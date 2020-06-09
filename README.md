@@ -1,4 +1,4 @@
-The  team will be building is an online store. Users are able to create an account, which is required, and then able to login. The user can browse the selection of items by category. The user can then sort these items by price. Additionally, the user may add items to the cart and purchase those items. 
+The  team will be building an online store. Users are able to create an account, which is required, and then able to login. The user can browse the selection of items by category. The user can then sort these items by price. Additionally, the user may add items to the cart and purchase those items. 
 
 
 The user can create an account
