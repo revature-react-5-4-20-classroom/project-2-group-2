@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 import {Container, Row, Col}from'reactstrap';
-import {SingleItemComponent,ReduxSingleItemComponent} from './components/SingleItemComponent'
+import {ReduxSingleItemComponent} from './components/SingleItemComponent'
+import { Cart } from './components/CartHoldingItems';
 //import 'bootstrap/dist/css/bootstrap.min.css';//was not working for me this time
 
 // import {BrowserRouter as Router} from 'react-router-dom'
@@ -38,6 +39,7 @@ export class App extends React.Component<any, any>{
               <h4>Project 2</h4>
               <p>We have some work to do!</p>
               <ReduxSingleItemComponent />
+              <Cart/>
             </Col>
             <Col sm="1"></Col>
           </Row>
