@@ -1,5 +1,7 @@
 import React from 'react';
 import { Jumbotron, Container, Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem, Button } from 'reactstrap';
+import { Item } from '../models/Item';
+import { getItemsByCategory } from '../api/StoreClient';
 
 // Component for displaying a list of items corresponding to a specific category
 
@@ -11,24 +13,26 @@ interface IItemBrowseComponentState {
     itemList: any[],
     categoryFilter: number,
     categoryName: string,
+    isError: boolean,
+    errorMessage: string,
 }
 
-export class ItemBrowseComponent extends React.Component<IItemBrowseComponentProps,IItemBrowseComponentState> {
+export class ItemListComponent extends React.Component<IItemBrowseComponentProps,IItemBrowseComponentState> {
 
     constructor(props: any) {
         super(props);
         this.state = {
             itemList: [],
             categoryFilter: 0,
-            categoryName: "(none)"
+            categoryName: "(none)",
+            isError: false,
+            errorMessage: "",
         }
     }
 
     // temporarily setting the item list as a bunch of strings
     componentDidMount() {
-        this.setState({
-            itemList: ["Shirt", "Harry Potter", "Nintendo Switch", "The Stand", "Laptop"]
-        })
+        this.getItems();
     }
 
     // change the selected category, get items based on that category
@@ -48,9 +52,23 @@ export class ItemBrowseComponent extends React.Component<IItemBrowseComponentPro
     }
 
     getItems = async () => {
-        // newItems : Item[] = getItemsByCategory(this.state.categoryFilter)
-        // this.setState({ categoryFilter: newItems })
-        console.log("Hello from inside getItems!")
+        try {
+            const newItems : Item[] = await getItemsByCategory(this.state.categoryFilter);
+            this.setState({ itemList: newItems });
+        } catch(e) {
+            // For now this doesn't do much, since you can't really have an invalid category id parameter
+            this.setState({
+                isError: true,
+                errorMessage: e.message,
+            }); 
+        }
+    }
+
+    clearError = () => {
+        this.setState({
+            isError: false,
+            errorMessage: "",
+        })
     }
 
     // temporary render, just to get a feel for the page.
@@ -67,19 +85,19 @@ export class ItemBrowseComponent extends React.Component<IItemBrowseComponentPro
                                     <DropdownItem id="(none)" value={0} onClick={this.changeCategory} defaultChecked>(none)</DropdownItem>
                                     <DropdownItem id="books" value={1} onClick={this.changeCategory}>Books</DropdownItem>
                                     <DropdownItem id="clothing" value={2} onClick={this.changeCategory}>Clothing</DropdownItem>
-                                    <DropdownItem id="electronics" calue={3} onClick={this.changeCategory}>Electronics</DropdownItem>
+                                    <DropdownItem id="electronics" value={3} onClick={this.changeCategory}>Electronics</DropdownItem>
                                 </DropdownMenu>
                             </UncontrolledDropdown>
                         </Col>
                     </Row>
                     <ListGroup>
-                        {/* Note: these will be real item properties, not strings */}
-                        {this.state.itemList.map((item: string, i) => {
+                        {/* I'm still not 100% sure what component is being displayed for each list item, so this is likely temporary */}
+                        {this.state.itemList.map((item: Item, i) => {
                             return( <ListGroupItem key={i}>
                                 <Row>
                                     <Col xs='auto'>Image</Col>
-                                    <Col xs='auto'>{item}</Col>
-                                    <Col xs='auto'>Item description</Col>
+                                    <Col xs='auto'>{item.item_name}</Col>
+                                    <Col xs='auto'>{item.description}</Col>
                                     <Col xs='auto'><Button color="primary">Add to cart</Button></Col>
                                 </Row>
                             </ListGroupItem>)

@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { FailedLoginError } from '../errors/FailedLoginError';
+import { Item } from '../models/Item';
 
 
 // For project work, take note that axios interprets non-200s response statuses as errors
@@ -39,3 +40,18 @@ const storeClient = axios.create({
 //     }
    
 // }
+
+// getting items by category - will send a get request to the appropriate backend endpoint
+// takes category id as an input - we may need to change this (or the endpoint) depending on how we set up our back end
+export async function getItemsByCategory(id: number) : Promise<any[]> {
+    try {
+        const response = await storeClient.get(`/items/category/${id}`);
+        return response.data.map((itemObj: any) => {
+           const {item_id, item_name, price, description, category_id, avg_rating, img_path} = itemObj;
+           return new Item(item_id, item_name, price, description, category_id, avg_rating, img_path);
+        })
+    } catch(e) {
+        // Add more error functionality later
+        throw e;
+    }
+}
