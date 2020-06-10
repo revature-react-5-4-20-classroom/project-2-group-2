@@ -3,27 +3,28 @@ import {IState} from '../redux/reducers';
 import { connect, Provider } from 'react-redux';
 
 interface IItemProps{
-    item_id: string;
-    item_name: string;
-    price: string;
+    item_id:    string,
+    item_name:  string,
+    price:      string,
     description:string,
     category_id:string,
-    avg_rating:string,
-    img_path:string
+    avg_rating: string,
+    img_path:   string
 }
 
 interface IItemState{
-    item_id: string;
-    item_name: string;
-    price: string;
+    item_id:    string,
+    item_name:  string,
+    price:      string,
     description:string,
     category_id:string,
-    avg_rating:string,
-    img_path:string
+    avg_rating: string,
+    img_path:   string
 }
 
 
-export class SingleItemComponent extends React.Component<IItemProps,any>{
+
+export class SingleItemComponent extends React.Component<IItemProps,IItemState>{
 
     constructor(props:IItemProps){
         super(props);
