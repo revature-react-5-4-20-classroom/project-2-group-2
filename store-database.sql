@@ -1,7 +1,7 @@
 CREATE TABLE project2_Items (
     item_id SERIAL PRIMARY KEY,
     item_name VARCHAR(25) NOT NULL,
-    price dec(,2) NOT NULL,
+    price dec(4,2) NOT NULL,
     category_id INTEGER NOT NULL REFERENCES CATEGORIES,
     avg_rating FLOAT NOT NULL,
     img_path VARCHAR(25) NOT NULL,
