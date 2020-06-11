@@ -13,10 +13,10 @@ public class Review {
 	@Id
 	@Column(name="review_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer review_id;
+	private Integer reviewId;
 	
 	@Column(name="user_id")
-	private Integer user_id;
+	private Integer userId;
 	
 	@Column(name="rating")
 	private Integer rating;
@@ -25,7 +25,7 @@ public class Review {
 	private String content;
 	
 	@Column(name="item_id")
-	private Integer item_id;
+	private Integer itemId;
 
 	
 	public Review() {
@@ -33,27 +33,27 @@ public class Review {
 	}
 	public Review(Integer review_id, Integer user_id, Integer rating, String content, Integer item_id) {
 		super();
-		this.review_id = review_id;
-		this.user_id = user_id;
+		this.reviewId = reviewId;
+		this.userId = userId;
 		this.rating = rating;
 		this.content = content;
-		this.item_id = item_id;
+		this.itemId = itemId;
 	}
 
-	public Integer getReview_id() {
-		return review_id;
+	public Integer getReviewId() {
+		return reviewId;
 	}
 
-	public void setReview_id(Integer review_id) {
-		this.review_id = review_id;
+	public void setReviewId(Integer reviewId) {
+		this.reviewId = reviewId;
 	}
 
-	public Integer getUser_id() {
-		return user_id;
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public void setUser_id(Integer user_id) {
-		this.user_id = user_id;
+	public void setUser_id(Integer userId) {
+		this.userId = userId;
 	}
 
 	public Integer getRating() {
@@ -72,18 +72,18 @@ public class Review {
 		this.content = content;
 	}
 
-	public Integer getItem_id() {
-		return item_id;
+	public Integer getItemId() {
+		return itemId;
 	}
 
-	public void setItem_id(Integer item_id) {
-		this.item_id = item_id;
+	public void setItem_id(Integer itemId) {
+		this.itemId = itemId;
 	}
 
 	@Override
 	public String toString() {
-		return "Review [review_id=" + review_id + ", user_id=" + user_id + ", rating=" + rating + ", content=" + content
-				+ ", item_id=" + item_id + "]";
+		return "Review [reviewId=" + reviewId + ", userId=" + userId + ", rating=" + rating + ", content=" + content
+				+ ", itemId=" + itemId + "]";
 	}
 
 	
