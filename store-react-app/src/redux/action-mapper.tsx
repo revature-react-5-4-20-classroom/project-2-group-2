@@ -1,5 +1,4 @@
 
-
 interface IItemState{
     item_id: string;
     item_name: string;
@@ -10,12 +9,9 @@ interface IItemState{
     img_path:string
 }
 
-
 export const itemClickTypes = {
     ITEM_CLICK: 'ITEM_CLICK',
-    
 }
-
 
 export const itemClickActionMapper = (itemClicked:IItemState) =>{
     return {
