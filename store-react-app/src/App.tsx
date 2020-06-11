@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import {Container, Row, Col, Navbar, NavbarToggler, Nav, NavItem}from'reactstrap';
 import {ReduxSingleItemComponent} from './components/SingleItemComponent'
-import { CheckoutPage } from './components/CartHoldingItems';
+import { CheckoutPage } from './components/CheckoutPage';
 import {  BrowserRouter, Route, Switch,NavLink } from 'react-router-dom';
 //import 'bootstrap/dist/css/bootstrap.min.css';//was not working for me. rene
 
