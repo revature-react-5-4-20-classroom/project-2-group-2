@@ -49,9 +49,10 @@ export class SingleItemComponent extends React.Component<IItemProps,IItemState>{
 
 const mapStateToProps = (state:IState) =>{
     return{
-      ...state.item,
+      ...state//.item,
     }
   }
+
   const mapDispatchToProps = {   
 
 }
