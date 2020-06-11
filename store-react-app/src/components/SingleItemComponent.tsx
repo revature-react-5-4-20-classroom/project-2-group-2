@@ -1,6 +1,7 @@
 import React from 'react'
 import {IState} from '../redux/reducers';
 import { connect, Provider } from 'react-redux';
+import { SubmitReviewComponent } from './SubmitReviewComponent';
 
 interface IItemProps{
     item_id:    string,
@@ -39,6 +40,7 @@ export class SingleItemComponent extends React.Component<IItemProps,IItemState>{
             <span>{this.props.price}</span>
             <p>{this.props.description}</p>
             <span>{this.props.avg_rating}</span>
+            <SubmitReviewComponent itemId={this.props.item_id} userId = "1" />
             </>
        );
     }
@@ -47,11 +49,12 @@ export class SingleItemComponent extends React.Component<IItemProps,IItemState>{
 
 const mapStateToProps = (state:IState) =>{
     return{
-      ...state.user,
+      ...state.item,
     }
   }
   const mapDispatchToProps = {   
-  }
+
+}
   
   // finally, we set up the componenet in its container with its connections
   // connect produces a "higher order component" that takes a component as an argument and returns a component

@@ -17,6 +17,15 @@ const storeClient = axios.create({
 })
 
 
+export async function submitReview(rate:string, text:string, userId:string, itemId:string ){
+    try{
+        const response =  await storeClient.post('/review', {rating:rate, content: text, userId:userId, itemId:itemId});
+    } catch (e){
+        console.log(e)
+    }
+}
+
+
 
 
 
