@@ -1,21 +1,21 @@
 // Adding an item model for now, just to make some things simpler
 
 export class Item{
-    item_id:    number;
+    item_id:    string;
     item_name:  string;
-    price:      number;
+    price:      string;
     description:string;
-    category_id:number;
-    avg_rating: number;
+    category_id:string;
+    avg_rating: string;
     img_path:   string;
 
     constructor(
-        item_id:    number,
+        item_id:    string,
         item_name:  string,
-        price:      number,
+        price:      string,
         description:string,
-        category_id:number,
-        avg_rating: number,
+        category_id:string,
+        avg_rating: string,
         img_path:   string,
     ) 
     {

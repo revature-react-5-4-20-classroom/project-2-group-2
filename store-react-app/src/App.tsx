@@ -28,13 +28,13 @@ import book18 from "./books-item-18.jpg"
 import { Item } from './models/Item';
 
 export let theCart:Item[]=[
-      new Item( 0,"Advanced Physical Chemistry",
-              48,"Description Description Description Description Description Description Description ",
-              0,8,book17),
+      new Item( "0","Advanced Physical Chemistry",
+              "48","Description Description Description Description Description Description Description ",
+              "0","8",book17),
 
-      new Item( 1,"Revenant Gun",
-              55,"Description Description Description Description Description Description Description ",
-              0,4,book18)
+      new Item( "1","Revenant Gun",
+              "55","Description Description Description Description Description Description Description ",
+              "0","4",book18)
       ]
 
 export class App extends React.Component<any, any>
@@ -78,6 +78,7 @@ export class App extends React.Component<any, any>
                     <Nav className='mr-auto' tabs>
                       <NavEasy href='/view' display='View Items'/>
                       <NavEasy href='/checkout' display='Checkout'/>
+                      <NavEasy href='/viewitem' display='View single item'/>
                     </Nav>
                   </Navbar>
 
