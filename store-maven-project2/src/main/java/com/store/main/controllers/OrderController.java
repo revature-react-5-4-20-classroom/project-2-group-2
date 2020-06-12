@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.store.main.models.Item;
+import com.store.main.models.Order;
 import com.store.main.models.Orderline;
 import com.store.main.services.OrderService;
 
@@ -30,6 +31,20 @@ public class OrderController
     }
     
     /*
+     *  Accepts and order in the following form:
+     */
+    @CrossOrigin(origins = "*")
+    @PostMapping("/ordersMany")
+    public String addNewOrder(@RequestBody Order ord)
+    {
+      System.out.println("POST /ordersMany has been hit");
+      
+      System.out.println("ord="+ord.toString());
+      
+      return "";
+    }
+    
+    /*
      *  Posts a new orderline to the orderlines table
      *  ann orderline is one item in an order
      *  the following fields must be passed in the body of the request
@@ -45,7 +60,7 @@ public class OrderController
      */
     @CrossOrigin(origins = "*")
     @PostMapping("/orders")
-    public Orderline addNewCat(@RequestBody Orderline ol)
+    public Orderline addOneOrderline(@RequestBody Orderline ol)
     {
         System.out.println("POST /orders has been hit");
         System.out.println("ol="+ol.toString());
