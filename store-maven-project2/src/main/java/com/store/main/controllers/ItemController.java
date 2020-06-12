@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,12 +23,14 @@ public class ItemController {
 	ItemService itemService;
 	
 	// get all items
+	@CrossOrigin
 	@GetMapping("/items")
 	public List<Item> getAllItems() {
 		return itemService.getAll();
 	}
 	
 	// get item by id
+	@CrossOrigin
 	@GetMapping("/items/itemId/{id}")
 	public Item getItemById(@PathVariable Integer id) {
 		try {
@@ -48,6 +51,7 @@ public class ItemController {
 //			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Issue finding items", e);
 //		}
 //	}
+	@CrossOrigin
 	@GetMapping("/items/category/{catId}")
 	public List<Item> getItemsByCategoryId(@PathVariable Integer catId) {
 		try {
@@ -58,6 +62,7 @@ public class ItemController {
 		}
 	}
 	
+	@CrossOrigin
 	@PatchMapping("/items/itemId/{id}")
 	public Item updateItemWithId(@RequestBody Item item, @PathVariable Integer id) {
 		item.setItemId(id);
