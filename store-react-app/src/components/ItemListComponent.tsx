@@ -5,11 +5,11 @@ import { getItemsByCategory } from '../api/StoreClient';
 
 // Component for displaying a list of items corresponding to a specific category
 
-interface IItemBrowseComponentProps {
+interface IItemListComponentProps {
     loggedInUser: any
 }
 
-interface IItemBrowseComponentState {
+interface IItemListComponentState {
     itemList: any[],
     categoryFilter: number,
     categoryName: string,
@@ -17,7 +17,7 @@ interface IItemBrowseComponentState {
     errorMessage: string,
 }
 
-export class ItemListComponent extends React.Component<IItemBrowseComponentProps,IItemBrowseComponentState> {
+export class ItemListComponent extends React.Component<IItemListComponentProps,IItemListComponentState> {
 
     constructor(props: any) {
         super(props);
@@ -37,7 +37,7 @@ export class ItemListComponent extends React.Component<IItemBrowseComponentProps
 
     // change the selected category, get items based on that category
     changeCategory = (e: any) => {
-        const categoryId = e.currentTarget.value;
+        const categoryId = parseInt(e.currentTarget.value);
         let newCatName: string;
         switch(categoryId) {
             case 1: newCatName='books'; break;
@@ -96,7 +96,7 @@ export class ItemListComponent extends React.Component<IItemBrowseComponentProps
                             return( <ListGroupItem key={i}>
                                 <Row>
                                     <Col xs='auto'>Image</Col>
-                                    <Col xs='auto'>{item.item_name}</Col>
+                                    <Col xs='auto'>{item.itemName}</Col>
                                     <Col xs='auto'>{item.description}</Col>
                                     <Col xs='auto'><Button color="primary">Add to cart</Button></Col>
                                 </Row>
