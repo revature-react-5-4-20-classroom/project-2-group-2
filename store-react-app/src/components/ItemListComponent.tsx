@@ -5,11 +5,11 @@ import { getItemsByCategory } from '../api/StoreClient';
 
 // Component for displaying a list of items corresponding to a specific category
 
-interface IItemBrowseComponentProps {
+interface IItemListComponentProps {
     loggedInUser: any
 }
 
-interface IItemBrowseComponentState {
+interface IItemListComponentState {
     itemList: any[],
     categoryFilter: number,
     categoryName: string,
@@ -17,7 +17,7 @@ interface IItemBrowseComponentState {
     errorMessage: string,
 }
 
-export class ItemListComponent extends React.Component<IItemBrowseComponentProps,IItemBrowseComponentState> {
+export class ItemListComponent extends React.Component<IItemListComponentProps,IItemListComponentState> {
 
     constructor(props: any) {
         super(props);
