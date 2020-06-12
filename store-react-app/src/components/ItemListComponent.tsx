@@ -1,13 +1,23 @@
 import React from 'react';
+import { IState } from '../redux/reducers';
 import { Jumbotron, Container, Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { Item } from '../models/Item';
 import { getItemsByCategory, getAllItems } from '../api/StoreClient';
-import { ReduxSingleItemComponent } from './SingleItemComponent';
+import { itemClickActionMapper } from '../redux/action-mapper';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 // Component for displaying a list of items corresponding to a specific category
 
 interface IItemListComponentProps {
-    loggedInUser: any
+    item_id:    string;
+    item_name:  string;
+    price:      string;
+    description:string;
+    category_id:string;
+    avg_rating: string;
+    img_path:   string;
+    itemClickActionMapper: (item:Item) => void;
 }
 
 interface IItemListComponentState {
@@ -73,7 +83,10 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
     }
 
     toggleRedirect = (e: any) => {
+        e.preventDefault();
         let value: number = parseInt(e.currentTarget.id);
+        const clickedItem: Item = this.state.itemList[value];
+        this.props.itemClickActionMapper(clickedItem);
         if(this.state.redirect === null) {
             this.setState({
                 redirect: value,
@@ -89,7 +102,7 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
         this.setState({
             isError: false,
             errorMessage: "",
-        })
+        });
     }
 
     // temporary render, just to get a feel for the page.
@@ -131,9 +144,22 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
         
             <>
             <Button onClick={this.toggleRedirect} id="0">Back To Items</Button>
-            <ReduxSingleItemComponent/>
+            <Redirect to="/viewitem"/>
             </>}
             </>
         );
     }
 }
+
+// Redux component
+const mapStateToProps = (state:IState) =>{
+    return{
+      ...state.item,
+    }
+  }
+
+  const mapDispatchToProps = {   
+    itemClickActionMapper
+}
+
+export const ReduxItemListComponent = connect(mapStateToProps, mapDispatchToProps)(ItemListComponent)

@@ -5,7 +5,7 @@ import { CheckoutPage } from './components/CheckoutPage';
 import {  BrowserRouter, Route, Switch,NavLink } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
-import { ItemListComponent } from './components/ItemListComponent';
+import { ItemListComponent, ReduxItemListComponent } from './components/ItemListComponent';
 //import 'bootstrap/dist/css/bootstrap.min.css';//was not working for me. rene
 
 /*
@@ -84,7 +84,7 @@ export class App extends React.Component<any, any>
 
                   <Switch>
                     <Route path="/view">
-                      <ItemListComponent loggedInUser={null}/>
+                      <ReduxItemListComponent/>
                     </Route>
 
                     <Route path="/checkout">
