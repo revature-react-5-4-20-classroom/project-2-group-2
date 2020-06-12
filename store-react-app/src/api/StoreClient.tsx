@@ -11,8 +11,8 @@ import { Item } from '../models/Item';
 // without repeating ourselves
 
 const storeClient = axios.create({
-    baseURL : 'http://localhost:3005', // Use this to test on your local machine, leave commented out.
-    //baseURL : 'http://18.216.197.108:3005',
+    baseURL : 'http://localhost:8080', // Use this to test on your local machine, leave commented out.
+    //baseURL : 'http://18.216.197.108:8080',
     //if you don't have the following line, your login won't work
     withCredentials: false, // we should probably change this later
 })
@@ -51,6 +51,20 @@ export async function submitReview(rate:string, text:string, userId:string, item
 export async function getItemsByCategory(id: number) : Promise<any[]> {
     try {
         const response = await storeClient.get(`/items/category/${id}`);
+        return response.data.map((itemObj: any) => {
+           const {itemId, itemName, price, description, categoryId, avgRating, imgPath} = itemObj;
+           return new Item(itemId, itemName, price, description, categoryId, avgRating, imgPath);
+        })
+    } catch(e) {
+        // Add more error functionality later
+        console.log(e.message);
+        throw e;
+    }
+}
+
+export async function getAllItems() : Promise<any[]> {
+    try {
+        const response = await storeClient.get(`/items`);
         return response.data.map((itemObj: any) => {
            const {itemId, itemName, price, description, categoryId, avgRating, imgPath} = itemObj;
            return new Item(itemId, itemName, price, description, categoryId, avgRating, imgPath);
