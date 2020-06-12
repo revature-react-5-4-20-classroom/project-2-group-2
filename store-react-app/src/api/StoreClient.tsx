@@ -11,10 +11,10 @@ import { Item } from '../models/Item';
 // without repeating ourselves
 
 const storeClient = axios.create({
-    //baseURL : 'http://localhost:8080', // Use this to test on your local machine, leave commented out.
-    baseURL : 'http://18.216.197.108:3005',
+    baseURL : 'http://localhost:3005', // Use this to test on your local machine, leave commented out.
+    //baseURL : 'http://18.216.197.108:3005',
     //if you don't have the following line, your login won't work
-    withCredentials: true,
+    withCredentials: false, // we should probably change this later
 })
 
 
@@ -57,6 +57,7 @@ export async function getItemsByCategory(id: number) : Promise<any[]> {
         })
     } catch(e) {
         // Add more error functionality later
+        console.log(e.message);
         throw e;
     }
 }
