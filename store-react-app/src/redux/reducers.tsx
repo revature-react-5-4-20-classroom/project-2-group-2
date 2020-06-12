@@ -13,13 +13,8 @@ interface IItemState{
     price:      string,
     description:string,
     category_id:string,
-<<<<<<< HEAD
     avg_rating:string,
     img_path:string,
-=======
-    avg_rating: string,
-    img_path:   string
->>>>>>> ab5460406f46f296a1f0fbeaead90612863cd75e
 }
 
 const initialItemState : IItemState = {
@@ -43,26 +38,6 @@ const initialCartState:ICartState ={
 
 export const cartReducer = (state:ICartState = initialCartState, action:AnyAction) : ICartState =>{
     switch(action.type){
-<<<<<<< HEAD
-        case itemClickTypes.ITEM_CLICK :{
-
-                let item_idNew= action.payload.itemClicked.item_id
-                let item_nameNew= action.payload.itemClicked.item_name
-                let priceNew= action.payload.itemClicked.price
-                let descriptionNew= action.payload.itemClicked.description
-                let category_idNew= action.payload.itemClicked.category_id
-                let avg_ratingNew= action.payload.itemClicked.avg_rating
-                let img_pathNew = action.payload.itemClicked.img_path
-
-            return{
-                    item_id: item_idNew,
-                    item_name: item_nameNew,
-                    price:priceNew,
-                    description: descriptionNew,
-                    category_id: category_idNew,
-                    avg_rating: avg_ratingNew,
-                    img_path:img_pathNew,
-=======
         case cartClickTypes.ADD_CLICK:{
                 
                
@@ -75,7 +50,6 @@ export const cartReducer = (state:ICartState = initialCartState, action:AnyActio
                }
             }default :{
                 return state;
->>>>>>> ab5460406f46f296a1f0fbeaead90612863cd75e
             }
         }
         

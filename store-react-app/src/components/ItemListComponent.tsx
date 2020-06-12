@@ -96,7 +96,8 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
                             return( <ListGroupItem key={i}>
                                 <Row>
                                     <Col xs='auto'>Image</Col>
-                                    <Col xs='auto'>{item.itemName}</Col>
+                                    
+                                    <Col xs='auto'>{item.item_name}</Col>
                                     <Col xs='auto'>{item.description}</Col>
                                     <Col xs='auto'><Button color="primary">Add to cart</Button></Col>
                                 </Row>
