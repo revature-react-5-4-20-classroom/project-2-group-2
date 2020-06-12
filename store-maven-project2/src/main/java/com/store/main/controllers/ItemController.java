@@ -23,14 +23,14 @@ public class ItemController {
 	ItemService itemService;
 	
 	// get all items
-	@CrossOrigin
+	@CrossOrigin(origins = "*")
 	@GetMapping("/items")
 	public List<Item> getAllItems() {
 		return itemService.getAll();
 	}
 	
 	// get item by id
-	@CrossOrigin
+	@CrossOrigin(origins = "*")
 	@GetMapping("/items/itemId/{id}")
 	public Item getItemById(@PathVariable Integer id) {
 		try {
@@ -51,7 +51,7 @@ public class ItemController {
 //			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Issue finding items", e);
 //		}
 //	}
-	@CrossOrigin
+	@CrossOrigin(origins = "*")
 	@GetMapping("/items/category/{catId}")
 	public List<Item> getItemsByCategoryId(@PathVariable Integer catId) {
 		try {
@@ -62,7 +62,7 @@ public class ItemController {
 		}
 	}
 	
-	@CrossOrigin
+	@CrossOrigin(origins = "*")
 	@PatchMapping("/items/itemId/{id}")
 	public Item updateItemWithId(@RequestBody Item item, @PathVariable Integer id) {
 		item.setItemId(id);

@@ -11,8 +11,8 @@ import { Item } from '../models/Item';
 // without repeating ourselves
 
 const storeClient = axios.create({
-    //baseURL : 'http://localhost:8080', // Use this to test on your local machine, leave commented out.
-    baseURL : 'http://18.216.197.108:3005',
+    baseURL : 'http://localhost:8080', // Use this to test on your local machine, leave commented out.
+    // baseURL : 'http://18.216.197.108:3005',
     //if you don't have the following line, your login won't work
     withCredentials: true,
 })
