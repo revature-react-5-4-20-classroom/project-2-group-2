@@ -55,6 +55,7 @@ public class ItemController {
 	@GetMapping("/items/category/{catId}")
 	public List<Item> getItemsByCategoryId(@PathVariable Integer catId) {
 		try {
+			//System.out.println(itemService.getByCategoryId(catId));
 			return itemService.getByCategoryId(catId);
 		} catch(RuntimeException e) {
 			e.printStackTrace();

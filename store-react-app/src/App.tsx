@@ -27,7 +27,15 @@ import book17 from "./books-item-17.jpg"
 import book18 from "./books-item-18.jpg"
 import { Item } from './models/Item';
 
-export let theCart:number[]=[1,7,13] //the item Ids
+export let theCart:Item[]=[
+      new Item( "0","Advanced Physical Chemistry",
+              "48","Description Description Description Description Description Description Description ",
+              "0","8",book17),
+
+      new Item( "1","Revenant Gun",
+              "55","Description Description Description Description Description Description Description ",
+              "0","4",book18)
+      ]
 
 export class App extends React.Component<any, any>
 {
@@ -76,7 +84,7 @@ export class App extends React.Component<any, any>
 
                   <Switch>
                     <Route path="/view">
-                      <ItemListComponent loggedInUser={null}/>
+                      {/* <ItemListComponent loggedInUser={null}/> */}
                     </Route>
 
                     <Route path="/checkout">

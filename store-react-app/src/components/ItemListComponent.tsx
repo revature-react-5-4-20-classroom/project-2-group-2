@@ -1,12 +1,23 @@
 import React from 'react';
+import { IState } from '../redux/reducers';
 import { Jumbotron, Container, Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { Item } from '../models/Item';
-import { getItemsByCategory } from '../api/StoreClient';
+import { getItemsByCategory, getAllItems } from '../api/StoreClient';
+import { itemClickActionMapper } from '../redux/action-mapper';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 // Component for displaying a list of items corresponding to a specific category
 
 interface IItemListComponentProps {
-    loggedInUser: any
+    item_id:    string;
+    item_name:  string;
+    price:      string;
+    description:string;
+    category_id:string;
+    avg_rating: string;
+    img_path:   string;
+    itemClickActionMapper: (item:Item) => void;
 }
 
 interface IItemListComponentState {
@@ -15,6 +26,7 @@ interface IItemListComponentState {
     categoryName: string,
     isError: boolean,
     errorMessage: string,
+    redirect: number | null,
 }
 
 export class ItemListComponent extends React.Component<IItemListComponentProps,IItemListComponentState> {
@@ -27,6 +39,7 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
             categoryName: "(none)",
             isError: false,
             errorMessage: "",
+            redirect: null,
         }
     }
 
@@ -53,7 +66,12 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
 
     getItems = async () => {
         try {
-            const newItems : Item[] = await getItemsByCategory(this.state.categoryFilter);
+            let newItems: Item[];
+            if(this.state.categoryFilter !== 0) {
+                newItems = await getItemsByCategory(this.state.categoryFilter);
+            } else {
+                newItems = await getAllItems();
+            }
             this.setState({ itemList: newItems });
         } catch(e) {
             // For now this doesn't do much, since you can't really have an invalid category id parameter
@@ -64,16 +82,34 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
         }
     }
 
+    toggleRedirect = (e: any) => {
+        e.preventDefault();
+        let value: number = parseInt(e.currentTarget.id);
+        const clickedItem: Item = this.state.itemList[value];
+        this.props.itemClickActionMapper(clickedItem);
+        if(this.state.redirect === null) {
+            this.setState({
+                redirect: value,
+            });
+        } else {
+            this.setState({
+                redirect: null,
+            });
+        }
+    }
+
     clearError = () => {
         this.setState({
             isError: false,
             errorMessage: "",
-        })
+        });
     }
 
     // temporary render, just to get a feel for the page.
     render() {
         return(
+            <>
+            {this.state.redirect === null ?
             <Jumbotron>
                 <Container>
                     <Row>
@@ -96,8 +132,7 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
                             return( <ListGroupItem key={i}>
                                 <Row>
                                     <Col xs='auto'>Image</Col>
-                                    
-                                    <Col xs='auto'>{item.item_name}</Col>
+                                    <Col xs='auto'><a href='#' onClick={this.toggleRedirect} id={i.toString()}>{item.item_name}</a></Col>
                                     <Col xs='auto'>{item.description}</Col>
                                     <Col xs='auto'><Button color="primary">Add to cart</Button></Col>
                                 </Row>
@@ -105,7 +140,26 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
                         })}
                     </ListGroup>
                 </Container>
-            </Jumbotron>
+            </Jumbotron> :
+        
+            <>
+            <Button onClick={this.toggleRedirect} id="0">Back To Items</Button>
+            <Redirect to="/viewitem"/>
+            </>}
+            </>
         );
     }
 }
+
+// Redux component
+const mapStateToProps = (state:IState) =>{
+    return{
+      ...state.item,
+    }
+  }
+
+  const mapDispatchToProps = {   
+    itemClickActionMapper
+}
+
+export const ReduxItemListComponent = connect(mapStateToProps, mapDispatchToProps)(ItemListComponent)
