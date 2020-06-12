@@ -2,15 +2,18 @@ import React from 'react'
 import {IState} from '../redux/reducers';
 import { connect, Provider } from 'react-redux';
 import { SubmitReviewComponent } from './SubmitReviewComponent';
+import {itemClickActionMapper} from '../redux/action-mapper';
+import {Item} from '../models/Item';
 
 interface IItemProps{
-    item_id:    string,
-    item_name:  string,
-    price:      string,
-    description:string,
-    category_id:string,
-    avg_rating: string,
-    img_path:   string
+    item_id:    string;
+    item_name:  string;
+    price:      string;
+    description:string;
+    category_id:string;
+    avg_rating: string;
+    img_path:   string;
+    itemClickActionMapper: (item:Item) => void;
 }
 
 interface IItemState{
@@ -29,6 +32,15 @@ export class SingleItemComponent extends React.Component<IItemProps,IItemState>{
 
     constructor(props:IItemProps){
         super(props);
+        this.state ={
+          item_id: '',
+          item_name: '',
+          price: '',
+          description:'',
+          category_id:'',
+          avg_rating:'',
+          img_path:''
+        }
     }
 
 
@@ -49,12 +61,12 @@ export class SingleItemComponent extends React.Component<IItemProps,IItemState>{
 
 const mapStateToProps = (state:IState) =>{
     return{
-      ...state//.item,
+      ...state.item,
     }
   }
 
   const mapDispatchToProps = {   
-
+    itemClickActionMapper
 }
   
   // finally, we set up the componenet in its container with its connections

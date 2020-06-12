@@ -45,9 +45,6 @@ export class SubmitReviewComponent extends React.Component<any,IReviewState>{
             console.log(error)
         }
       }
-
-
-
     render(){
         return(
             <>

@@ -31,7 +31,7 @@ public class Review {
 	public Review() {
 		
 	}
-	public Review(Integer review_id, Integer user_id, Integer rating, String content, Integer item_id) {
+	public Review(Integer reviewId, Integer userId, Integer rating, String content, Integer itemId) {
 		super();
 		this.reviewId = reviewId;
 		this.userId = userId;

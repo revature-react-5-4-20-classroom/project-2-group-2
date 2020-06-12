@@ -1,14 +1,25 @@
 import {AnyAction, combineReducers, bindActionCreators} from 'redux';
-import { itemClickTypes } from './action-mapper';
+import { itemClickTypes, cartClickTypes } from './action-mapper';
+import { Item } from '../models/Item';
+import { ItemListComponent } from '../components/ItemListComponent';
+
+
+
+
 
 interface IItemState{
-    item_id: string;
-    item_name: string;
-    price: string;
+    item_id:    string,
+    item_name:  string,
+    price:      string,
     description:string,
     category_id:string,
+<<<<<<< HEAD
     avg_rating:string,
     img_path:string,
+=======
+    avg_rating: string,
+    img_path:   string
+>>>>>>> ab5460406f46f296a1f0fbeaead90612863cd75e
 }
 
 const initialItemState : IItemState = {
@@ -20,10 +31,19 @@ const initialItemState : IItemState = {
     avg_rating:'',
     img_path:'',
 }
+interface ICartState{
+    items : Item[];
+    index :number | undefined;
+}
 
-export const itemReducer = (state:IItemState = initialItemState, action: AnyAction) : IItemState =>{
+const initialCartState:ICartState ={
+    items : [],
+    index : 0
+}
 
+export const cartReducer = (state:ICartState = initialCartState, action:AnyAction) : ICartState =>{
     switch(action.type){
+<<<<<<< HEAD
         case itemClickTypes.ITEM_CLICK :{
 
                 let item_idNew= action.payload.itemClicked.item_id
@@ -42,44 +62,72 @@ export const itemReducer = (state:IItemState = initialItemState, action: AnyActi
                     category_id: category_idNew,
                     avg_rating: avg_ratingNew,
                     img_path:img_pathNew,
+=======
+        case cartClickTypes.ADD_CLICK:{
+                
+               
+               let newState = state.items
+               newState.push(action.payload.itemClicked);
+
+               return{
+                items: newState,
+                index:undefined
+               }
+            }default :{
+                return state;
+>>>>>>> ab5460406f46f296a1f0fbeaead90612863cd75e
             }
         }
-        default : {
-            return state;
-        }
+        
+}
+
+
+export const itemReducer = (state:IItemState = initialItemState, action: AnyAction) : IItemState =>{
+
+    switch(action.type){
+            case itemClickTypes.ITEM_CLICK :{
+
+
+                    let item_idNew= action.payload.itemClicked.item_id
+                    let item_nameNew= action.payload.itemClicked.item_name
+                    let priceNew= action.payload.itemClicked.price
+                    let descriptionNew= action.payload.itemClicked.description
+                    let category_idNew= action.payload.itemClicked.category_id
+                    let avg_ratingNew= action.payload.itemClicked.avg_rating
+                    let img_pathNew = action.payload.itemClicked.img_path
+
+
+             
+
+                return{
+                        item_id: item_idNew,
+                        item_name: item_nameNew,
+                        price:priceNew,
+                        description: descriptionNew,
+                        category_id: category_idNew,
+                        avg_rating: avg_ratingNew,
+                        img_path:img_pathNew
+                }
+            }
+            default : {
+                return state;
+            }
     }
+
 }
 
-interface Icart{
-    items:[],
-    action:AnyAction
-}
 
-const initialCartState:Icart={
-    items:[],
-    action:{type:''}
-}
 
-export const cartReducer= (state:Icart = initialCartState, action: AnyAction) : Icart =>
-{
-    switch(action.type)
-    {
-        case 'CART_ITEM_ADD':
-            //return state.items.concat(action.item)
-
-        default:return state
-    }
-}
 
 export interface IState {
-    user: IItemState,
+    item: IItemState,
+    items:ICartState
     
 }
-
 // Now all of our reducers are in state, exported here
 //all actions can take place on state and they go to the appropriate
 // reducer
 export const state = combineReducers<IState>({
-    //cart:cartReducer,
-    user:itemReducer,
+    item : itemReducer,
+    items:cartReducer
 })

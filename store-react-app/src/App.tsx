@@ -3,6 +3,9 @@ import {Container, Row, Col, Navbar, NavbarToggler, Nav, NavItem}from'reactstrap
 import {ReduxSingleItemComponent} from './components/SingleItemComponent'
 import { CheckoutPage } from './components/CheckoutPage';
 import {  BrowserRouter, Route, Switch,NavLink } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
+import { ItemListComponent } from './components/ItemListComponent';
 //import 'bootstrap/dist/css/bootstrap.min.css';//was not working for me. rene
 
 /*
@@ -43,13 +46,13 @@ export class App extends React.Component<any, any>
   //   })
   // }
 
-  // constructor(props:any){
-  //   super(props);
-  //   this.state = {
-  //     loggedInUser:null
+  constructor(props:any){
+    super(props);
+    // this.state = {
+    //   loggedInUser:null
       
-  //   }
-  // }
+    // }
+  }
 
   toggleNavbar=()=>
   {
@@ -68,7 +71,7 @@ export class App extends React.Component<any, any>
               <h4>Project 2</h4>
               <p>We have some work to do!</p>
 
-              {/* <ReduxSingleItemComponent /> */}
+              
                 <BrowserRouter>
                   <Navbar color='light' light expand='md'>
                     <NavbarToggler onClick={this.toggleNavbar}/>
@@ -80,12 +83,19 @@ export class App extends React.Component<any, any>
 
                   <Switch>
                     <Route path="/view">
-                      <i>You are viewing all the items available to buy</i>
+                      <ItemListComponent loggedInUser={null}/>
                     </Route>
 
                     <Route path="/checkout">
                       <CheckoutPage/>
                     </Route>
+                    <Provider store={store}>
+                    
+                      <Route path="/viewitem">
+                        <ReduxSingleItemComponent /> 
+                      </Route>
+                    </Provider>
+                    
                   </Switch>
 
                 </BrowserRouter>

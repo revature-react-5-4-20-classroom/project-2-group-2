@@ -11,6 +11,7 @@ import { Item } from '../models/Item';
 // without repeating ourselves
 
 const storeClient = axios.create({
+    //baseURL : 'http://localhost:8080', // Use this to test on your local machine, leave commented out.
     baseURL : 'http://18.216.197.108:3005',
     //if you don't have the following line, your login won't work
     withCredentials: true,
@@ -51,8 +52,8 @@ export async function getItemsByCategory(id: number) : Promise<any[]> {
     try {
         const response = await storeClient.get(`/items/category/${id}`);
         return response.data.map((itemObj: any) => {
-           const {item_id, item_name, price, description, category_id, avg_rating, img_path} = itemObj;
-           return new Item(item_id, item_name, price, description, category_id, avg_rating, img_path);
+           const {itemId, itemName, price, description, categoryId, avgRating, imgPath} = itemObj;
+           return new Item(itemId, itemName, price, description, categoryId, avgRating, imgPath);
         })
     } catch(e) {
         // Add more error functionality later
