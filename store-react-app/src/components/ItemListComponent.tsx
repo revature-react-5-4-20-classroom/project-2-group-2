@@ -96,7 +96,7 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
     render() {
         return(
             <>
-            {this.state.redirect === 0 ?
+            {this.state.redirect === null ?
             <Jumbotron>
                 <Container>
                     <Row>
