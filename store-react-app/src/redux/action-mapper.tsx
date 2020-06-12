@@ -13,6 +13,21 @@ export const itemClickTypes = {
     ITEM_CLICK: 'ITEM_CLICK',
 }
 
+export const cartClickTypes = {
+    ADD_CLICK: 'ADD_CLICK',
+    REMOVE_CLICK:'REMOVE_CLICK'
+}
+
+export const addClickActionMappper = (itemClicked:IItemState, index:number) =>{
+    return {
+        type: cartClickTypes.ADD_CLICK,
+        payload:{
+            itemClicked,
+            index
+        }
+    }
+}
+
 export const itemClickActionMapper = (itemClicked:IItemState) =>{
     return {
         type: itemClickTypes.ITEM_CLICK,
