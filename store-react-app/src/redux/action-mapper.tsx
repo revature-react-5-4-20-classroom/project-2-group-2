@@ -18,7 +18,7 @@ export const cartClickTypes = {
     REMOVE_CLICK:'REMOVE_CLICK'
 }
 
-export const addClickActionMappper = (itemClicked:IItemState, index:number) =>{
+export const addClickActionMappper = (itemClicked:IItemState, index:number|undefined) =>{
     return {
         type: cartClickTypes.ADD_CLICK,
         payload:{
