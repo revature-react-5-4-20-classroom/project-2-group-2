@@ -26,11 +26,6 @@ export async function submitReview(rate:string, text:string, userId:string, item
 }
 
 
-
-
-
-
-
 //implement login later. needs new user object
 
 // export async function login(un:string, pw:string){

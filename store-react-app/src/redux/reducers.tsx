@@ -8,7 +8,7 @@ interface IItemState{
     description:string,
     category_id:string,
     avg_rating:string,
-    img_path:string
+    img_path:string,
 }
 
 const initialItemState : IItemState = {
@@ -18,8 +18,7 @@ const initialItemState : IItemState = {
     description:'',
     category_id:'',
     avg_rating:'',
-    img_path:''
-    
+    img_path:'',
 }
 
 export const itemReducer = (state:IItemState = initialItemState, action: AnyAction) : IItemState =>{
@@ -42,7 +41,7 @@ export const itemReducer = (state:IItemState = initialItemState, action: AnyActi
                     description: descriptionNew,
                     category_id: category_idNew,
                     avg_rating: avg_ratingNew,
-                    img_path:img_pathNew
+                    img_path:img_pathNew,
             }
         }
         default : {

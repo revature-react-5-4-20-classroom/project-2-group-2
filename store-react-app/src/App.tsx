@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './App.css';
 import {Container, Row, Col, Navbar, NavbarToggler, Nav, NavItem}from'reactstrap';
 import {ReduxSingleItemComponent} from './components/SingleItemComponent'
 import { CheckoutPage } from './components/CheckoutPage';
@@ -14,13 +13,26 @@ import {  BrowserRouter, Route, Switch,NavLink } from 'react-router-dom';
     npm i bootstrap
 */
 
-// import {BrowserRouter as Router} from 'react-router-dom'
 // import {Route, Switch, useHistory, Redirect} from 'react-router';
 // import { connect, Provider } from 'react-redux';
 
 // interface IAppState {
 //   loggedInUser : User | null;
 // }
+
+import book17 from "./books-item-17.jpg"
+import book18 from "./books-item-18.jpg"
+import { Item } from './models/Item';
+
+export let theCart:Item[]=[
+      new Item( 0,"Advanced Physical Chemistry",
+              48,"Description Description Description Description Description Description Description ",
+              0,8,book17),
+
+      new Item( 1,"Revenant Gun",
+              55,"Description Description Description Description Description Description Description ",
+              0,4,book18)
+      ]
 
 export class App extends React.Component<any, any>
 {

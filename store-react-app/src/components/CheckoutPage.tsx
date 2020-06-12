@@ -5,21 +5,10 @@ import { SingleItemComponent } from "./SingleItemComponent";
 import { store } from "../redux/store";
 import {prnt}from'../Helpers';
 import { Container, Row, Col, Button, Table, Media } from "reactstrap";
-import book17 from "./books-item-17.jpg"
-import book18 from "./books-item-18.jpg"
+import {theCart}from'../App'
 
-//initalize the store with some items in the cart. just to look at for now
-// store.dispatch({
-// 	type:'CART_ITEM_ADD',
-// 	item:<SingleItemComponent
-// 			item_id=    "1"
-// 			item_name=  "redux test A"
-// 			price=      "100"
-// 			description="redux test description A"
-// 			category_id="redux test category A"
-// 			avg_rating= "redux test rating A"
-// 			img_path=   "redux test image url"/>
-// })
+//import book17 from "./books-item-17.jpg"
+//import book18 from "./books-item-18.jpg"
 
 const debug=true;//prnt function will print things
 
@@ -28,29 +17,26 @@ export class CheckoutPage extends React.Component<any,any>
 	constructor(props:any)
 	{
 		super(props);
-		this.state={
-			items:[	//data from the database. column names
-				{
-					item_id:    "1",
-					item_name:  "Advanced Physical Chemistry",
-					price:      45,
-					description:"Description Description Description Description Description Description Description ",
-					category_id:"test category A",
-					avg_rating: 8,
-					img_path:   book17,
-				},
+	}
 
-				{
-					item_id:    "1",
-					item_name:  "Revenant Gun",
-					price:      55,
-					description:"Description Description Description Description Description Description Description ",
-					category_id:"test category B",
-					avg_rating: 9,
-					img_path:   book18,
-				}
-			]
-		}
+	componentDidMount=()=>
+	{
+		//prnt(debug,`CheckoutPage componentDidMount()`)
+
+		//store.subscribe(()=>prnt(debug,`store=`,store.getState()))
+		//initalize the store with some items in the cart. just to look at for now
+		// store.dispatch({
+		// 	type:'CART_ITEM_ADD',
+		// 	item:'some item in the thing'
+		// })
+
+		//let storeState=store.getState();	prnt(debug,`storeState=`,storeState)
+		//let user=storeState.user;			prnt(debug,`user=`,user)
+		//let theCart=user.cart;				prnt(debug,`theCart=`,theCart)
+		//theCart.concat('newItem')
+
+		//prnt(debug,`store.getState()=`,store.getState())
+		//prnt(debug,``)
 	}
 
 	render()
@@ -74,7 +60,7 @@ export class CheckoutPage extends React.Component<any,any>
 		//let stateRedux=store.getState()
 		//prnt(debug,`Cart displayItems() stateRedux=`,stateRedux)
 
-		return this.state.items.map((item:any)=>
+		return theCart.map((item:any)=>
 		{
 			return(
 				<Container>
@@ -112,7 +98,7 @@ export class CheckoutPage extends React.Component<any,any>
 			<Container>
 				<Row>
 					<Col>
-						Total $400
+						Total $1234
 					</Col>
 				</Row>
 				<Row>
