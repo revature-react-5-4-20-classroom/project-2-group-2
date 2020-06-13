@@ -40,8 +40,9 @@ export const cartReducer = (state:ICartState = initialCartState, action:AnyActio
     switch(action.type){
         case cartClickTypes.ADD_CLICK:{
                 
-               
-               let newState = state.items
+               console.log(state.items)
+               console.log(action.payload.itemClicked.item_id)
+               let newState = [...state.items]
                newState.push(action.payload.itemClicked);
 
                return{

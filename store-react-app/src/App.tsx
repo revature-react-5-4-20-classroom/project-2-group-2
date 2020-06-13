@@ -6,6 +6,11 @@ import {  BrowserRouter, Route, Switch,NavLink } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { ItemListComponent, ReduxItemListComponent } from './components/ItemListComponent';
+import book17 from "./books-item-17.jpg"
+import book18 from "./books-item-18.jpg"
+import { Item } from './models/Item';
+import {User} from './models/User';
+import { LoginComponent } from './components/LoginComponent';
 //import 'bootstrap/dist/css/bootstrap.min.css';//was not working for me. rene
 
 /*
@@ -19,13 +24,11 @@ import { ItemListComponent, ReduxItemListComponent } from './components/ItemList
 // import {Route, Switch, useHistory, Redirect} from 'react-router';
 // import { connect, Provider } from 'react-redux';
 
-// interface IAppState {
-//   loggedInUser : User | null;
-// }
+interface IAppState {
+  loggedInUser : User | null;
+}
 
-import book17 from "./books-item-17.jpg"
-import book18 from "./books-item-18.jpg"
-import { Item } from './models/Item';
+
 
 export let theCart:Item[]=[
       new Item( "0","Advanced Physical Chemistry",
@@ -40,18 +43,18 @@ export let theCart:Item[]=[
 export class App extends React.Component<any, any>
 {
 
-  // updateUser = (user:User | null) => {
-  //   this.setState({
-  //     loggedInUser : user,
-  //   })
-  // }
+  updateUser = (user:User | null) => {
+    this.setState({
+      loggedInUser : user,
+    })
+  }
 
   constructor(props:any){
     super(props);
-    // this.state = {
-    //   loggedInUser:null
+    this.state = {
+      loggedInUser:null
       
-    // }
+    }
   }
 
   toggleNavbar=()=>
@@ -61,7 +64,25 @@ export class App extends React.Component<any, any>
   }
 
   render(){
-    return(<>
+
+    if(this.state.loggedInUser == null){
+
+          
+          return(
+            <>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+            <BrowserRouter>
+            <Switch>
+              <Route path='/'>
+                <LoginComponent updateUser={this.updateUser}/>
+              </Route>
+            </Switch>
+            </BrowserRouter>
+            </>
+          )
+          
+    } else{
+      return(<>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
         <Container>
           <Row>
@@ -106,6 +127,8 @@ export class App extends React.Component<any, any>
           </Row>
         </Container>
     </>)
+    }
+    
   }
 }
 

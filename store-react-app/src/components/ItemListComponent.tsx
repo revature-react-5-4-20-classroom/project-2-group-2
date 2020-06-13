@@ -3,9 +3,10 @@ import { IState } from '../redux/reducers';
 import { Jumbotron, Container, Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { Item } from '../models/Item';
 import { getItemsByCategory, getAllItems } from '../api/StoreClient';
-import { itemClickActionMapper } from '../redux/action-mapper';
+import { itemClickActionMapper,addClickActionMappper } from '../redux/action-mapper';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { ReduxCartComponent } from './CartComponent';
 
 // Component for displaying a list of items corresponding to a specific category
 
@@ -17,7 +18,9 @@ interface IItemListComponentProps {
     category_id:string;
     avg_rating: string;
     img_path:   string;
+    items : Item[];
     itemClickActionMapper: (item:Item) => void;
+    addClickActionMappper:(item:Item, index:number|undefined) => void;
 }
 
 interface IItemListComponentState {
@@ -81,6 +84,12 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
             }); 
         }
     }
+    addToCart = (e : any) => {
+        e.preventDefault();
+        let value: number = parseInt(e.currentTarget.id);
+        const clickedItem: Item = this.state.itemList[value];
+        this.props.addClickActionMappper(clickedItem, undefined);
+    }
 
     toggleRedirect = (e: any) => {
         e.preventDefault();
@@ -134,19 +143,23 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
                                     <Col xs='auto'>Image</Col>
                                     <Col xs='auto'><a href='#' onClick={this.toggleRedirect} id={i.toString()}>{item.item_name}</a></Col>
                                     <Col xs='auto'>{item.description}</Col>
-                                    <Col xs='auto'><Button color="primary">Add to cart</Button></Col>
+                                    <Col xs='auto'><Button color="primary" id={i.toString()} onClick={this.addToCart}>Add to cart</Button></Col>
                                 </Row>
                             </ListGroupItem>)
                         })}
                     </ListGroup>
                 </Container>
             </Jumbotron> :
-        
+            
             <>
             <Button onClick={this.toggleRedirect} id="0">Back To Items</Button>
             <Redirect to="/viewitem"/>
             </>}
+            <>
+                <ReduxCartComponent />
             </>
+            </>
+
         );
     }
 }
@@ -155,11 +168,13 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
 const mapStateToProps = (state:IState) =>{
     return{
       ...state.item,
+      ...state.items
     }
   }
 
   const mapDispatchToProps = {   
-    itemClickActionMapper
+    itemClickActionMapper,
+    addClickActionMappper
 }
 
 export const ReduxItemListComponent = connect(mapStateToProps, mapDispatchToProps)(ItemListComponent)

@@ -1,4 +1,4 @@
-
+import {Item} from '../models/Item'
 interface IItemState{
     item_id: string;
     item_name: string;
@@ -18,7 +18,7 @@ export const cartClickTypes = {
     REMOVE_CLICK:'REMOVE_CLICK'
 }
 
-export const addClickActionMappper = (itemClicked:IItemState, index:number|undefined) =>{
+export const addClickActionMappper = (itemClicked:Item, index:number|undefined) =>{
     return {
         type: cartClickTypes.ADD_CLICK,
         payload:{

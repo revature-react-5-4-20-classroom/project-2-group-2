@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { FailedLoginError } from '../errors/FailedLoginError';
 import { Item } from '../models/Item';
+import {User} from '../models/User';
 
 
 // For project work, take note that axios interprets non-200s response statuses as errors
@@ -11,7 +12,7 @@ import { Item } from '../models/Item';
 // without repeating ourselves
 
 const storeClient = axios.create({
-    baseURL : 'http://localhost:8080', // Use this to test on your local machine, leave commented out.
+    baseURL : 'http://localhost:3005', // Use this to test on your local machine, leave commented out.
     //baseURL : 'http://18.216.197.108:8080',
     //if you don't have the following line, your login won't work
     withCredentials: false, // we should probably change this later
@@ -29,22 +30,22 @@ export async function submitReview(rate:string, text:string, userId:string, item
 
 //implement login later. needs new user object
 
-// export async function login(un:string, pw:string){
-//     try{
-//         const response =  await storeClient.post('/login', {username:un, password: pw});
-//         const {userId, username,password, firstName, lastName , email, roleId} = response.data;
-//         console.log(response.data);
-//         return new User(userId, username, password, firstName, lastName, email, roleId);
-//     } catch (e){
-//         if(e.response.status === 401){
-//             throw new FailedLoginError('Failed to authenticate', un);
-//         } else{
-//             //We could throw a different custom error, this exposes a little too much to the user
-//             throw e;
-//         }
-//     }
+export async function login(un:string, pw:string){
+    try{
+        const response =  await storeClient.post('/login', {username:un, password: pw});
+        const {userId, username,password, firstName, lastName , email, address, addressCity,addressState, addressZipcode} = response.data;
+        console.log(response.data);
+        return new User(userId, username, password, firstName, lastName, email, address, addressCity, addressState, addressZipcode);
+    } catch (e){
+        if(e.response.status === 401){
+            throw new FailedLoginError('Failed to authenticate', un);
+        } else{
+            //We could throw a different custom error, this exposes a little too much to the user
+            throw e;
+        }
+    }
    
-// }
+}
 
 // getting items by category - will send a get request to the appropriate backend endpoint
 // takes category id as an input - we may need to change this (or the endpoint) depending on how we set up our back end
