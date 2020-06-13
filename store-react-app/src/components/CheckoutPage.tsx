@@ -6,6 +6,7 @@ import { store } from "../redux/store";
 import {prnt}from'../Helpers';
 import { Container, Row, Col, Button, Table, Media } from "reactstrap";
 import {theCart}from'../App'
+import{storeClient}from'../api/StoreClient'
 
 //import book17 from "./books-item-17.jpg"
 //import book18 from "./books-item-18.jpg"
@@ -103,11 +104,31 @@ export class CheckoutPage extends React.Component<any,any>
 				</Row>
 				<Row>
 					<Col>
-						<Button>Purchase</Button>
+						<Button onClick={this.performPurchase}>Purchase</Button>
 					</Col>
 				</Row>
 			</Container>
 		</>)
+	}
+
+	performPurchase=async()=>
+	{
+		prnt(true,`CheckoutPage performPurchase() was hit`)
+
+		let oneItem=theCart[0]
+		prnt(true,`oneItem=`,oneItem)
+
+		let json={
+			orderId:1,
+			itemId:oneItem.item_id,
+			userId:1,
+			quantity:1, 
+			notes:""
+		}
+		prnt(true,`json=`,json)
+
+		let response=await storeClient.post('/orders',json)
+		prnt(true,`response.data=`,response.data)
 	}
 }
 

@@ -29,9 +29,8 @@ CREATE TABLE project2_Users(
     address_zipcode VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE project2_Orders(
+create table project2_orders(
     order_id SERIAL PRIMARY KEY,
-    item_id INTEGER NOT NULL REFERENCES project2_Items,
     user_id INTEGER NOT NULL REFERENCES project2_Users,
     store_id INTEGER REFERENCES project2_Stores,
     date_created DATE NOT NULL,
