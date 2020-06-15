@@ -5,16 +5,12 @@ import { CheckoutPage } from './components/CheckoutPage';
 import {  BrowserRouter, Route, Switch,NavLink } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
-<<<<<<< HEAD
 import { ItemListComponent, ReduxItemListComponent } from './components/ItemListComponent';
 import book17 from "./books-item-17.jpg"
 import book18 from "./books-item-18.jpg"
 import { Item } from './models/Item';
 import {User} from './models/User';
 import { LoginComponent } from './components/LoginComponent';
-=======
-import { ItemListComponent } from './components/ItemListComponent';
->>>>>>> 0851e122a608cf4641a0fe56c1320b8209cdc467
 //import 'bootstrap/dist/css/bootstrap.min.css';//was not working for me. rene
 
 /*

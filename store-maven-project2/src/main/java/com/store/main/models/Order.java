@@ -21,7 +21,7 @@ public class Order
     super();
   }
 
-  public List<Orderline> orderlines;
+  //public List<Orderline> orderlines;
   
   @Id
   @Column(name = "order_id")
