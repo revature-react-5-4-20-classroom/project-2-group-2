@@ -11,13 +11,8 @@ import {User} from '../models/User';
 // on that client instead of an axios directly. This lets up set up configuration
 // without repeating ourselves
 
-<<<<<<< HEAD
-const storeClient = axios.create({
-    baseURL : 'http://localhost:3005', // Use this to test on your local machine, leave commented out.
-=======
 export const storeClient = axios.create({
     baseURL : 'http://localhost:8080', // Use this to test on your local machine, leave commented out.
->>>>>>> 0851e122a608cf4641a0fe56c1320b8209cdc467
     //baseURL : 'http://18.216.197.108:8080',
     //if you don't have the following line, your login won't work
     withCredentials: false, // we should probably change this later
