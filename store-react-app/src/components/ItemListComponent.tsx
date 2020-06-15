@@ -7,6 +7,7 @@ import { itemClickActionMapper,addClickActionMappper } from '../redux/action-map
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ReduxCartComponent } from './CartComponent';
+import { getImageUrl } from '../api/getImageUrl';
 
 // Component for displaying a list of items corresponding to a specific category
 
@@ -140,7 +141,7 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
                         {this.state.itemList.map((item: Item, i) => {
                             return( <ListGroupItem key={i}>
                                 <Row>
-                                    <Col xs='auto'>Image</Col>
+                                    <Col xs='auto'><img src={getImageUrl(this.state.itemList[i])} style={{height:"100px", width:"auto"}} /></Col>
                                     <Col xs='auto'><a href='#' onClick={this.toggleRedirect} id={i.toString()}>{item.item_name}</a></Col>
                                     <Col xs='auto'>{item.description}</Col>
                                     <Col xs='auto'><Button color="primary" id={i.toString()} onClick={this.addToCart}>Add to cart</Button></Col>

@@ -105,7 +105,7 @@ export class App extends React.Component<any, any>
 
                   <Switch>
                     <Route path="/view">
-                      {/* <ItemListComponent loggedInUser={null}/> */}
+                      <ReduxItemListComponent />
                     </Route>
 
                     <Route path="/checkout">
