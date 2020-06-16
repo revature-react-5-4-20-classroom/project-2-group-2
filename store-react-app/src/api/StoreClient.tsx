@@ -76,3 +76,29 @@ export async function getAllItems() : Promise<any[]> {
         throw e;
     }
 }
+
+// function for getting items via search term
+export async function getItemsBySearchParam(param: string) : Promise<any[]> {
+    try {
+        const response = await storeClient.get(`/items/search/${param}`);
+        return response.data.map((itemObj: any) => {
+            const {itemId, itemName, price, description, categoryId, avgRating, imgPath} = itemObj;
+            return new Item(itemId, itemName, price, description, categoryId, avgRating, imgPath);
+         });
+    } catch(e) {
+        console.log(e.message);
+        throw e;
+    }
+}
+
+// function for getting a single item by id
+export async function getItemById(id: number) : Promise<any> {
+    try {
+        const response = await storeClient.get(`items/itemId/${id}`);
+        const {itemId, itemName, price, description, categoryId, avgRating, imgPath} = response.data;
+        return new Item(itemId, itemName, price, description, categoryId, avgRating, imgPath);
+    } catch(e) {
+        console.log(e.message);
+        throw e;
+    }
+}
