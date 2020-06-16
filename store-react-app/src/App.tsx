@@ -111,9 +111,13 @@ export class App extends React.Component<any, any>
 
                   <Switch>
                     <Route path="/view">
+<<<<<<< HEAD
                     <Provider store={store}>
                       < ReduxItemListComponent />
                       </Provider>
+=======
+                      <ReduxItemListComponent />
+>>>>>>> 77bd04ef13207167f52fe2570be2d46717fe8221
                     </Route>
 
                     <Route path="/checkout">
