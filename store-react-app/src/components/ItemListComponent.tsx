@@ -1,9 +1,9 @@
 import React from 'react';
 import { IState } from '../redux/reducers';
-import { Jumbotron, Container, Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem, Button } from 'reactstrap';
+import { Jumbotron, Container, Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem, Button, Input } from 'reactstrap';
 import { Item } from '../models/Item';
-import { getItemsByCategory, getAllItems } from '../api/StoreClient';
-import { itemClickActionMapper,addClickActionMappper } from '../redux/action-mapper';
+import { getItemsByCategory, getAllItems, getItemById, getItemsBySearchParam } from '../api/StoreClient';
+import { itemClickActionMapper,addClickActionMappper,removeClickActionMapper  } from '../redux/action-mapper';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ReduxCartComponent } from './CartComponent';
@@ -22,6 +22,7 @@ interface IItemListComponentProps {
     items : Item[];
     itemClickActionMapper: (item:Item) => void;
     addClickActionMappper:(item:Item, index:number|undefined) => void;
+    //removeClickActionMapper :(item:Item, index:number|undefined) => void;
 }
 
 interface IItemListComponentState {
@@ -31,6 +32,7 @@ interface IItemListComponentState {
     isError: boolean,
     errorMessage: string,
     redirect: number | null,
+    searchParam: string,
 }
 
 export class ItemListComponent extends React.Component<IItemListComponentProps,IItemListComponentState> {
@@ -44,6 +46,7 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
             isError: false,
             errorMessage: "",
             redirect: null,
+            searchParam: "",
         }
     }
 
@@ -56,25 +59,44 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
     changeCategory = (e: any) => {
         const categoryId = parseInt(e.currentTarget.value);
         let newCatName: string;
+        let newSearchParam: string;
         switch(categoryId) {
-            case 1: newCatName='books'; break;
-            case 2: newCatName='clothing'; break;
-            case 3: newCatName='electronics'; break;
-            default: newCatName='(none)';
+            case 1: newCatName='books'; newSearchParam = ""; break;
+            case 2: newCatName='clothing'; newSearchParam = ""; break;
+            case 3: newCatName='electronics'; newSearchParam = ""; break;
+            default: newCatName='(none)'; newSearchParam = this.state.searchParam;
         }
         this.setState({
             categoryFilter: categoryId,
             categoryName: newCatName,
+            searchParam: newSearchParam,
+        }, this.getItems);
+    }
+
+    changeSearchParam = (e: any) => {
+        this.setState({
+            searchParam: e.currentTarget.value,
+            categoryFilter: 0,
+            categoryName: '(none)',
         }, this.getItems);
     }
 
     getItems = async () => {
         try {
-            let newItems: Item[];
-            if(this.state.categoryFilter !== 0) {
-                newItems = await getItemsByCategory(this.state.categoryFilter);
+            let newItems: Item[] = [];
+            if(this.state.searchParam === "") {
+                if(this.state.categoryFilter !== 0) {
+                    newItems = await getItemsByCategory(this.state.categoryFilter);
+                } else {
+                    newItems = await getAllItems();
+                }
             } else {
-                newItems = await getAllItems();
+                if(!isNaN(parseInt(this.state.searchParam))) {
+                    const newItem = await getItemById(parseInt(this.state.searchParam));
+                    newItems.push(newItem);
+                } else {
+                    newItems = await getItemsBySearchParam(this.state.searchParam);
+                }
             }
             this.setState({ itemList: newItems });
         } catch(e) {
@@ -92,6 +114,7 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
         const clickedItem: Item = this.state.itemList[value];
         this.props.addClickActionMappper(clickedItem, undefined);
     }
+   
 
     toggleRedirect = (e: any) => {
         e.preventDefault();
@@ -125,6 +148,7 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
                 <Container>
                     <Row>
                         <Col xs='auto'><h2>Browse Items</h2></Col>
+                        <Col xs='auto'><Input type="text" value={this.state.searchParam} placeholder="Search" onChange={this.changeSearchParam}/></Col>
                         <Col xs='auto'>
                             <UncontrolledDropdown>
                                 <DropdownToggle caret>Category: {this.state.categoryName}</DropdownToggle>
@@ -177,6 +201,7 @@ const mapStateToProps = (state:IState) =>{
 const mapDispatchToProps = {   
     itemClickActionMapper,
     addClickActionMappper
+    //removeClickActionMapper
 }
 
 export const ReduxItemListComponent = connect(mapStateToProps, mapDispatchToProps)(ItemListComponent)

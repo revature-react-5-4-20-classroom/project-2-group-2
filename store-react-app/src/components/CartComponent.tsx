@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Item } from '../models/Item'
 import { IState } from '../redux/reducers'
-import {addClickActionMappper} from '../redux/action-mapper';
+import {addClickActionMappper, removeClickActionMapper} from '../redux/action-mapper';
 import { connect, Provider } from 'react-redux';
 import { Jumbotron, Container, Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem, Button } from 'reactstrap';
 
@@ -9,6 +9,7 @@ interface ICartProps{
     items:Item[];
     index:number|undefined;
     addClickActionMappper : (item:Item, index:number|undefined) =>void;
+    removeClickActionMapper:(item:Item, index:number|undefined) => void;
 }
 
 interface ICartState{
@@ -26,6 +27,12 @@ export class CartComponent extends React.Component<ICartProps,ICartState>{
             index:undefined
         }
     }
+    removeFromCart = (e : any) => {
+        e.preventDefault();
+        let value: number = parseInt(e.currentTarget.id);
+        const clickedItem: Item = this.props.items[value];
+        this.props.removeClickActionMapper(clickedItem, value);
+    }
     
     render(){
         return(
@@ -37,6 +44,7 @@ export class CartComponent extends React.Component<ICartProps,ICartState>{
                                     <Col xs='auto'><img src={`http://project2-group2-store.s3.amazonaws.com/project2-group2-store/books/` + item.img_path}></img></Col>
                                     <Col xs='auto'><p>{item.item_name}</p></Col>
                                     <Col xs='auto'><p>{item.price}</p></Col>
+                                    <Col xs='auto'><Button color="primary" id={i.toString()} onClick={this.removeFromCart}>X</Button></Col>
                                 </Row>
                             </ListGroupItem>)
                         })}
@@ -53,7 +61,9 @@ const mapStateToProps = (state:IState) =>{
   }
 
   const mapDispatchToProps = {   
-    addClickActionMappper
+    addClickActionMappper,
+    removeClickActionMapper
+    
 }
 
   export const ReduxCartComponent = connect(mapStateToProps, mapDispatchToProps)(CartComponent);

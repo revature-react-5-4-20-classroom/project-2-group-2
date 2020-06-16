@@ -5,14 +5,12 @@ import { CheckoutPage, ReduxCheckoutPage } from './components/CheckoutPage';
 import {  BrowserRouter, Route, Switch,NavLink } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
-import { ItemListComponent, ReduxItemListComponent } from './components/ItemListComponent';
-import book17 from "./books-item-17.jpg"
-import book18 from "./books-item-18.jpg"
-import { Item } from './models/Item';
+import { ReduxItemListComponent } from './components/ItemListComponent';
 import {User} from './models/User';
 import { LoginComponent } from './components/LoginComponent';
 import { login } from './api/StoreClient';
 import { prnt } from './Helpers';
+import { CreateUserComponent } from './components/CreateUserComponent';
 //import 'bootstrap/dist/css/bootstrap.min.css';//was not working for me. rene
 
 /*
@@ -47,15 +45,14 @@ export class App extends React.Component<any, any>
 
   async componentDidMount()
   {
-    prnt(true,`App componentDidMount() was reached`)
-
+    //prnt(true,`App componentDidMount() was reached`)
     //automatically log in so I don't have to type it in a million times
     //comment out to disable
-    const loggedInUser  = await login("user","user");
-    this.updateUser(loggedInUser)
+    // const loggedInUser  = await login("user","user");
+    // this.updateUser(loggedInUser)
+    //prnt(true,`App this.props.items=`,this.props.items)
 
-    prnt(true,`App this.props.items=`,this.props.items)
-
+    //trying to add items to the cart for testing
     //this.props.addClickActionMappper(clickedItem, undefined);
   }
 
@@ -88,9 +85,10 @@ export class App extends React.Component<any, any>
           <Navbar color='light' light expand='md'>
             <NavbarToggler onClick={this.toggleNavbar}/>
             <Nav className='mr-auto' tabs>
-              <NavEasy href='/view' display='View Items'/>
+              <NavEasy href='/view'     display='View Items'/>
               <NavEasy href='/checkout' display='Checkout'/>
               <NavEasy href='/viewitem' display='View single item'/>
+              <NavEasy href='/newuser'  display='New User'/>
             </Nav>
           </Navbar>
 
@@ -106,6 +104,10 @@ export class App extends React.Component<any, any>
 
               <Route path="/viewitem">
                 <ReduxSingleItemComponent /> 
+              </Route>
+
+              <Route path='/newuser'>
+                <CreateUserComponent/>
               </Route>
             </Provider>
           </Switch>

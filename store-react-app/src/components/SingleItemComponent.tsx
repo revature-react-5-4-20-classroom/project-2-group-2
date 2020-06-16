@@ -66,7 +66,8 @@ const mapStateToProps = (state:IState) =>{
   }
 
   const mapDispatchToProps = {   
-    itemClickActionMapper
+    itemClickActionMapper,
+    
 }
   
   // finally, we set up the componenet in its container with its connections

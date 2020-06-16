@@ -69,4 +69,10 @@ public class ItemController {
 		item.setItemId(id);
 		return itemService.update(item);
 	}
+	
+	@CrossOrigin(origins = "*")
+	@GetMapping("items/search/{param}")
+	public List<Item> getItemsBySearchParam(@PathVariable String param) {
+		return itemService.getBySearchParam(param);
+	}
 }

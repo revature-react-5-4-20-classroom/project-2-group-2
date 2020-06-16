@@ -12,4 +12,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	
 	List<Item> findByCategoryId(Integer catId);
 	
+	@Query("select i from Item i where i.itemName like %:param% order by i.categoryId")
+	List<Item> findBySearchParam(String param);
+	
 }
