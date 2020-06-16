@@ -5,15 +5,17 @@ import { SingleItemComponent } from "./SingleItemComponent";
 import { store } from "../redux/store";
 import {prnt}from'../Helpers';
 import { Container, Row, Col, Button, Table, Media } from "reactstrap";
-import {theCart}from'../App'
 import{storeClient}from'../api/StoreClient'
-
+import { Item } from "../models/Item";
+import { itemClickActionMapper,addClickActionMappper } from '../redux/action-mapper';
+import { IState } from "../redux/reducers";
+import { getImageUrl } from "../api/getImageUrl";
 //import book17 from "./books-item-17.jpg"
 //import book18 from "./books-item-18.jpg"
 
 const debug=true;//prnt function will print things
 
-export class CheckoutPage extends React.Component<any,any>
+export class CheckoutPage extends React.Component<IReduxProps,any>
 {
 	constructor(props:any)
 	{
@@ -22,31 +24,26 @@ export class CheckoutPage extends React.Component<any,any>
 
 	componentDidMount=()=>
 	{
-		//prnt(debug,`CheckoutPage componentDidMount()`)
-
-		//store.subscribe(()=>prnt(debug,`store=`,store.getState()))
-		//initalize the store with some items in the cart. just to look at for now
-		// store.dispatch({
-		// 	type:'CART_ITEM_ADD',
-		// 	item:'some item in the thing'
-		// })
-
-		//let storeState=store.getState();	prnt(debug,`storeState=`,storeState)
-		//let user=storeState.user;			prnt(debug,`user=`,user)
-		//let theCart=user.cart;				prnt(debug,`theCart=`,theCart)
-		//theCart.concat('newItem')
-
-		//prnt(debug,`store.getState()=`,store.getState())
-		//prnt(debug,``)
+		prnt(debug,`CheckoutPage componentDidMount() was reached`)
+		prnt(debug,`this.props.items=`,this.props.items)
 	}
 
 	render()
 	{
+		if(this.props.items.length<=0)//if the cart is empty
+		{
+			return(<>
+				<i>Your cart is empty</i><br/>
+				<i>Please go buy our stuff</i>
+			</>)
+		}
+
+		//otherwise display all the items in it
 		return(<>
 			<Container>
 				<Row>
 					<Col sm="10">
-						{this.displayItems()}
+						{this.displayItemsInCart()}
 					</Col>
 					<Col sm="2">
 						{this.displayCheckoutPanel()}
@@ -56,22 +53,32 @@ export class CheckoutPage extends React.Component<any,any>
 		</>)
 	}
 
-	displayItems=()=>
+	displayItemsInCart=()=>
 	{
 		//let stateRedux=store.getState()
 		//prnt(debug,`Cart displayItems() stateRedux=`,stateRedux)
 
-		return theCart.map((item:any)=>
+		return this.props.items.map((item:any)=>
 		{
+			/*
+				___________________________________________
+						|item name		|(Remove from cart)
+				image	|rating			|
+						|price			|
+						|__________________________________
+						|Description
+				___________________________________________
+			*/	
+
 			return(
 				<Container>
-					<Row> {/*each item*/}
-						<Col sm="4">
+					<Row> 
+						<Col xs='auto'>
 							{/* <Media object data-src={logo} /> */}
-							<img src={item.img_path}/>
+							<img src={getImageUrl(item)} style={{height:"100px", width:"auto"}}/>
 						</Col>
-						<Col sm="8">
-							<Row> {/*item name, price, rating, remove from cart*/}
+						<Col>
+							<Row>
 								<Col>
 									<Row><Col>{item.item_name}</Col></Row>
 									<Row><Col>{item.avg_rating} / 10</Col></Row>
@@ -81,7 +88,7 @@ export class CheckoutPage extends React.Component<any,any>
 									<Button>Remove from cart</Button> 
 								</Col>
 							</Row> 
-							<Row> {/*description*/}
+							<Row>
 								<Col>
 									{item.description} 
 								</Col>
@@ -99,7 +106,7 @@ export class CheckoutPage extends React.Component<any,any>
 			<Container>
 				<Row>
 					<Col>
-						Total $1234
+						Total $0
 					</Col>
 				</Row>
 				<Row>
@@ -115,30 +122,40 @@ export class CheckoutPage extends React.Component<any,any>
 	{
 		prnt(true,`CheckoutPage performPurchase() was hit`)
 
-		let oneItem=theCart[0]
-		prnt(true,`oneItem=`,oneItem)
+		// let oneItem=this.props.items[0]
+		// prnt(true,`oneItem=`,oneItem)
 
-		let json={
-			orderId:1,
-			itemId:oneItem.item_id,
-			userId:1,
-			quantity:1, 
-			notes:""
-		}
-		prnt(true,`json=`,json)
+		// let json={
+		// 	orderId:1,
+		// 	itemId:oneItem.item_id,
+		// 	userId:1,
+		// 	quantity:1, 
+		// 	notes:""
+		// }
+		// prnt(true,`json=`,json)
 
-		let response=await storeClient.post('/orders',json)
-		prnt(true,`response.data=`,response.data)
+		// let response=await storeClient.post('/orders',json)
+		// prnt(true,`response.data=`,response.data)
 	}
 }
 
-// const mapStateToProps = (state:any) =>{
-//     return{
-//       ...state.user,
-//     }
-// }
+// Black magic Redux stuff
+interface IReduxProps {
+    items : Item[];
+    itemClickActionMapper: (item:Item) => void;
+    addClickActionMappper:(item:Item, index:number|undefined) => void;
+}
 
-// const mapDispatchToProps = {   
-// }
+const mapStateToProps = (state:IState) =>{
+    return{
+      ...state.item,
+      ...state.items
+    }
+}
 
-// export const ReduxCart = connect(mapStateToProps, mapDispatchToProps)(CheckoutPage);
+const mapDispatchToProps = {   
+    itemClickActionMapper,
+    addClickActionMappper
+}
+
+export const ReduxCheckoutPage = connect(mapStateToProps, mapDispatchToProps)(CheckoutPage)

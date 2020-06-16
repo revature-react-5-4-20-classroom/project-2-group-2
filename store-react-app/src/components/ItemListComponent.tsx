@@ -85,6 +85,7 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
             }); 
         }
     }
+
     addToCart = (e : any) => {
         e.preventDefault();
         let value: number = parseInt(e.currentTarget.id);
@@ -171,9 +172,9 @@ const mapStateToProps = (state:IState) =>{
       ...state.item,
       ...state.items
     }
-  }
+}
 
-  const mapDispatchToProps = {   
+const mapDispatchToProps = {   
     itemClickActionMapper,
     addClickActionMappper
 }
