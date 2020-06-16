@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.store.main.models.Item;
 import com.store.main.models.Order;
+import com.store.main.models.OrderFromClient;
 import com.store.main.models.Orderline;
 import com.store.main.services.OrderService;
 
@@ -22,44 +23,65 @@ public class OrderController
     OrderService orderService;
     
     @CrossOrigin(origins = "*")
-    @GetMapping("/orders")
+    @GetMapping("/orders")//get all the orders to view them
     public List <Orderline> getAll()
     {
-      System.out.println("GET /orders has been hit");
+        System.out.println("GET /orders has been hit");
       
         return orderService.getAll();
     }
     
     /*
-     *  Accepts and order in the following form:
+     *  Accepts an order in the request body in the following form:
+     *    {
+              "notes":"These are notes for the order",
+              "itemIds":[13,14]
+          }
+          
+        responds with a message of what happened when placing the order
      */
     @CrossOrigin(origins = "*")
-    @PostMapping("/ordersMany")
-    public String addNewOrder(@RequestBody Order ord)
+    @PostMapping("/orderItems")//post all the items to a new order. purchasing
+    public String addNewOrder(@RequestBody OrderFromClient ord)
     {
-      System.out.println("POST /ordersMany has been hit");
-      
+      System.out.println("POST /orderItems has been reached");
       System.out.println("ord="+ord.toString());
       
-      return "";
+      if(ord.notes==null)       
+      {
+        System.out.println("notes="+ord.notes);
+        return "Could not place order, notes was not in request body";
+      }
+      
+      if(ord.itemIds==null)     
+      {
+        System.out.println("itemIds="+ord.itemIds);
+        return "Could not place order, itemIds were not in request body";
+      }
+      
+      //the order must now be put into the correct tables
+      
+      return "Your order was placed successfully";
     }
     
     /*
      *  Posts a new orderline to the orderlines table
-     *  ann orderline is one item in an order
+     *  an orderline is one item in an order
      *  the following fields must be passed in the body of the request
+     *  {
           "orderId":1
           "itemId":2
           "userId":2
           "quantity":100 
           "notes":"notes notes notes "
-          
-         returns:
+         }
+         
+         responds:
            The new orderline when it is successful.
            null when there was not enough information to create an orderline
      */
     @CrossOrigin(origins = "*")
-    @PostMapping("/orders")
+    @PostMapping("/orderOneItem")
     public Orderline addOneOrderline(@RequestBody Orderline ol)
     {
         System.out.println("POST /orders has been hit");
