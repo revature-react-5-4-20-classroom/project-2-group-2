@@ -49,7 +49,22 @@ export const cartReducer = (state:ICartState = initialCartState, action:AnyActio
                 items: newState,
                 index:undefined
                }
-            }default :{
+            }
+            case cartClickTypes.REMOVE_CLICK:{
+                let newState = [...state.items];
+                const updatedCart = newState.filter( (item)=> {
+                    console.log(action.payload.itemClicked.item_id)
+                    if(item.item_id !== action.payload.itemClicked.item_id){
+                        return item;
+                    }
+                })
+
+                return{
+                    items: updatedCart,
+                    index:undefined
+                }
+            }
+            default :{
                 return state;
             }
         }

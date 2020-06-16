@@ -3,7 +3,7 @@ import { IState } from '../redux/reducers';
 import { Jumbotron, Container, Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem, Button, Input } from 'reactstrap';
 import { Item } from '../models/Item';
 import { getItemsByCategory, getAllItems, getItemById, getItemsBySearchParam } from '../api/StoreClient';
-import { itemClickActionMapper,addClickActionMappper } from '../redux/action-mapper';
+import { itemClickActionMapper,addClickActionMappper,removeClickActionMapper  } from '../redux/action-mapper';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ReduxCartComponent } from './CartComponent';
@@ -22,6 +22,7 @@ interface IItemListComponentProps {
     items : Item[];
     itemClickActionMapper: (item:Item) => void;
     addClickActionMappper:(item:Item, index:number|undefined) => void;
+    //removeClickActionMapper :(item:Item, index:number|undefined) => void;
 }
 
 interface IItemListComponentState {
@@ -112,6 +113,7 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
         const clickedItem: Item = this.state.itemList[value];
         this.props.addClickActionMappper(clickedItem, undefined);
     }
+   
 
     toggleRedirect = (e: any) => {
         e.preventDefault();
@@ -198,6 +200,7 @@ const mapStateToProps = (state:IState) =>{
   const mapDispatchToProps = {   
     itemClickActionMapper,
     addClickActionMappper
+    //removeClickActionMapper
 }
 
 export const ReduxItemListComponent = connect(mapStateToProps, mapDispatchToProps)(ItemListComponent)

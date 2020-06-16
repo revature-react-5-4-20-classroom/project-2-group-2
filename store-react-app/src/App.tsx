@@ -11,6 +11,7 @@ import book18 from "./books-item-18.jpg"
 import { Item } from './models/Item';
 import {User} from './models/User';
 import { LoginComponent } from './components/LoginComponent';
+import { CreateUserComponent } from './components/CreateUserComponent';
 //import 'bootstrap/dist/css/bootstrap.min.css';//was not working for me. rene
 
 /*
@@ -77,6 +78,11 @@ export class App extends React.Component<any, any>
                 <LoginComponent updateUser={this.updateUser}/>
               </Route>
             </Switch>
+            <Switch>
+              <Route path='/newuser'>
+                <CreateUserComponent/>
+              </Route>
+            </Switch>
             </BrowserRouter>
             </>
           )
@@ -105,7 +111,13 @@ export class App extends React.Component<any, any>
 
                   <Switch>
                     <Route path="/view">
+<<<<<<< HEAD
+                    <Provider store={store}>
+                      < ReduxItemListComponent />
+                      </Provider>
+=======
                       <ReduxItemListComponent />
+>>>>>>> 77bd04ef13207167f52fe2570be2d46717fe8221
                     </Route>
 
                     <Route path="/checkout">

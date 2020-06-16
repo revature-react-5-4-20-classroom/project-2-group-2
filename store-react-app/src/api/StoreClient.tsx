@@ -22,7 +22,17 @@ export const storeClient = axios.create({
 export async function submitReview(rate:string, text:string, userId:string, itemId:string ){
     try{
         const response =  await storeClient.post('/review', {rating:rate, content: text, userId:userId, itemId:itemId});
+        return response;
     } catch (e){
+        console.log(e)
+    }
+}
+
+export async function createUser(username:string,password:string,email:string,firstName:string,lastName:string,address:string,city:string,state:string,zipCode:string){
+    try{
+        const response = await storeClient.post('/newuser', {username:username,password:password, email:email, firstName:firstName, lastName:lastName, address:address, addressCity:city, addressState:state,addressZipcode:zipCode});
+        return response;
+    }catch(e){
         console.log(e)
     }
 }

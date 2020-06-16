@@ -34,19 +34,13 @@ public class UserController {
 	public List<User> getAllUsers(){
 		return userService.getAll();
 	}
-	@PostMapping
-	public User createNewUser(@RequestBody User user, HttpSession session) {
-		if(session.getAttribute("isLoggedIn") != null && (Boolean) session.getAttribute("isLoggedIn")) {
-			return userService.create(user);
-		} else {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-		}
-	}
-	
-	@PostMapping("/{id}")
+	@PostMapping("/newuser")
 	public User createNewUser(@RequestBody User user) {
+//		user.setUserId(1);
 		return userService.create(user);
 	}
+	
+	
 	
 	@PutMapping("/{id}")
 	public User createOrUpdateUserWithId(@RequestBody User user, @PathVariable Integer id) {
