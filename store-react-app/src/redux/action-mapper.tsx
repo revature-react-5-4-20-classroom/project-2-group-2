@@ -18,6 +18,16 @@ export const cartClickTypes = {
     REMOVE_CLICK:'REMOVE_CLICK'
 }
 
+export const removeClickActionMapper = (itemClicked:Item, index:number|undefined) =>{
+    return{
+        type: cartClickTypes.REMOVE_CLICK,
+        payload:{
+            itemClicked,
+            index
+        }
+    }
+}
+
 export const addClickActionMappper = (itemClicked:Item, index:number|undefined) =>{
     return {
         type: cartClickTypes.ADD_CLICK,
