@@ -15,11 +15,17 @@ import { getImageUrl } from "../api/getImageUrl";
 
 const debug=true;//prnt function will print things
 
-export class CheckoutPage extends React.Component<IReduxProps,any>
+export class CheckoutPage extends React.Component<any,any>
 {
 	constructor(props:any)
 	{
 		super(props);
+		this.state={
+			jsxMessage:(<>
+						<i>Your cart is empty</i><br/>
+						<i>Please go buy our stuff</i>
+						</>)
+		}
 	}
 
 	componentDidMount=()=>
@@ -37,8 +43,7 @@ export class CheckoutPage extends React.Component<IReduxProps,any>
 			jsxContent=(<>
 				<Row>
 					<Col>
-						<i>Your cart is empty</i><br/>
-						<i>Please go buy our stuff</i>
+						{this.state.jsxMessage}
 					</Col>
 				</Row>
 			</>)
@@ -134,11 +139,15 @@ export class CheckoutPage extends React.Component<IReduxProps,any>
 		</>)
 	}
 
+	/*
+		this function is called when the pruchase button is clicked.
+		it sends a json order to the server.
+	*/
 	performPurchase=async()=>
 	{
 		prnt(debug,`CheckoutPage performPurchase() was hit`)
 
-		let itemIds=this.props.items.map((item)=>
+		let itemIds=this.props.items.map((item:any)=>
 		{
 			return item.item_id
 		})
@@ -155,17 +164,18 @@ export class CheckoutPage extends React.Component<IReduxProps,any>
 		let response=await storeClient.post('/orderItems',orderFromClient)
 		//prnt(debug,`response=`,response)
 		prnt(debug,`response.data=`,response.data)
+
+		//clear the cart the fancy redux way
+		this.props.clearCartActionMapper()
+
+		//and display the response from the server
+		this.setState({
+			jsxMessage:(<i>{response.data}</i>)
+		})
 	}
 }
 
-// Black magic Redux stuff
-interface IReduxProps {
-    items : Item[];		//receives the items in the cart from redux somehow
-	parentState:any,	//passes in the state of the element checkout page is within
-    itemClickActionMapper: (item:Item) => void;
-    addClickActionMappper:(item:Item, index:number|undefined) => void;
-}
-
+// Black magic rube goldberg Redux stuff
 const mapStateToProps = (state:IState) =>{
     return{
       ...state.item,
@@ -173,9 +183,20 @@ const mapStateToProps = (state:IState) =>{
     }
 }
 
+export const clearCartActionMapper = (itemClicked:Item, index:number|undefined) =>{
+    return{
+        type: 'CART_CLEAR',
+        payload:{
+            itemClicked,
+            index
+        }
+    }
+}
+
 const mapDispatchToProps = {   
     itemClickActionMapper,
-    addClickActionMappper
+    addClickActionMappper,
+	clearCartActionMapper
 }
 
 export const ReduxCheckoutPage = connect(mapStateToProps, mapDispatchToProps)(CheckoutPage)

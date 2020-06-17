@@ -51,34 +51,39 @@ export const cartReducer = (state:ICartState = initialCartState, action:AnyActio
                 index:undefined
                }
             }
-            case cartClickTypes.REMOVE_CLICK:{
-                let newState = [...state.items];
-                let index = action.payload.index;
-                let updatedCart : Item[] = [];
 
-                for(let i =0; i< newState.length; i++){
-                    console.log(index);
-                    if(i!==index){
-                        updatedCart.push(newState[i]);
-                    }
-                }
-                // const updatedCart = newState.filter( (item)=> {
-                //     console.log(action.payload.itemClicked.item_id)
-                //     if(item.item_id !== action.payload.itemClicked.item_id){
-                //         return item;
-                //     }
-                // })
+        case cartClickTypes.REMOVE_CLICK:{
+            let newState = [...state.items];
+            let index = action.payload.index;
+            let updatedCart : Item[] = [];
 
-                return{
-                    items: updatedCart,
-                    index:undefined
+            for(let i =0; i< newState.length; i++){
+                console.log(index);
+                if(i!==index){
+                    updatedCart.push(newState[i]);
                 }
             }
-            default :{
-                return state;
+            // const updatedCart = newState.filter( (item)=> {
+            //     console.log(action.payload.itemClicked.item_id)
+            //     if(item.item_id !== action.payload.itemClicked.item_id){
+            //         return item;
+            //     }
+            // })
+
+            return{
+                items: updatedCart,
+                index:undefined
             }
         }
-        
+
+        case 'CART_CLEAR':{
+            return{items:[],index:undefined}
+        }
+
+        default :{
+            return state;
+        }
+    } 
 }
 
 
