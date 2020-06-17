@@ -40,7 +40,7 @@ export class LoginComponent extends React.Component<ILoginComponentProps, ILogin
       roleId: 0,
       isError: false,
       errorMessage: '',
-      redirect: false
+      redirect: true
     }
   }
 

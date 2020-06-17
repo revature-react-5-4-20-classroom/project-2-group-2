@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Container, Row, Col, Navbar, NavbarToggler, Nav, NavItem}from'reactstrap';
+import {Container, Row, Col, Navbar, NavbarToggler, Nav, NavItem, Dropdown, DropdownToggle, DropdownItem, DropdownMenu}from'reactstrap';
 import {ReduxSingleItemComponent} from './components/SingleItemComponent'
 import { CheckoutPage } from './components/CheckoutPage';
 import {  BrowserRouter, Route, Switch,NavLink } from 'react-router-dom';
@@ -12,6 +12,8 @@ import { Item } from './models/Item';
 import {User} from './models/User';
 import { LoginComponent } from './components/LoginComponent';
 import { CreateUserComponent } from './components/CreateUserComponent';
+import { ReduxCartComponent } from './components/CartComponent';
+import NavbarComponent from './components/NavbarComponent';
 //import 'bootstrap/dist/css/bootstrap.min.css';//was not working for me. rene
 
 /*
@@ -64,6 +66,14 @@ export class App extends React.Component<any, any>
       setIsOpen(!isOpen)
   }
 
+  handleOpen = () => {
+    this.setState({ isOpen: true })
+  }
+
+  handleClose = () => {
+     this.setState({ isOpen: false })
+  }
+
   render(){
 
     if(this.state.loggedInUser == null){
@@ -95,29 +105,27 @@ export class App extends React.Component<any, any>
             <Col sm="1"></Col>
 
             <Col sm="10">
-              <h4>Project 2</h4>
-              <p>We have some work to do!</p>
+              
 
               
                 <BrowserRouter>
-                  <Navbar color='light' light expand='md'>
+                  {/* <Navbar color='light' light expand='md'>
                     <NavbarToggler onClick={this.toggleNavbar}/>
                     <Nav className='mr-auto' tabs>
                       <NavEasy href='/view' display='View Items'/>
                       <NavEasy href='/checkout' display='Checkout'/>
                       <NavEasy href='/viewitem' display='View single item'/>
                     </Nav>
-                  </Navbar>
+                  </Navbar> */}
+                  <NavbarComponent />
+
+                 
 
                   <Switch>
                     <Route path="/view">
-<<<<<<< HEAD
                     <Provider store={store}>
                       < ReduxItemListComponent />
                       </Provider>
-=======
-                      <ReduxItemListComponent />
->>>>>>> 77bd04ef13207167f52fe2570be2d46717fe8221
                     </Route>
 
                     <Route path="/checkout">
