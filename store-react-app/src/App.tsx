@@ -64,24 +64,17 @@ export class App extends React.Component<any, any>
       setIsOpen(!isOpen)
   }
 
-<<<<<<< HEAD
-  handleOpen = () => {
-    this.setState({ isOpen: true })
-  }
-
-  handleClose = () => {
-     this.setState({ isOpen: false })
-  }
+ 
 
   render(){
-=======
-  render()
+
+  
   {
-    let jsxPage=(<></>)//the content of the page will go in this variable
+   
 
     if(this.state.loggedInUser == null)
     {
-      jsxPage=(<>
+      return(
         <BrowserRouter>
         <Switch>
           <Route path='/'>
@@ -89,126 +82,68 @@ export class App extends React.Component<any, any>
           </Route>
         </Switch>
         </BrowserRouter>
-      </>)
+      )
     } 
     else
     {
-      jsxPage=(<>
+      return(
         <BrowserRouter>
-          <Navbar color='light' light expand='md'>
+          {/* <Navbar color='light' light expand='md'>
             <NavbarToggler onClick={this.toggleNavbar}/>
             <Nav className='mr-auto' tabs>
+
+                        <NavItem>
+                                <NavLink to="/home">Home</NavLink>
+                            </NavItem>
               <NavEasy href='/view'     display='View Items'/>
               <NavEasy href='/checkout' display='Checkout'/>
               <NavEasy href='/viewitem' display='View single item'/>
               <NavEasy href='/newuser'  display='New User'/>
             </Nav>
-          </Navbar>
+          </Navbar> */}
+          <NavbarComponent/>
 
           <Switch>
             <Provider store={store}>
               <Route path="/view">
                 <ReduxItemListComponent />
               </Route>
->>>>>>> d4ce6f10fe4c71fc6c65b0a3d7bc0449723e848f
+              </Provider>
 
+              <Provider store={store}>
               <Route path="/checkout">
                 <ReduxCheckoutPage/>
               </Route>
+              </Provider>
 
+              <Provider store={store}>
               <Route path="/viewitem">
                 <ReduxSingleItemComponent /> 
               </Route>
+              </Provider>
 
               <Route path='/newuser'>
                 <CreateUserComponent/>
               </Route>
-<<<<<<< HEAD
+
             </Switch>
             </BrowserRouter>
-            </>
           )
           
-    } else{
-      return(<>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
-        <Container>
-          <Row>
-            <Col sm="1"></Col>
-
-            <Col sm="10">
-              
-
-              
-                <BrowserRouter>
-                  {/* <Navbar color='light' light expand='md'>
-                    <NavbarToggler onClick={this.toggleNavbar}/>
-                    <Nav className='mr-auto' tabs>
-                      <NavEasy href='/view' display='View Items'/>
-                      <NavEasy href='/checkout' display='Checkout'/>
-                      <NavEasy href='/viewitem' display='View single item'/>
-                    </Nav>
-                  </Navbar> */}
-                  <NavbarComponent />
-
-                 
-
-                  <Switch>
-                    <Route path="/view">
-                    <Provider store={store}>
-                      < ReduxItemListComponent />
-                      </Provider>
-                    </Route>
-
-                    <Route path="/checkout">
-                      <CheckoutPage/>
-                    </Route>
-                    <Provider store={store}>
-                    
-                      <Route path="/viewitem">
-                        <ReduxSingleItemComponent /> 
-                      </Route>
-                    </Provider>
-                    
-                  </Switch>
-
-                </BrowserRouter>
-            </Col>
-
-            <Col sm="1"></Col>
-          </Row>
-        </Container>
-=======
-            </Provider>
-          </Switch>
-        </BrowserRouter>
->>>>>>> d4ce6f10fe4c71fc6c65b0a3d7bc0449723e848f
-    </>)
+    } 
     }
     
-    return(<>
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
-      <Container>
-        <Row>
-          {/* <Col sm="10"> */}
-          <Col sm={{size:10}}>
-            <h4>Project 2</h4>
-            <p>We are getting stuff done!</p>
-            {jsxPage}
-          </Col>
-        </Row>
-      </Container>
-    </>)
+   
   }
 }
 
-function NavEasy(props:any)
-{
-    return(
-        <NavItem>
-            <NavLink to={props.href} className='nav-link' activeClassName='active'>{props.display}</NavLink>
-        </NavItem>
-    )
-}
+{/* // function NavEasy(props:any)
+// {
+//     return(
+//         <NavItem>
+//             <NavLink to={props.href} className='nav-link' activeClassName='active'>{props.display}</NavLink>
+//         </NavItem>
+//     )
+// } */}
 
-export default App;
+
