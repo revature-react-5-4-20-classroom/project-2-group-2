@@ -39,7 +39,7 @@ export class App extends React.Component<any, any>
   constructor(props:any){
     super(props);
     this.state = {
-      loggedInUser:null
+      loggedInUser:null //Maybe this should be in redux so it's global?
     }
   }
 

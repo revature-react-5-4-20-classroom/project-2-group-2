@@ -120,22 +120,24 @@ export class CheckoutPage extends React.Component<IReduxProps,any>
 
 	performPurchase=async()=>
 	{
-		prnt(true,`CheckoutPage performPurchase() was hit`)
+		prnt(debug,`CheckoutPage performPurchase() was hit`)
 
-		// let oneItem=this.props.items[0]
-		// prnt(true,`oneItem=`,oneItem)
+		let itemIds=this.props.items.map((item)=>
+		{
+			return item.item_id
+		})
 
-		// let json={
-		// 	orderId:1,
-		// 	itemId:oneItem.item_id,
-		// 	userId:1,
-		// 	quantity:1, 
-		// 	notes:""
-		// }
-		// prnt(true,`json=`,json)
+		prnt(debug,`itemIds=`,itemIds)
 
-		// let response=await storeClient.post('/orders',json)
-		// prnt(true,`response.data=`,response.data)
+		let orderFromClient={
+			"notes":"test notes from client",
+			"userId":1,//needs to access the logged in user and use their id
+			"itemIds":itemIds
+		}
+		prnt(debug,`orderFromClient=`,orderFromClient)
+
+		let response=await storeClient.post('/orderItems',orderFromClient)
+		prnt(debug,`response.data=`,response.data)
 	}
 }
 

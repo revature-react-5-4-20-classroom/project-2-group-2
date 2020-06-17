@@ -39,6 +39,7 @@ public class OrderController
      *  Accepts an order in the request body in the following form:
      *    {
               "notes":"These are notes for the order",
+              "userId":1
               "itemIds":[13,14]
           }
           
@@ -57,6 +58,12 @@ public class OrderController
         return "Could not place order, notes was not in request body";
       }
       
+      if(ord.userId==null)       
+      {
+        System.out.println("userId="+ord.userId);
+        return "Could not place order, userId was not in request body";
+      }
+      
       if(ord.itemIds==null)     
       {
         System.out.println("itemIds="+ord.itemIds);
@@ -65,11 +72,11 @@ public class OrderController
 
       //create an order and put it in the database
       Order newOrder=new Order(
-            0,  //Integer orderId. 0 uses default primary key
-            1,  //Integer userId, 
-            1,  //Integer storeId, 
+            0,              //Integer orderId. 0 uses default primary key
+            ord.userId,     //Integer userId, 
+            1,              //Integer storeId, 
             LocalDate.now(),//LocalDate dateCreated,
-            "test notes"    //String notes
+            ord.notes       //String notes
           );
       
       newOrder=orderService.orderRepo.save(newOrder);
@@ -81,16 +88,14 @@ public class OrderController
       
       for(int itemId:ord.itemIds)
       {
-        //int itemId=ord.itemIds.get(0);
-        
         Orderline newOrderline=new Orderline(
-              0,          //Integer orderlineId.  0 uses default primary key
-              newOrderId, //Integer orderId, 
-              itemId,     //Integer itemId, 
-              1,          //Integer userId,
-              LocalDate.now(),    //LocalDate dateCreated, 
-              1,                  //Integer quantity, 
-              "item test notes"   //String notes
+              0,                //Integer orderlineId.  0 uses default primary key
+              newOrderId,       //Integer orderId, 
+              itemId,           //Integer itemId, 
+              ord.userId,       //Integer userId,
+              LocalDate.now(),  //LocalDate dateCreated, 
+              1,                    //Integer quantity, 
+              "backend test notes"  //String notes
             );
         
         orderlineService.orderlineRepo.save(newOrderline);
