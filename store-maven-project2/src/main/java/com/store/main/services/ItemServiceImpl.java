@@ -48,5 +48,10 @@ public class ItemServiceImpl implements ItemService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public List<Item> getBySearchParam(String param) {
+		return itemRepository.findBySearchParam(param);
+	}
 
 }

@@ -15,6 +15,8 @@ public interface ItemService {
 	
 	List<Item> getByCategoryId(Integer id);
 	
+	List<Item> getBySearchParam(String param);
+	
 	Item update(Item item);
 	
 	// No creating items for now

@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { FailedLoginError } from '../errors/FailedLoginError';
 import { Item } from '../models/Item';
 import {User} from '../models/User';
+import { prnt } from '../Helpers';
 
 
 // For project work, take note that axios interprets non-200s response statuses as errors
@@ -40,13 +41,18 @@ export async function createUser(username:string,password:string,email:string,fi
 
 //implement login later. needs new user object
 
-export async function login(un:string, pw:string){
-    try{
+export async function login(un:string, pw:string)
+{
+    try
+    {
         const response =  await storeClient.post('/login', {username:un, password: pw});
+
         const {userId, username,password, firstName, lastName , email, address, addressCity,addressState, addressZipcode} = response.data;
         console.log(response.data);
         return new User(userId, username, password, firstName, lastName, email, address, addressCity, addressState, addressZipcode);
-    } catch (e){
+    } 
+    catch (e)
+    {
         if(e.response.status === 401){
             throw new FailedLoginError('Failed to authenticate', un);
         } else{
@@ -82,6 +88,32 @@ export async function getAllItems() : Promise<any[]> {
         })
     } catch(e) {
         // Add more error functionality later
+        console.log(e.message);
+        throw e;
+    }
+}
+
+// function for getting items via search term
+export async function getItemsBySearchParam(param: string) : Promise<any[]> {
+    try {
+        const response = await storeClient.get(`/items/search/${param}`);
+        return response.data.map((itemObj: any) => {
+            const {itemId, itemName, price, description, categoryId, avgRating, imgPath} = itemObj;
+            return new Item(itemId, itemName, price, description, categoryId, avgRating, imgPath);
+         });
+    } catch(e) {
+        console.log(e.message);
+        throw e;
+    }
+}
+
+// function for getting a single item by id
+export async function getItemById(id: number) : Promise<any> {
+    try {
+        const response = await storeClient.get(`items/itemId/${id}`);
+        const {itemId, itemName, price, description, categoryId, avgRating, imgPath} = response.data;
+        return new Item(itemId, itemName, price, description, categoryId, avgRating, imgPath);
+    } catch(e) {
         console.log(e.message);
         throw e;
     }
