@@ -2,6 +2,7 @@ import {AnyAction, combineReducers, bindActionCreators} from 'redux';
 import { itemClickTypes, cartClickTypes } from './action-mapper';
 import { Item } from '../models/Item';
 import { ItemListComponent } from '../components/ItemListComponent';
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
 
 
@@ -52,12 +53,21 @@ export const cartReducer = (state:ICartState = initialCartState, action:AnyActio
             }
             case cartClickTypes.REMOVE_CLICK:{
                 let newState = [...state.items];
-                const updatedCart = newState.filter( (item)=> {
-                    console.log(action.payload.itemClicked.item_id)
-                    if(item.item_id !== action.payload.itemClicked.item_id){
-                        return item;
+                let index = action.payload.index;
+                let updatedCart : Item[] = [];
+
+                for(let i =0; i< newState.length; i++){
+                    console.log(index);
+                    if(i!==index){
+                        updatedCart.push(newState[i]);
                     }
-                })
+                }
+                // const updatedCart = newState.filter( (item)=> {
+                //     console.log(action.payload.itemClicked.item_id)
+                //     if(item.item_id !== action.payload.itemClicked.item_id){
+                //         return item;
+                //     }
+                // })
 
                 return{
                     items: updatedCart,

@@ -4,6 +4,7 @@ import { IState } from '../redux/reducers'
 import {addClickActionMappper, removeClickActionMapper} from '../redux/action-mapper';
 import { connect, Provider } from 'react-redux';
 import { Jumbotron, Container, Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem, Button } from 'reactstrap';
+import { getImageUrl } from '../api/getImageUrl';
 
 interface ICartProps{
     items:Item[];
@@ -41,7 +42,7 @@ export class CartComponent extends React.Component<ICartProps,ICartState>{
                         {this.props.items.map((item: Item, i) => {
                             return( <ListGroupItem key={i}>
                                 <Row>
-                                    <Col xs='auto'><img src={`http://project2-group2-store.s3.amazonaws.com/project2-group2-store/books/` + item.img_path}></img></Col>
+                                    <Col xs='auto'><img src={getImageUrl(this.props.items[i])} style={{height:"100px", width:"auto"}}></img></Col>
                                     <Col xs='auto'><p>{item.item_name}</p></Col>
                                     <Col xs='auto'><p>{item.price}</p></Col>
                                     <Col xs='auto'><Button color="primary" id={i.toString()} onClick={this.removeFromCart}>X</Button></Col>
