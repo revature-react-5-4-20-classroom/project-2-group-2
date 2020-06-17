@@ -48,8 +48,8 @@ export class App extends React.Component<any, any>
     //prnt(true,`App componentDidMount() was reached`)
     //automatically log in so I don't have to type it in a million times
     //comment out to disable
-    // const loggedInUser  = await login("user","user");
-    // this.updateUser(loggedInUser)
+    const loggedInUser  = await login("user","user");
+    this.updateUser(loggedInUser)
     //prnt(true,`App this.props.items=`,this.props.items)
 
     //trying to add items to the cart for testing
@@ -99,7 +99,7 @@ export class App extends React.Component<any, any>
               </Route>
 
               <Route path="/checkout">
-                <ReduxCheckoutPage/>
+                <ReduxCheckoutPage parentState={this.state}/>
               </Route>
 
               <Route path="/viewitem">

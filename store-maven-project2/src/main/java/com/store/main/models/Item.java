@@ -21,12 +21,16 @@ public class Item {
 	@Column(name = "item_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer itemId;
+	
 	@Column(name = "item_name")
 	private String itemName;
+	
 	@Column(name = "price")
 	private Double price;
+	
 	@Column(name = "description")
 	private String description;
+	
 	// Many to one relationship with category - For now, just use a simple integer
 //	@JoinColumn(name = "category_id")
 //	@ManyToOne(fetch = FetchType.EAGER)
@@ -34,8 +38,10 @@ public class Item {
 //	private Category category;
 	@Column(name = "category_id")
 	private Integer categoryId;
+	
 	@Column(name = "avg_rating")
 	private Float avgRating;
+	
 	@Column(name = "img_path")
 	private String imgPath;
 	

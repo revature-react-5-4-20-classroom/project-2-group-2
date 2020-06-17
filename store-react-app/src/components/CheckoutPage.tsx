@@ -130,20 +130,22 @@ export class CheckoutPage extends React.Component<IReduxProps,any>
 		prnt(debug,`itemIds=`,itemIds)
 
 		let orderFromClient={
-			"notes":"test notes from client",
-			"userId":1,//needs to access the logged in user and use their id
-			"itemIds":itemIds
+			"notes":	"test notes from client",
+			"userId":	this.props.parentState.loggedInUser.userId,
+			"itemIds":	itemIds
 		}
 		prnt(debug,`orderFromClient=`,orderFromClient)
 
 		let response=await storeClient.post('/orderItems',orderFromClient)
+		//prnt(debug,`response=`,response)
 		prnt(debug,`response.data=`,response.data)
 	}
 }
 
 // Black magic Redux stuff
 interface IReduxProps {
-    items : Item[];
+    items : Item[];		//receives the items in the cart from redux somehow
+	parentState:any,	//passes in the state of the element checkout page is within
     itemClickActionMapper: (item:Item) => void;
     addClickActionMappper:(item:Item, index:number|undefined) => void;
 }
