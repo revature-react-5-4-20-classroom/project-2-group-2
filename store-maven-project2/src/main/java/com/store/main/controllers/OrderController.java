@@ -15,6 +15,7 @@ import com.store.main.models.Order;
 import com.store.main.models.OrderFromClient;
 import com.store.main.models.Orderline;
 import com.store.main.services.OrderService;
+import com.store.main.services.OrderlineService;
 
 @RestController
 public class OrderController
@@ -22,9 +23,12 @@ public class OrderController
     @Autowired
     OrderService orderService;
     
+    @Autowired
+    OrderlineService orderlineService;
+    
     @CrossOrigin(origins = "*")
     @GetMapping("/orders")//get all the orders to view them
-    public List <Orderline> getAll()
+    public List <Order> getAll()
     {
         System.out.println("GET /orders has been hit");
       
@@ -58,8 +62,39 @@ public class OrderController
         System.out.println("itemIds="+ord.itemIds);
         return "Could not place order, itemIds were not in request body";
       }
+
+      //create an order and put it in the database
+      Order newOrder=new Order(
+            0,  //Integer orderId. 0 uses default primary key
+            1,  //Integer userId, 
+            1,  //Integer storeId, 
+            LocalDate.now(),//LocalDate dateCreated,
+            "test notes"    //String notes
+          );
       
-      //the order must now be put into the correct tables
+      newOrder=orderService.orderRepo.save(newOrder);
+      
+      //create the orderlines and put those in the database
+      int newOrderId=newOrder.getOrderId();
+      
+      System.out.println("newOrderId="+newOrderId);
+      
+      for(int itemId:ord.itemIds)
+      {
+        //int itemId=ord.itemIds.get(0);
+        
+        Orderline newOrderline=new Orderline(
+              0,          //Integer orderlineId.  0 uses default primary key
+              newOrderId, //Integer orderId, 
+              itemId,     //Integer itemId, 
+              1,          //Integer userId,
+              LocalDate.now(),    //LocalDate dateCreated, 
+              1,                  //Integer quantity, 
+              "item test notes"   //String notes
+            );
+        
+        orderlineService.orderlineRepo.save(newOrderline);
+      }
       
       return "Your order was placed successfully";
     }
@@ -80,56 +115,56 @@ public class OrderController
            The new orderline when it is successful.
            null when there was not enough information to create an orderline
      */
-    @CrossOrigin(origins = "*")
-    @PostMapping("/orderOneItem")
-    public Orderline addOneOrderline(@RequestBody Orderline ol)
-    {
-        System.out.println("POST /orders has been hit");
-        System.out.println("ol="+ol.toString());
-        
-        if(ol.orderId==null)
-        {
-            System.out.println("orderId was null is the request");
-            return null;
-        }
-        
-        if(ol.itemId==null)
-        {
-            System.out.println("itemId was null is the request");
-            return null;
-        }
-        
-        if(ol.userId==null)
-        {
-            System.out.println("userId was null is the request");
-            return null;
-        }
-
-        if(ol.quantity==null)
-        {
-            System.out.println("quantity was null is the request");
-            return null;
-        }
-        
-        if(ol.notes==null)
-        {
-            System.out.println("notes was null is the request");
-            return null;
-        }
-        
-        ol.dateCreated=LocalDate.now();
-
-//            orderlineId
-//            orderId
-//            itemId
-//            userId
-//            dateCreated
-//            quantity
-//            notes
-            
-        return orderService.save(ol);
-    }
-    
+//    @CrossOrigin(origins = "*")
+//    @PostMapping("/orderOneItem")
+//    public Orderline addOneOrderline(@RequestBody Orderline ol)
+//    {
+//        System.out.println("POST /orders has been hit");
+//        System.out.println("ol="+ol.toString());
+//        
+//        if(ol.orderId==null)
+//        {
+//            System.out.println("orderId was null is the request");
+//            return null;
+//        }
+//        
+//        if(ol.itemId==null)
+//        {
+//            System.out.println("itemId was null is the request");
+//            return null;
+//        }
+//        
+//        if(ol.userId==null)
+//        {
+//            System.out.println("userId was null is the request");
+//            return null;
+//        }
+//
+//        if(ol.quantity==null)
+//        {
+//            System.out.println("quantity was null is the request");
+//            return null;
+//        }
+//        
+//        if(ol.notes==null)
+//        {
+//            System.out.println("notes was null is the request");
+//            return null;
+//        }
+//        
+//        ol.dateCreated=LocalDate.now();
+//
+////            orderlineId
+////            orderId
+////            itemId
+////            userId
+////            dateCreated
+////            quantity
+////            notes
+//            
+//        return orderService.save(ol);
+//    }
+//    
     @CrossOrigin(origins = "*")
     @GetMapping("/orders/items")
     public Orderline getAllOrderlines()
