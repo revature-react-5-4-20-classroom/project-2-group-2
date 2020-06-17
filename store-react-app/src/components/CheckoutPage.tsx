@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { SingleItemComponent } from "./SingleItemComponent";
 import { store } from "../redux/store";
 import {prnt}from'../Helpers';
-import { Container, Row, Col, Button, Table, Media } from "reactstrap";
+import { Container, Row, Col, Button, Table, Media, Jumbotron, ListGroup, ListGroupItem } from "reactstrap";
 import{storeClient}from'../api/StoreClient'
 import { Item } from "../models/Item";
 import { itemClickActionMapper,addClickActionMappper } from '../redux/action-mapper';
@@ -30,27 +30,41 @@ export class CheckoutPage extends React.Component<IReduxProps,any>
 
 	render()
 	{
+		let jsxContent=(<></>)
+
 		if(this.props.items.length<=0)//if the cart is empty
 		{
-			return(<>
-				<i>Your cart is empty</i><br/>
-				<i>Please go buy our stuff</i>
+			jsxContent=(<>
+				<Row>
+					<Col>
+						<i>Your cart is empty</i><br/>
+						<i>Please go buy our stuff</i>
+					</Col>
+				</Row>
 			</>)
 		}
-
-		//otherwise display all the items in it
-		return(<>
-			<Container>
+		else
+		{
+			//otherwise display all the items in it
+			jsxContent=(<>
 				<Row>
-					<Col sm="10">
-						{this.displayItemsInCart()}
-					</Col>
-					<Col sm="2">
+					<ListGroup >
+						<Col>
+							{this.displayItemsInCart()}
+						</Col>
+					</ListGroup>
+					<Col >
 						{this.displayCheckoutPanel()}
 					</Col>
 				</Row>
-			</Container>
-		</>)
+			</>)
+		}
+
+		return(	<Jumbotron>
+					<Container>
+						{jsxContent}
+					</Container>
+				</Jumbotron>)
 	}
 
 	displayItemsInCart=()=>
@@ -71,31 +85,33 @@ export class CheckoutPage extends React.Component<IReduxProps,any>
 			*/	
 
 			return(
-				<Container>
-					<Row> 
-						<Col xs='auto'>
-							{/* <Media object data-src={logo} /> */}
-							<img src={getImageUrl(item)} style={{height:"100px", width:"auto"}}/>
-						</Col>
-						<Col>
-							<Row>
-								<Col>
-									<Row><Col>{item.item_name}</Col></Row>
-									<Row><Col>{item.avg_rating} / 10</Col></Row>
-									<Row><Col><b>${item.price}</b></Col></Row>
-								</Col>
-								<Col>
-									<Button>Remove from cart</Button> 
-								</Col>
-							</Row> 
-							<Row>
-								<Col>
-									{item.description} 
-								</Col>
-							</Row>
-						</Col>
-					</Row>
-				</Container>
+				<ListGroupItem>
+					<Container>
+						<Row> 
+							<Col >
+								{/* <Media object data-src={logo} /> */}
+								<img src={getImageUrl(item)} style={{height:"200px", width:"auto"}}/>
+							</Col>
+							<Col>
+								<Row>
+									<Col>
+										<Row><Col>{item.item_name}</Col></Row>
+										<Row><Col>{item.avg_rating} / 10</Col></Row>
+										<Row><Col><b>${item.price}</b></Col></Row>
+									</Col>
+									<Col>
+										<Button>Remove from cart</Button> 
+									</Col>
+								</Row> 
+								<Row>
+									<Col>
+										{item.description} 
+									</Col>
+								</Row>
+							</Col>
+						</Row>
+					</Container>
+				</ListGroupItem>
 			)
 		})
 	}

@@ -41,7 +41,7 @@ export class App extends React.Component<any, any>
   constructor(props:any){
     super(props);
     this.state = {
-      loggedInUser:null //Maybe this should be in redux so it's global?
+      loggedInUser:null
     }
   }
 
@@ -64,43 +64,27 @@ export class App extends React.Component<any, any>
       setIsOpen(!isOpen)
   }
 
- 
-
-  render(){
-
-  
+  render()
   {
-   
-
     if(this.state.loggedInUser == null)
     {
-      return(
+      return(<>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
         <BrowserRouter>
-        <Switch>
-          <Route path='/'>
-            <LoginComponent updateUser={this.updateUser}/>
-          </Route>
-        </Switch>
+          <Switch>
+            <Route path='/'>
+              <LoginComponent updateUser={this.updateUser}/>
+            </Route>
+          </Switch>
         </BrowserRouter>
-      )
+      </>)
     } 
     else
     {
-      return(
+      return(<>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
         <BrowserRouter>
-          {/* <Navbar color='light' light expand='md'>
-            <NavbarToggler onClick={this.toggleNavbar}/>
-            <Nav className='mr-auto' tabs>
-
-                        <NavItem>
-                                <NavLink to="/home">Home</NavLink>
-                            </NavItem>
-              <NavEasy href='/view'     display='View Items'/>
-              <NavEasy href='/checkout' display='Checkout'/>
-              <NavEasy href='/viewitem' display='View single item'/>
-              <NavEasy href='/newuser'  display='New User'/>
-            </Nav>
-          </Navbar> */}
           <NavbarComponent/>
 
           <Switch>
@@ -108,42 +92,22 @@ export class App extends React.Component<any, any>
               <Route path="/view">
                 <ReduxItemListComponent />
               </Route>
-              </Provider>
 
-              <Provider store={store}>
               <Route path="/checkout">
                 <ReduxCheckoutPage parentState={this.state}/>
               </Route>
-              </Provider>
 
-              <Provider store={store}>
               <Route path="/viewitem">
                 <ReduxSingleItemComponent /> 
               </Route>
-              </Provider>
 
               <Route path='/newuser'>
                 <CreateUserComponent/>
               </Route>
-
-            </Switch>
-            </BrowserRouter>
-          )
-          
-    } 
+            </Provider>
+          </Switch>
+        </BrowserRouter>
+      </>)
     }
-    
-   
   }
 }
-
-{/* // function NavEasy(props:any)
-// {
-//     return(
-//         <NavItem>
-//             <NavLink to={props.href} className='nav-link' activeClassName='active'>{props.display}</NavLink>
-//         </NavItem>
-//     )
-// } */}
-
-
