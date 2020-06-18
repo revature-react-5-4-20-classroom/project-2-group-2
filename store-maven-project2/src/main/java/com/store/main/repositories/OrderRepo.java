@@ -14,13 +14,13 @@ import com.store.main.models.Orderline;
 @Repository
 public interface OrderRepo extends JpaRepository<Order, Integer>
 {
-  //we now have CRUD methods
+  //we now have basic CRUD methods
   
   //findBy is special
-  Orderline findByOrderId(Integer orderId);
+  Order findByOrderId(Integer orderId);
 
   //@Table(schema = "public", name = "project2_orderlines")
   
-  @Query("select c from Order c order by c.orderId") //HQL
-  List<Orderline> findAllSorted();
+  @Query("select c from Order c where c.userId=:id") //HQL
+  List<Order> findAllByUserId(Integer id);
 }

@@ -1,5 +1,6 @@
 package com.store.main.controllers;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +16,8 @@ import com.store.main.models.Item;
 import com.store.main.models.Order;
 import com.store.main.models.OrderFromClient;
 import com.store.main.models.Orderline;
+import com.store.main.repositories.ItemRepository;
+import com.store.main.repositories.OrderlineRepo;
 import com.store.main.services.OrderService;
 import com.store.main.services.OrderlineService;
 
@@ -26,8 +30,15 @@ public class OrderController
     @Autowired
     OrderlineService orderlineService;
     
+    @Autowired
+    OrderlineRepo orderlineRepo; //maybe go straight to the repo and nevermind services
+    
+    @Autowired
+    ItemRepository itemRepo;
+    
+    //GETS all the orders in the orders table
     @CrossOrigin(origins = "*")
-    @GetMapping("/orders")//get all the orders to view them
+    @GetMapping("/orderAll")
     public List <Order> getAll()
     {
         System.out.println("GET /orders has been hit");
@@ -35,8 +46,8 @@ public class OrderController
         return orderService.getAll();
     }
     
-    /*
-     *  Accepts an order in the request body in the following form:
+    //POSTS a new order to the database
+    /*  Accepts an order in the request body in the following form:
      *    {
               "notes":"These are notes for the order",
               "userId":1
@@ -104,72 +115,42 @@ public class OrderController
       return "Your order was placed successfully";
     }
     
-    /*
-     *  Posts a new orderline to the orderlines table
-     *  an orderline is one item in an order
-     *  the following fields must be passed in the body of the request
-     *  {
-          "orderId":1
-          "itemId":2
-          "userId":2
-          "quantity":100 
-          "notes":"notes notes notes "
-         }
-         
-         responds:
-           The new orderline when it is successful.
-           null when there was not enough information to create an orderline
-     */
-//    @CrossOrigin(origins = "*")
-//    @PostMapping("/orderOneItem")
-//    public Orderline addOneOrderline(@RequestBody Orderline ol)
-//    {
-//        System.out.println("POST /orders has been hit");
-//        System.out.println("ol="+ol.toString());
-//        
-//        if(ol.orderId==null)
-//        {
-//            System.out.println("orderId was null is the request");
-//            return null;
-//        }
-//        
-//        if(ol.itemId==null)
-//        {
-//            System.out.println("itemId was null is the request");
-//            return null;
-//        }
-//        
-//        if(ol.userId==null)
-//        {
-//            System.out.println("userId was null is the request");
-//            return null;
-//        }
-//
-//        if(ol.quantity==null)
-//        {
-//            System.out.println("quantity was null is the request");
-//            return null;
-//        }
-//        
-//        if(ol.notes==null)
-//        {
-//            System.out.println("notes was null is the request");
-//            return null;
-//        }
-//        
-//        ol.dateCreated=LocalDate.now();
-//
-////            orderlineId
-////            orderId
-////            itemId
-////            userId
-////            dateCreated
-////            quantity
-////            notes
-//            
-//        return orderService.save(ol);
-//    }
-//    
+    //GETS a single order by order_id
+    @CrossOrigin(origins = "*")
+    @GetMapping("/orderOne/{id}")
+    public Order getOneWithId(@PathVariable Integer id)
+    {
+      return orderService.orderRepo.findByOrderId(id);
+    }
+    
+    //GETS all orders by user_id
+    @CrossOrigin(origins = "*")
+    @GetMapping("/orderAll/{userId}")
+    public List<Order> getAllWithId(@PathVariable Integer userId)
+    {
+      return orderService.orderRepo.findAllByUserId(userId);
+    }
+    
+    //GETS all items by order_id [ {itemObject}, {itemObject} ]
+    @CrossOrigin(origins = "*")
+    @GetMapping("/orderItems/{orderId}")
+    public List<Item> getAllItemsByOrderId(@PathVariable Integer orderId)
+    {
+      List<Orderline> ordLines=orderlineRepo.findAllByOrderId(orderId);
+      
+      //get each item using each orderline, no time to come up with a better way
+      List<Item> itemsInAnOrder=new ArrayList<Item>();
+      
+      for(Orderline ordLine:ordLines)
+      {
+        Item itemInOrderline=itemRepo.findByItemId(ordLine.itemId);
+        itemsInAnOrder.add(itemInOrderline);
+      }
+      
+      return itemsInAnOrder;
+    }
+    
+    //GETS all orerlines in the orderline table
     @CrossOrigin(origins = "*")
     @GetMapping("/orders/items")
     public Orderline getAllOrderlines()

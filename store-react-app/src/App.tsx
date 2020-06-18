@@ -13,6 +13,7 @@ import { prnt } from './Helpers';
 import { CreateUserComponent } from './components/CreateUserComponent';
 import { ReduxCartComponent } from './components/CartComponent';
 import NavbarComponent from './components/NavbarComponent';
+import { ViewOneOrderAndItems } from './components/ViewOneOrderAndItems';
 //import 'bootstrap/dist/css/bootstrap.min.css';//was not working for me. rene
 
 /*
@@ -103,6 +104,11 @@ export class App extends React.Component<any, any>
 
               <Route path='/newuser'>
                 <CreateUserComponent/>
+              </Route>
+
+              <Route path='/myprofile'>
+                {/* Just putting this here for now to view it. maybe a user wants to view all orders */}
+                <ViewOneOrderAndItems/>
               </Route>
             </Provider>
           </Switch>

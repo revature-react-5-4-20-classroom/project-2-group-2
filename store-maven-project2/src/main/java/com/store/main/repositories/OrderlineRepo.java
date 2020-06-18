@@ -19,9 +19,7 @@ public interface OrderlineRepo extends JpaRepository<Orderline, Integer>
   //findBy is special
   Orderline findByOrderId(Integer orderlineId);
 
-  //@Table(schema = "public", name = "project2_orderlines")
   
-  //may not work or be needed, maybe
-  //@Query("select c from Orderline c order by c.orderId") //HQL
-  //List<Orderline> findAllSorted();
+  @Query("select x from Orderline x where x.orderId=:orderId") //HQL
+  List<Orderline> findAllByOrderId(Integer orderId);
 }
