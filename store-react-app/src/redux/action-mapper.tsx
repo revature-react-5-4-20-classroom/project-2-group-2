@@ -1,4 +1,5 @@
 import {Item} from '../models/Item'
+import { prnt } from '../Helpers'
 interface IItemState{
     item_id: string;
     item_name: string;
@@ -47,3 +48,18 @@ export const itemClickActionMapper = (itemClicked:IItemState) =>{
     }
 }
 
+//clears the cart of all items in it
+export const clearCartActionMapper = (itemClicked:Item) =>{
+    return{
+        type: 'CART_CLEAR',
+        payload:{itemClicked}
+    }
+}
+
+//removes the itemClicked from the cart without using an index
+export const cartRemoveItemActionMapper = (itemClicked:Item) =>{
+    return{
+        type: 'CART_REMOVE_ITEM',
+        payload:{itemClicked}
+    }
+}

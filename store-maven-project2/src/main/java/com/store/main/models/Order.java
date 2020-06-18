@@ -16,11 +16,6 @@ import javax.persistence.Table;
 @Table(schema = "public", name = "project2_orders")
 public class Order
 {
-  public Order()
-  {
-    super();
-  }
-  
   @Id
   @Column(name = "order_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +32,26 @@ public class Order
   
   @Column(name = "notes")
   private String notes;
+
+  public Order()
+  {
+    super();
+  }
+  
+  public Order( 
+      Integer orderId, 
+      Integer userId, 
+      Integer storeId, 
+      LocalDate dateCreated,
+      String notes)
+  {
+    super();
+    this.orderId = orderId;
+    this.userId = userId;
+    this.storeId = storeId;
+    this.dateCreated = dateCreated;
+    this.notes = notes;
+  }
 
   public Integer getOrderId()
   {

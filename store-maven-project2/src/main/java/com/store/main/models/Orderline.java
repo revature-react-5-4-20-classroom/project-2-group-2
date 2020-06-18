@@ -14,11 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Table(schema = "public", name = "project2_orderline")
 public class Orderline
 {
-    public Orderline()
-    {
-      super();
-    }
-
     @Id
     @Column(name = "orderline_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +36,34 @@ public class Orderline
     
     @Column(name = "notes")
     public String notes;
+
+    public Orderline()
+    {
+      super();
+    }
+    
+    
+    
+    public Orderline(
+        Integer orderlineId, 
+        Integer orderId, 
+        Integer itemId, 
+        Integer userId,
+        LocalDate dateCreated, 
+        Integer quantity, 
+        String notes)
+    {
+      super();
+      this.orderlineId = orderlineId;
+      this.orderId = orderId;
+      this.itemId = itemId;
+      this.userId = userId;
+      this.dateCreated = dateCreated;
+      this.quantity = quantity;
+      this.notes = notes;
+    }
+
+
 
     public Integer getOrderlineId()
     {

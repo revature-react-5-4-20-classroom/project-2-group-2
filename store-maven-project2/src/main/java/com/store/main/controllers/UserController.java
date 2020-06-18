@@ -22,7 +22,7 @@ import com.store.main.models.User;
 import com.store.main.services.UserService;
 
 
-//We cacn specify the base url of /users here, then we don't need it on individual methods
+//We can specify the base url of /users here, then we don't need it on individual methods
 // RequestMapping matches all methods
 
 @RestController

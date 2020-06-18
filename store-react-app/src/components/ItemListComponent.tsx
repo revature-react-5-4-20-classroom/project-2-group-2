@@ -1,6 +1,6 @@
 import React from 'react';
 import { IState } from '../redux/reducers';
-import { Jumbotron, Container, Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem, Button, Input } from 'reactstrap';
+import { Jumbotron, Container, Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem, Button, Input, Table } from 'reactstrap';
 import { Item } from '../models/Item';
 import { getItemsByCategory, getAllItems, getItemById, getItemsBySearchParam } from '../api/StoreClient';
 import { itemClickActionMapper,addClickActionMappper,removeClickActionMapper  } from '../redux/action-mapper';
@@ -154,6 +154,7 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
     render() {
         return(
             <>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
             {this.state.redirect === null ?
             <Jumbotron>
                 <Container>
@@ -172,19 +173,18 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
                             </UncontrolledDropdown>
                         </Col>
                     </Row>
-                    <ListGroup>
-                        {/* I'm still not 100% sure what component is being displayed for each list item, so this is likely temporary */}
-                        {this.state.itemList.map((item: Item, i) => {
-                            return( <ListGroupItem key={i}>
-                                <Row>
-                                    <Col xs='auto'><img src={getImageUrl(this.state.itemList[i])} style={{height:"100px", width:"auto"}} /></Col>
-                                    <Col xs='auto'><a href='#' onClick={this.toggleRedirect} id={i.toString()}>{item.item_name}</a></Col>
-                                    <Col xs='auto'>{item.description}</Col>
-                                    <Col xs='auto'><Button color="primary" id={i.toString()} onClick={this.addToCart}>Add to cart</Button></Col>
-                                </Row>
-                            </ListGroupItem>)
-                        })}
-                    </ListGroup>
+                        <ListGroup>
+                            {this.state.itemList.map((item: Item, i) => {
+                                return( <ListGroupItem key={i}>
+                                    <Row>
+                                        <Col xs='auto'><img src={getImageUrl(this.state.itemList[i])} style={{height:"100px", width:"auto"}} /></Col>
+                                        <Col xs='auto'><a href='#' onClick={this.toggleRedirect} id={i.toString()}>{item.item_name}</a></Col>
+                                        <Col xs='auto'>{item.description}</Col>
+                                        <Col xs='auto'><Button color="primary" id={i.toString()} onClick={this.addToCart}>Add to cart</Button></Col>
+                                    </Row>
+                                </ListGroupItem>)
+                            })}
+                        </ListGroup>
                 </Container>
             </Jumbotron> :
             

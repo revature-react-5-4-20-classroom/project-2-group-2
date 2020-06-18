@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class OrderFromClient
 {
   public String notes;          //the special notes for the order
+  public Integer userId;        //the userId that is placing the order.
   public List<Integer> itemIds; //the item ids that the order is made up of
   
   @Override

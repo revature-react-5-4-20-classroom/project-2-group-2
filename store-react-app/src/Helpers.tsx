@@ -17,3 +17,25 @@ export function prnt(debug:boolean,text:string,dataJson?:any)
         else            console.log(text)
     }
 }
+
+/*
+    removes the valueToRemove from the array
+*/
+export function arrayRemoveValue(array:any[],valueToRemove:any)
+{
+    let i=array.findIndex((value:any)=>valueToRemove===value)
+
+    array.splice(i,1)
+}
+
+/*
+	returns a new array with a value removed from array
+*/
+export function arrayWithValueRemoved(array:any[],valueToRemove:any)
+{
+	let newArray=[...array]
+
+	arrayRemoveValue(newArray,valueToRemove)
+
+	return newArray
+}

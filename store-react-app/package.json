@@ -48,15 +48,5 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.5"
-  },
-  "keywords": [
-    "redux",
-    "generator",
-    "iterator",
-    "middleware",
-    "redux-middleware",
-    "generators",
-    "async",
-    "iteration"
-  ]
+  }
 }

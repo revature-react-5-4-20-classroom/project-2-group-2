@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import { SingleItemComponent } from "./SingleItemComponent";
 import { store } from "../redux/store";
 import {prnt}from'../Helpers';
-import { Container, Row, Col, Button, Table, Media } from "reactstrap";
+import { Container, Row, Col, Button, Table, Media, Jumbotron, ListGroup, ListGroupItem } from "reactstrap";
 import{storeClient}from'../api/StoreClient'
 import { Item } from "../models/Item";
-import { itemClickActionMapper,addClickActionMappper } from '../redux/action-mapper';
+import { itemClickActionMapper,addClickActionMappper, cartRemoveItemActionMapper,clearCartActionMapper } from '../redux/action-mapper';
 import { IState } from "../redux/reducers";
 import { getImageUrl } from "../api/getImageUrl";
 //import book17 from "./books-item-17.jpg"
@@ -15,11 +15,17 @@ import { getImageUrl } from "../api/getImageUrl";
 
 const debug=true;//prnt function will print things
 
-export class CheckoutPage extends React.Component<IReduxProps,any>
+export class CheckoutPage extends React.Component<any,any>
 {
 	constructor(props:any)
 	{
 		super(props);
+		this.state={
+			jsxMessage:(<>
+						<i>Your cart is empty</i><br/>
+						<i>Please go buy our stuff</i>
+						</>)
+		}
 	}
 
 	componentDidMount=()=>
@@ -30,27 +36,40 @@ export class CheckoutPage extends React.Component<IReduxProps,any>
 
 	render()
 	{
+		let jsxContent=(<></>)
+
 		if(this.props.items.length<=0)//if the cart is empty
 		{
-			return(<>
-				<i>Your cart is empty</i><br/>
-				<i>Please go buy our stuff</i>
+			jsxContent=(<>
+				<Row>
+					<Col>
+						{this.state.jsxMessage}
+					</Col>
+				</Row>
 			</>)
 		}
-
-		//otherwise display all the items in it
-		return(<>
-			<Container>
+		else
+		{
+			//otherwise display all the items in it
+			jsxContent=(<>
 				<Row>
-					<Col sm="10">
-						{this.displayItemsInCart()}
-					</Col>
-					<Col sm="2">
+					<ListGroup >
+						<Col>
+							{this.displayItemsInCart()}
+						</Col>
+					</ListGroup>
+					<Col >
 						{this.displayCheckoutPanel()}
 					</Col>
 				</Row>
-			</Container>
-		</>)
+			</>)
+		}
+
+		return(	<Jumbotron>
+					<Container>
+						{jsxContent}
+					</Container>
+				</Jumbotron>)
 	}
 
 	displayItemsInCart=()=>
@@ -71,31 +90,40 @@ export class CheckoutPage extends React.Component<IReduxProps,any>
 			*/	
 
 			return(
-				<Container>
-					<Row> 
-						<Col xs='auto'>
-							{/* <Media object data-src={logo} /> */}
-							<img src={getImageUrl(item)} style={{height:"100px", width:"auto"}}/>
-						</Col>
-						<Col>
-							<Row>
-								<Col>
-									<Row><Col>{item.item_name}</Col></Row>
-									<Row><Col>{item.avg_rating} / 10</Col></Row>
-									<Row><Col><b>${item.price}</b></Col></Row>
-								</Col>
-								<Col>
-									<Button>Remove from cart</Button> 
-								</Col>
-							</Row> 
-							<Row>
-								<Col>
-									{item.description} 
-								</Col>
-							</Row>
-						</Col>
-					</Row>
-				</Container>
+				<ListGroupItem>
+					<Container>
+						<Row> 
+							<Col >
+								{/* <Media object data-src={logo} /> */}
+								<img src={getImageUrl(item)} style={{height:"200px", width:"auto"}}/>
+							</Col>
+							<Col>
+								<Row>
+									<Col>
+										<Row><Col>{item.item_name}</Col></Row>
+										<Row><Col>{item.avg_rating} / 10</Col></Row>
+										<Row><Col><b>${item.price}</b></Col></Row>
+									</Col>
+									<Col>
+										<Button onClick={
+											()=>{
+												this.props.cartRemoveItemActionMapper(item)
+											}
+
+										}>
+											Remove from cart
+										</Button> 
+									</Col>
+								</Row> 
+								<Row>
+									<Col>
+										{item.description} 
+									</Col>
+								</Row>
+							</Col>
+						</Row>
+					</Container>
+				</ListGroupItem>
 			)
 		})
 	}
@@ -106,7 +134,7 @@ export class CheckoutPage extends React.Component<IReduxProps,any>
 			<Container>
 				<Row>
 					<Col>
-						Total $0
+						Total ${this.calculateCartTotal()}
 					</Col>
 				</Row>
 				<Row>
@@ -118,34 +146,62 @@ export class CheckoutPage extends React.Component<IReduxProps,any>
 		</>)
 	}
 
+	calculateCartTotal=()=>
+	{
+		let total=0
+
+		for(let item of this.props.items)
+		{
+			total+=parseInt(item.price)
+		}
+
+		return total
+
+		// return this.props.items.reduce((total:number,item:Item,0,0)=>
+		// {
+		// 	prnt(debug,`total+parseInt(item.price)`,total+parseInt(item.price))
+
+		// 	return total+parseInt(item.price)
+		// })
+	}
+
+	/*
+		this function is called when the pruchase button is clicked.
+		it sends a json order to the server.
+	*/
 	performPurchase=async()=>
 	{
-		prnt(true,`CheckoutPage performPurchase() was hit`)
+		prnt(debug,`CheckoutPage performPurchase() was hit`)
 
-		// let oneItem=this.props.items[0]
-		// prnt(true,`oneItem=`,oneItem)
+		let itemIds=this.props.items.map((item:any)=>
+		{
+			return item.item_id
+		})
 
-		// let json={
-		// 	orderId:1,
-		// 	itemId:oneItem.item_id,
-		// 	userId:1,
-		// 	quantity:1, 
-		// 	notes:""
-		// }
-		// prnt(true,`json=`,json)
+		prnt(debug,`itemIds=`,itemIds)
 
-		// let response=await storeClient.post('/orders',json)
-		// prnt(true,`response.data=`,response.data)
+		let orderFromClient={
+			"notes":	"test notes from client",
+			"userId":	this.props.parentState.loggedInUser.userId,
+			"itemIds":	itemIds
+		}
+		prnt(debug,`orderFromClient=`,orderFromClient)
+
+		let response=await storeClient.post('/orderItems',orderFromClient)
+		//prnt(debug,`response=`,response)
+		prnt(debug,`response.data=`,response.data)
+
+		//clear the cart the fancy redux way
+		this.props.clearCartActionMapper()
+
+		//and display the response from the server
+		this.setState({
+			jsxMessage:(<i>{response.data}</i>)
+		})
 	}
 }
 
-// Black magic Redux stuff
-interface IReduxProps {
-    items : Item[];
-    itemClickActionMapper: (item:Item) => void;
-    addClickActionMappper:(item:Item, index:number|undefined) => void;
-}
-
+// Black magic rube goldberg Redux stuff
 const mapStateToProps = (state:IState) =>{
     return{
       ...state.item,
@@ -155,7 +211,9 @@ const mapStateToProps = (state:IState) =>{
 
 const mapDispatchToProps = {   
     itemClickActionMapper,
-    addClickActionMappper
+    addClickActionMappper,
+	clearCartActionMapper,
+	cartRemoveItemActionMapper,
 }
 
 export const ReduxCheckoutPage = connect(mapStateToProps, mapDispatchToProps)(CheckoutPage)
