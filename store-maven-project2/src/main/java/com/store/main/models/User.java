@@ -140,6 +140,13 @@ public class User {
 	public void setAddressZipcode(String addressZipcode) {
 		this.addressZipcode = addressZipcode;
 	}
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", email=" + email
+				+ ", firstName=" + firstName + ", lastName=" + lastName + ", address=" + address + ", addressCity="
+				+ addressCity + ", addressState=" + addressState + ", addressZipcode=" + addressZipcode + "]";
+	}
+	
 	
 	
 }

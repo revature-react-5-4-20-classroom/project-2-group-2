@@ -1,10 +1,11 @@
 import React from 'react';
 import { User } from "../models/User";
-import { Jumbotron, Button } from 'reactstrap';
+import { UpdateUserInfo } from "./UpdateUserInfo"
+import { Jumbotron, Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
 
 interface IProfileComponentProps {
     loggedInUser: User | null,
-    //updateUser: (u: User) => void,
+    updateUser: (u: User) => void,
 }
 
 interface IProfileComponentState {
@@ -39,14 +40,14 @@ export class ProfileComponent extends React.Component<IProfileComponentProps,IPr
                 <p className="lead">Address: {this.props.loggedInUser?.address}
                     , {this.props.loggedInUser?.addressCity}
                     , {this.props.loggedInUser?.addressState} {this.props.loggedInUser?.addressZipcode}</p>
-                {/* <Button color="primary" onClick={this.toggleModal}>Update Profile</Button> */}
+                <Button color="primary" onClick={this.toggleModal}>Update Profile</Button>
             </Jumbotron>
-            {/* <Modal isOpen={this.state.isModal}>
+            <Modal isOpen={this.state.isModal}>
                 <ModalHeader toggle={this.toggleModal}>Update User Profile</ModalHeader>
                 <ModalBody>
-                    {this.props.loggedInUser !== null ? <UpdateUserComponent loggedInUser={this.props.loggedInUser} userToUpdate={this.props.loggedInUser} updateUser={this.props.updateUser}/> : ''}
+                    {this.props.loggedInUser !== null ? <UpdateUserInfo loggedInUser={this.props.loggedInUser} updateUser={this.props.updateUser}/> : ''}
                 </ModalBody>
-            </Modal> */}
+            </Modal>
             </>
         );
     }

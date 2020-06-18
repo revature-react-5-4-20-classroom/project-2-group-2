@@ -52,8 +52,8 @@ export class App extends React.Component<any, any>
     //prnt(true,`App componentDidMount() was reached`)
     //automatically log in so I don't have to type it in a million times
     //comment out to disable
-    const loggedInUser  = await login("user","user");
-    this.updateUser(loggedInUser)
+    // const loggedInUser  = await login("user","user");
+    // this.updateUser(loggedInUser)
     //prnt(true,`App this.props.items=`,this.props.items)
 
     //trying to add items to the cart for testing
@@ -66,8 +66,13 @@ export class App extends React.Component<any, any>
       setIsOpen(!isOpen)
   }
 
-  render()
-  {
+  
+ 
+
+  render(){
+
+  
+  
     if(this.state.loggedInUser == null)
     {
       return(<>
@@ -78,6 +83,10 @@ export class App extends React.Component<any, any>
             <Route path='/'>
               <LoginComponent updateUser={this.updateUser}/>
             </Route>
+
+            <Route path='/newuser'>
+                <CreateUserComponent/>
+              </Route>
           </Switch>
         </BrowserRouter>
       </>)
@@ -104,11 +113,7 @@ export class App extends React.Component<any, any>
               </Route>
 
               <Route path="/myprofile">
-                <ProfileComponent loggedInUser={this.state.loggedInUser}/>
-              </Route>
-
-              <Route path='/newuser'>
-                <CreateUserComponent/>
+                <ProfileComponent loggedInUser={this.state.loggedInUser} updateUser={this.updateUser}/>
               </Route>
             </Provider>
           </Switch>
