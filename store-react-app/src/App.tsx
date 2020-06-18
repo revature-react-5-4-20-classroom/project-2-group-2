@@ -13,6 +13,7 @@ import { prnt } from './Helpers';
 import { CreateUserComponent } from './components/CreateUserComponent';
 import { ReduxCartComponent } from './components/CartComponent';
 import NavbarComponent from './components/NavbarComponent';
+import { ProfileComponent } from './components/ProfileComponent';
 //import 'bootstrap/dist/css/bootstrap.min.css';//was not working for me. rene
 
 /*
@@ -65,16 +66,7 @@ export class App extends React.Component<any, any>
       setIsOpen(!isOpen)
   }
 
-<<<<<<< HEAD
-  
- 
-
-  render(){
-
-  
-=======
   render()
->>>>>>> f4c9bffc0ace1111d7b12c20a1e951d986d35584
   {
     if(this.state.loggedInUser == null)
     {
@@ -109,6 +101,10 @@ export class App extends React.Component<any, any>
 
               <Route path="/viewitem">
                 <ReduxSingleItemComponent /> 
+              </Route>
+
+              <Route path="/myprofile">
+                <ProfileComponent loggedInUser={this.state.loggedInUser}/>
               </Route>
 
               <Route path='/newuser'>
