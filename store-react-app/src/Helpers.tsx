@@ -36,6 +36,6 @@ export function arrayWithValueRemoved(array:any[],valueToRemove:any)
 	let newArray=[...array]
 
 	arrayRemoveValue(newArray,valueToRemove)
-
+	localStorage.setItem('cart', JSON.stringify(newArray));
 	return newArray
 }

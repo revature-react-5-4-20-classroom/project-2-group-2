@@ -51,8 +51,8 @@ export class App extends React.Component<any, any>
     //prnt(true,`App componentDidMount() was reached`)
     //automatically log in so I don't have to type it in a million times
     //comment out to disable
-    const loggedInUser  = await login("user","user");
-    this.updateUser(loggedInUser)
+    // const loggedInUser  = await login("user","user");
+    // this.updateUser(loggedInUser)
     //prnt(true,`App this.props.items=`,this.props.items)
 
     //trying to add items to the cart for testing
@@ -65,17 +65,13 @@ export class App extends React.Component<any, any>
       setIsOpen(!isOpen)
   }
 
-<<<<<<< HEAD
   
  
 
   render(){
 
   
-=======
-  render()
->>>>>>> f4c9bffc0ace1111d7b12c20a1e951d986d35584
-  {
+  
     if(this.state.loggedInUser == null)
     {
       return(<>
@@ -86,6 +82,10 @@ export class App extends React.Component<any, any>
             <Route path='/'>
               <LoginComponent updateUser={this.updateUser}/>
             </Route>
+
+            <Route path='/newuser'>
+                <CreateUserComponent/>
+              </Route>
           </Switch>
         </BrowserRouter>
       </>)
@@ -111,9 +111,7 @@ export class App extends React.Component<any, any>
                 <ReduxSingleItemComponent /> 
               </Route>
 
-              <Route path='/newuser'>
-                <CreateUserComponent/>
-              </Route>
+              
             </Provider>
           </Switch>
         </BrowserRouter>

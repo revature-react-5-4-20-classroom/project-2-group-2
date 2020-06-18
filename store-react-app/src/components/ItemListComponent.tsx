@@ -57,8 +57,10 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
         let items : Item[] = JSON.parse(localStorage.getItem('cart') || '[{}]');
 
         for(let item in items){
+            
             let itemJson = JSON.parse(item);
             let newItem = new Item(itemJson.item_id, itemJson.item_name, itemJson.price, itemJson.description, itemJson.category_id, itemJson.avg_rating, itemJson.img_path);
+            console.log(newItem.item_name);
             addClickActionMappper(newItem, undefined);
         }
     }
