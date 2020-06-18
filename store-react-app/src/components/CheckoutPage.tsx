@@ -7,7 +7,7 @@ import {prnt}from'../Helpers';
 import { Container, Row, Col, Button, Table, Media, Jumbotron, ListGroup, ListGroupItem } from "reactstrap";
 import{storeClient}from'../api/StoreClient'
 import { Item } from "../models/Item";
-import { itemClickActionMapper,addClickActionMappper } from '../redux/action-mapper';
+import { itemClickActionMapper,addClickActionMappper, cartRemoveItemActionMapper,clearCartActionMapper } from '../redux/action-mapper';
 import { IState } from "../redux/reducers";
 import { getImageUrl } from "../api/getImageUrl";
 //import book17 from "./books-item-17.jpg"
@@ -105,7 +105,14 @@ export class CheckoutPage extends React.Component<any,any>
 										<Row><Col><b>${item.price}</b></Col></Row>
 									</Col>
 									<Col>
-										<Button>Remove from cart</Button> 
+										<Button onClick={
+											()=>{
+												this.props.cartRemoveItemActionMapper(item)
+											}
+
+										}>
+											Remove from cart
+										</Button> 
 									</Col>
 								</Row> 
 								<Row>
@@ -183,20 +190,13 @@ const mapStateToProps = (state:IState) =>{
     }
 }
 
-export const clearCartActionMapper = (itemClicked:Item, index:number|undefined) =>{
-    return{
-        type: 'CART_CLEAR',
-        payload:{
-            itemClicked,
-            index
-        }
-    }
-}
+
 
 const mapDispatchToProps = {   
     itemClickActionMapper,
     addClickActionMappper,
-	clearCartActionMapper
+	clearCartActionMapper,
+	cartRemoveItemActionMapper,
 }
 
 export const ReduxCheckoutPage = connect(mapStateToProps, mapDispatchToProps)(CheckoutPage)

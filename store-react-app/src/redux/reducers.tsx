@@ -3,10 +3,7 @@ import { itemClickTypes, cartClickTypes } from './action-mapper';
 import { Item } from '../models/Item';
 import { ItemListComponent } from '../components/ItemListComponent';
 import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
-
-
-
-
+import { arrayRemoveValue, prnt, arrayWithValueRemoved } from '../Helpers';
 
 interface IItemState{
     item_id:    string,
@@ -72,13 +69,18 @@ export const cartReducer = (state:ICartState = initialCartState, action:AnyActio
 
             return{
                 items: updatedCart,
-                index:undefined
+                index: undefined
             }
         }
 
-        case 'CART_CLEAR':{
+        case 'CART_CLEAR':
             return{items:[],index:undefined}
-        }
+
+        case 'CART_REMOVE_ITEM':
+            return{
+                items:arrayWithValueRemoved(state.items,action.payload.itemClicked),
+                index:undefined
+            }
 
         default :{
             return state;
