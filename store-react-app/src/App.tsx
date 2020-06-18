@@ -41,6 +41,7 @@ export class App extends React.Component<any, any>
 
   constructor(props:any){
     super(props);
+    
     this.state = {
       loggedInUser:null
     }
@@ -65,8 +66,18 @@ export class App extends React.Component<any, any>
       setIsOpen(!isOpen)
   }
 
-  render()
-  {
+  
+ 
+
+  render(){
+
+    //test area. comment out to not use
+    // return(<>
+    //   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    //   <h4>Test Area</h4>
+    //   <ViewOneOrderAndItems orderId={18}/>
+    // </>)
+  
     if(this.state.loggedInUser == null)
     {
       return(<>
@@ -77,6 +88,10 @@ export class App extends React.Component<any, any>
             <Route path='/'>
               <LoginComponent updateUser={this.updateUser}/>
             </Route>
+
+            <Route path='/newuser'>
+                <CreateUserComponent/>
+              </Route>
           </Switch>
         </BrowserRouter>
       </>)
@@ -107,8 +122,7 @@ export class App extends React.Component<any, any>
               </Route>
 
               <Route path='/myprofile'>
-                {/* Just putting this here for now to view it. maybe a user wants to view all orders */}
-                <ViewOneOrderAndItems/>
+                
               </Route>
             </Provider>
           </Switch>

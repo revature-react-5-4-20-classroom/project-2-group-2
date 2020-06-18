@@ -15,6 +15,7 @@ interface IItemState{
     img_path:string,
 }
 
+let cart = JSON.parse(localStorage.getItem('cart') || '[]')
 const initialItemState : IItemState = {
     item_id: '',
     item_name: '',
@@ -27,10 +28,11 @@ const initialItemState : IItemState = {
 interface ICartState{
     items : Item[];
     index :number | undefined;
+    
 }
 
 const initialCartState:ICartState ={
-    items : [],
+    items : cart ,
     index : 0
 }
 
@@ -42,6 +44,7 @@ export const cartReducer = (state:ICartState = initialCartState, action:AnyActio
                console.log(action.payload.itemClicked.item_id)
                let newState = [...state.items]
                newState.push(action.payload.itemClicked);
+               localStorage.setItem('cart', JSON.stringify(newState));
 
                return{
                 items: newState,
@@ -66,7 +69,7 @@ export const cartReducer = (state:ICartState = initialCartState, action:AnyActio
             //         return item;
             //     }
             // })
-
+            localStorage.setItem('cart', JSON.stringify(updatedCart));
             return{
                 items: updatedCart,
                 index: undefined

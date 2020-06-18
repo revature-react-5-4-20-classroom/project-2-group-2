@@ -53,6 +53,16 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
     // temporarily setting the item list as a bunch of strings
     componentDidMount() {
         this.getItems();
+
+        let items : Item[] = JSON.parse(localStorage.getItem('cart') || '[{}]');
+
+        for(let item in items){
+            
+            let itemJson = JSON.parse(item);
+            let newItem = new Item(itemJson.item_id, itemJson.item_name, itemJson.price, itemJson.description, itemJson.category_id, itemJson.avg_rating, itemJson.img_path);
+            console.log(newItem.item_name);
+            addClickActionMappper(newItem, undefined);
+        }
     }
 
     // change the selected category, get items based on that category
@@ -113,6 +123,7 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
         let value: number = parseInt(e.currentTarget.id);
         const clickedItem: Item = this.state.itemList[value];
         this.props.addClickActionMappper(clickedItem, undefined);
+        //localStorage.setItem("cart", JSON.stringify(this.props.items));
     }
    
 
@@ -138,6 +149,8 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
             errorMessage: "",
         });
     }
+
+    
 
     // temporary render, just to get a feel for the page.
     render() {
@@ -181,9 +194,7 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
             <Button onClick={this.toggleRedirect} id="0">Back To Items</Button>
             <Redirect to="/viewitem"/>
             </>}
-            <>
-                <ReduxCartComponent />
-            </>
+        
             </>
 
         );

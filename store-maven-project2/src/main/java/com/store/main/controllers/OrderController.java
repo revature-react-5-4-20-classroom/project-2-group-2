@@ -54,11 +54,13 @@ public class OrderController
               "itemIds":[13,14]
           }
           
-        responds with a message of what happened when placing the order
+        responds:
+          with the id of the new order that was placed
+          -1 when there was a failure
      */
     @CrossOrigin(origins = "*")
     @PostMapping("/orderItems")//post all the items to a new order. purchasing
-    public String addNewOrder(@RequestBody OrderFromClient ord)
+    public Integer addNewOrder(@RequestBody OrderFromClient ord)
     {
       System.out.println("POST /orderItems has been reached");
       System.out.println("ord="+ord.toString());
@@ -66,19 +68,22 @@ public class OrderController
       if(ord.notes==null)       
       {
         System.out.println("notes="+ord.notes);
-        return "Could not place order, notes was not in request body";
+        System.out.println("Could not place order, notes was not in request body");
+        return -1;
       }
       
       if(ord.userId==null)       
       {
         System.out.println("userId="+ord.userId);
-        return "Could not place order, userId was not in request body";
+        System.out.println("Could not place order, userId was not in request body");
+        return -1;
       }
       
       if(ord.itemIds==null)     
       {
         System.out.println("itemIds="+ord.itemIds);
-        return "Could not place order, itemIds were not in request body";
+        System.out.println("Could not place order, itemIds were not in request body");
+        return -1;
       }
 
       //create an order and put it in the database
@@ -112,7 +117,7 @@ public class OrderController
         orderlineService.orderlineRepo.save(newOrderline);
       }
       
-      return "Your order was placed successfully";
+      return newOrderId;
     }
     
     //GETS a single order by order_id

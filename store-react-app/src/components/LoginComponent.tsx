@@ -23,6 +23,7 @@ interface ILoginComponentState {
   isError: boolean;
   errorMessage: string;
   redirect:boolean;
+  newUserRedirect:boolean|null;
   
 }
 
@@ -40,7 +41,8 @@ export class LoginComponent extends React.Component<ILoginComponentProps, ILogin
       roleId: 0,
       isError: false,
       errorMessage: '',
-      redirect: true
+      redirect: true,
+      newUserRedirect:null
     }
   }
 
@@ -65,6 +67,11 @@ export class LoginComponent extends React.Component<ILoginComponentProps, ILogin
       isError: false,
     })
   }
+
+  // toAccountCreation = (event:any) =>{
+  //   event.preventDefault();
+  //   <Redirect to="/newuser"></Redirect>
+  // }
 
   attemptLogin = async (event: any) => {
     event.preventDefault();
@@ -113,6 +120,7 @@ export class LoginComponent extends React.Component<ILoginComponentProps, ILogin
               <Input onChange={this.setPassword} value={this.state.password} type="password" name="password" id="password" required />
             </Col>
           </FormGroup>
+          <a href="/newuser">Don't have an account? Click here to create one</a> <br></br>
           <Button color="info">Submit</Button>
         </Form>
         <Toast isOpen={this.state.isError}>

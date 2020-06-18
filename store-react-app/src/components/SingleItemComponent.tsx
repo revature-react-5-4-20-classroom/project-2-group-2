@@ -4,6 +4,8 @@ import { connect, Provider } from 'react-redux';
 import { SubmitReviewComponent } from './SubmitReviewComponent';
 import {itemClickActionMapper} from '../redux/action-mapper';
 import {Item} from '../models/Item';
+import { Row, Col, Button } from 'reactstrap';
+import { getImageUrl } from '../api/getImageUrl';
 
 interface IItemProps{
     item_id:    string;
@@ -26,21 +28,10 @@ interface IItemState{
     img_path:   string
 }
 
-
-
 export class SingleItemComponent extends React.Component<IItemProps,IItemState>{
 
     constructor(props:IItemProps){
         super(props);
-        this.state ={
-          item_id: '',
-          item_name: '',
-          price: '',
-          description:'',
-          category_id:'',
-          avg_rating:'',
-          img_path:''
-        }
     }
 
 
@@ -58,6 +49,45 @@ export class SingleItemComponent extends React.Component<IItemProps,IItemState>{
     }
 }
 
+//display the item so it looks pretty. maybe throw a button in the top right corner
+//displayOneItem(item,<Button>Click me</Button>)
+/*
+    ___________________________________________
+            |item name		|(jsxButtonContent)
+      image	|rating			  |
+            |price			  |
+            |__________________________________
+            |Description
+    ___________________________________________
+*/
+export function displayOneItem(item:Item,jsxButtonContent:any)
+{
+  return(
+      <Row> 
+        <Col sm="2">
+          {/* <Media object data-src={logo} /> */}
+          <img src={getImageUrl(item)} style={{height:"150px", width:"auto"}}/>
+        </Col>
+        <Col>
+          <Row>
+            <Col>
+              <Row><Col>{item.item_name}</Col></Row>
+              <Row><Col>{item.avg_rating} / 10</Col></Row>
+              <Row><Col><b>${item.price}</b></Col></Row>
+            </Col>
+            <Col>
+              {jsxButtonContent}
+            </Col>
+          </Row> 
+          <Row>
+            <Col>
+              {item.description} 
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+  );
+}
 
 const mapStateToProps = (state:IState) =>{
     return{

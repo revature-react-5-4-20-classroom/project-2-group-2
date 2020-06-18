@@ -1,15 +1,16 @@
 
 import React from "react";
 import { connect } from "react-redux";
-import { SingleItemComponent } from "./SingleItemComponent";
+import { SingleItemComponent,displayOneItem } from "./SingleItemComponent";
 import { store } from "../redux/store";
-import {prnt}from'../Helpers';
+import {prnt, calculatePriceOfItems}from'../Helpers';
 import { Container, Row, Col, Button, Table, Media, Jumbotron, ListGroup, ListGroupItem } from "reactstrap";
 import{storeClient}from'../api/StoreClient'
 import { Item } from "../models/Item";
 import { itemClickActionMapper,addClickActionMappper, cartRemoveItemActionMapper,clearCartActionMapper } from '../redux/action-mapper';
 import { IState } from "../redux/reducers";
 import { getImageUrl } from "../api/getImageUrl";
+import { ViewOneOrderAndItems } from "./ViewOneOrderAndItems";
 //import book17 from "./books-item-17.jpg"
 //import book18 from "./books-item-18.jpg"
 
@@ -19,12 +20,14 @@ export class CheckoutPage extends React.Component<any,any>
 {
 	constructor(props:any)
 	{
-		super(props);
+		super(props)
 		this.state={
 			jsxMessage:(<>
 						<i>Your cart is empty</i><br/>
 						<i>Please go buy our stuff</i>
-						</>)
+						</>),
+			showOrder:false, 	//will we display the order and its items?
+			placedOrderId:-1,	//the id of the order that was just placed when purchasing the items
 		}
 	}
 
@@ -43,7 +46,8 @@ export class CheckoutPage extends React.Component<any,any>
 			jsxContent=(<>
 				<Row>
 					<Col>
-						{this.state.jsxMessage}
+						{this.state.jsxMessage}<br/>
+						{this.state.showOrder?<ViewOneOrderAndItems orderId={this.state.placedOrderId}/>:null}
 					</Col>
 				</Row>
 			</>)
@@ -53,12 +57,10 @@ export class CheckoutPage extends React.Component<any,any>
 			//otherwise display all the items in it
 			jsxContent=(<>
 				<Row>
-					<ListGroup >
-						<Col>
-							{this.displayItemsInCart()}
-						</Col>
-					</ListGroup>
-					<Col >
+					<Col>
+						{this.displayItemsInCart()}
+					</Col>
+					<Col sm="2">
 						{this.displayCheckoutPanel()}
 					</Col>
 				</Row>
@@ -74,54 +76,18 @@ export class CheckoutPage extends React.Component<any,any>
 
 	displayItemsInCart=()=>
 	{
-		//let stateRedux=store.getState()
-		//prnt(debug,`Cart displayItems() stateRedux=`,stateRedux)
-
 		return this.props.items.map((item:any)=>
 		{
-			/*
-				___________________________________________
-						|item name		|(Remove from cart)
-				image	|rating			|
-						|price			|
-						|__________________________________
-						|Description
-				___________________________________________
-			*/	
+			let jsxButton=(
+				<Button onClick={()=>{this.props.cartRemoveItemActionMapper(item)}}>
+					Remove from cart
+				</Button> 
+			)
 
 			return(
 				<ListGroupItem>
 					<Container>
-						<Row> 
-							<Col >
-								{/* <Media object data-src={logo} /> */}
-								<img src={getImageUrl(item)} style={{height:"200px", width:"auto"}}/>
-							</Col>
-							<Col>
-								<Row>
-									<Col>
-										<Row><Col>{item.item_name}</Col></Row>
-										<Row><Col>{item.avg_rating} / 10</Col></Row>
-										<Row><Col><b>${item.price}</b></Col></Row>
-									</Col>
-									<Col>
-										<Button onClick={
-											()=>{
-												this.props.cartRemoveItemActionMapper(item)
-											}
-
-										}>
-											Remove from cart
-										</Button> 
-									</Col>
-								</Row> 
-								<Row>
-									<Col>
-										{item.description} 
-									</Col>
-								</Row>
-							</Col>
-						</Row>
+						{displayOneItem(item,jsxButton)}
 					</Container>
 				</ListGroupItem>
 			)
@@ -134,7 +100,7 @@ export class CheckoutPage extends React.Component<any,any>
 			<Container>
 				<Row>
 					<Col>
-						Total ${this.calculateCartTotal()}
+						Total ${calculatePriceOfItems(this.props.items)}
 					</Col>
 				</Row>
 				<Row>
@@ -144,25 +110,6 @@ export class CheckoutPage extends React.Component<any,any>
 				</Row>
 			</Container>
 		</>)
-	}
-
-	calculateCartTotal=()=>
-	{
-		let total=0
-
-		for(let item of this.props.items)
-		{
-			total+=parseInt(item.price)
-		}
-
-		return total
-
-		// return this.props.items.reduce((total:number,item:Item,0,0)=>
-		// {
-		// 	prnt(debug,`total+parseInt(item.price)`,total+parseInt(item.price))
-
-		// 	return total+parseInt(item.price)
-		// })
 	}
 
 	/*
@@ -180,24 +127,38 @@ export class CheckoutPage extends React.Component<any,any>
 
 		prnt(debug,`itemIds=`,itemIds)
 
-		let orderFromClient={
+		let orderToPlace={
 			"notes":	"test notes from client",
 			"userId":	this.props.parentState.loggedInUser.userId,
 			"itemIds":	itemIds
 		}
-		prnt(debug,`orderFromClient=`,orderFromClient)
+		prnt(debug,`orderToPlace=`,orderToPlace)
 
-		let response=await storeClient.post('/orderItems',orderFromClient)
+		let response=await storeClient.post('/orderItems',orderToPlace)
 		//prnt(debug,`response=`,response)
-		prnt(debug,`response.data=`,response.data)
 
-		//clear the cart the fancy redux way
-		this.props.clearCartActionMapper()
+		let placedOrderId=response.data
+		prnt(debug,`placedOrderId=`,placedOrderId)
 
-		//and display the response from the server
-		this.setState({
-			jsxMessage:(<i>{response.data}</i>)
-		})
+
+		if(placedOrderId<0)
+		{
+			this.setState({
+				jsxMessage:(<i>The order could not be placed. There was an issue on the server</i>),
+			})
+		}
+		else
+		{
+			//clear the cart the fancy redux way
+			this.props.clearCartActionMapper()
+
+			//and display the response from the server
+			this.setState({
+				jsxMessage:(<i>Your order was placed successfully. Order id is {placedOrderId}</i>),
+				showOrder:true,
+				placedOrderId:placedOrderId
+			})
+		}
 	}
 }
 
