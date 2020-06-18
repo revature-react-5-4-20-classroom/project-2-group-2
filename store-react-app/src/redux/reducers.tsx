@@ -18,6 +18,7 @@ interface IItemState{
     img_path:string,
 }
 
+let cart = JSON.parse(localStorage.getItem('cart') || '[{}]')
 const initialItemState : IItemState = {
     item_id: '',
     item_name: '',
@@ -30,10 +31,11 @@ const initialItemState : IItemState = {
 interface ICartState{
     items : Item[];
     index :number | undefined;
+    
 }
 
 const initialCartState:ICartState ={
-    items : [],
+    items : cart ,
     index : 0
 }
 

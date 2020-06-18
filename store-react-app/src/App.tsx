@@ -40,6 +40,7 @@ export class App extends React.Component<any, any>
 
   constructor(props:any){
     super(props);
+    
     this.state = {
       loggedInUser:null
     }
@@ -64,6 +65,7 @@ export class App extends React.Component<any, any>
       setIsOpen(!isOpen)
   }
 
+  
  
 
   render(){
