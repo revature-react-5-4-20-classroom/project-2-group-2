@@ -58,8 +58,6 @@ export const clearCartActionMapper = (itemClicked:Item) =>{
 
 //removes the itemClicked from the cart without using an index
 export const cartRemoveItemActionMapper = (itemClicked:Item) =>{
-    prnt(true,`cartRemoveItemActionMapper() has been reached`)
-
     return{
         type: 'CART_REMOVE_ITEM',
         payload:{itemClicked}

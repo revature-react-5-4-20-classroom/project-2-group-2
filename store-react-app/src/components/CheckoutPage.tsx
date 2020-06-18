@@ -134,7 +134,7 @@ export class CheckoutPage extends React.Component<any,any>
 			<Container>
 				<Row>
 					<Col>
-						Total $0
+						Total ${this.calculateCartTotal()}
 					</Col>
 				</Row>
 				<Row>
@@ -144,6 +144,25 @@ export class CheckoutPage extends React.Component<any,any>
 				</Row>
 			</Container>
 		</>)
+	}
+
+	calculateCartTotal=()=>
+	{
+		let total=0
+
+		for(let item of this.props.items)
+		{
+			total+=parseInt(item.price)
+		}
+
+		return total
+
+		// return this.props.items.reduce((total:number,item:Item,0,0)=>
+		// {
+		// 	prnt(debug,`total+parseInt(item.price)`,total+parseInt(item.price))
+
+		// 	return total+parseInt(item.price)
+		// })
 	}
 
 	/*
@@ -189,8 +208,6 @@ const mapStateToProps = (state:IState) =>{
       ...state.items
     }
 }
-
-
 
 const mapDispatchToProps = {   
     itemClickActionMapper,
