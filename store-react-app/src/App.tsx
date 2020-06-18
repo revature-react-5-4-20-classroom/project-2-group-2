@@ -14,6 +14,7 @@ import { CreateUserComponent } from './components/CreateUserComponent';
 import { ReduxCartComponent } from './components/CartComponent';
 import NavbarComponent from './components/NavbarComponent';
 import { ViewOneOrderAndItems } from './components/ViewOneOrderAndItems';
+import { ProfileComponent } from './components/ProfileComponent';
 //import 'bootstrap/dist/css/bootstrap.min.css';//was not working for me. rene
 
 /*
@@ -52,8 +53,8 @@ export class App extends React.Component<any, any>
     //prnt(true,`App componentDidMount() was reached`)
     //automatically log in so I don't have to type it in a million times
     //comment out to disable
-    const loggedInUser  = await login("user","user");
-    this.updateUser(loggedInUser)
+    // const loggedInUser  = await login("user","user");
+    // this.updateUser(loggedInUser)
     //prnt(true,`App this.props.items=`,this.props.items)
 
     //trying to add items to the cart for testing
@@ -117,12 +118,8 @@ export class App extends React.Component<any, any>
                 <ReduxSingleItemComponent /> 
               </Route>
 
-              <Route path='/newuser'>
-                <CreateUserComponent/>
-              </Route>
-
-              <Route path='/myprofile'>
-                
+              <Route path="/myprofile">
+                <ProfileComponent loggedInUser={this.state.loggedInUser} updateUser={this.updateUser}/>
               </Route>
             </Provider>
           </Switch>
