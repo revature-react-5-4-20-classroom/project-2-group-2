@@ -23,7 +23,7 @@ interface ILoginComponentState {
   isError: boolean;
   errorMessage: string;
   redirect:boolean;
-  newUserRedirect:boolean|null;
+  newUser:boolean|null;
   
 }
 
@@ -42,7 +42,7 @@ export class LoginComponent extends React.Component<ILoginComponentProps, ILogin
       isError: false,
       errorMessage: '',
       redirect: true,
-      newUserRedirect:null
+      newUser:null
     }
   }
 
@@ -72,7 +72,12 @@ export class LoginComponent extends React.Component<ILoginComponentProps, ILogin
   //   event.preventDefault();
   //   <Redirect to="/newuser"></Redirect>
   // }
-
+  newUser = (e:any) =>{
+    e.preventDefault();
+    this.setState({
+      newUser:true
+    })
+  }
   attemptLogin = async (event: any) => {
     event.preventDefault();
     console.log(event);
@@ -103,6 +108,14 @@ export class LoginComponent extends React.Component<ILoginComponentProps, ILogin
       return(
         <Redirect to='/view'></Redirect>
       )
+    }else if(this.state.newUser!=null){
+      this.setState({
+        newUser:null
+      })
+      return(
+        <Redirect to='/newuser'></Redirect>
+      )
+    
     }else{
       return (
         <div>
@@ -120,7 +133,7 @@ export class LoginComponent extends React.Component<ILoginComponentProps, ILogin
               <Input onChange={this.setPassword} value={this.state.password} type="password" name="password" id="password" required />
             </Col>
           </FormGroup>
-          <a href="/newuser">Don't have an account? Click here to create one</a> <br></br>
+          <a href="#" onClick={this.newUser}>Don't have an account? Click here to create one</a> <br></br>
           <Button color="info">Submit</Button>
         </Form>
         <Toast isOpen={this.state.isError}>
