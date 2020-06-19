@@ -1,6 +1,6 @@
 import React from 'react';
 import { IState } from '../redux/reducers';
-import { Jumbotron, Container, Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem, Button, Input, Table } from 'reactstrap';
+import { Jumbotron, Container, Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, ListGroup, ListGroupItem, Button, Input, Table, Alert } from 'reactstrap';
 import { Item } from '../models/Item';
 import { getItemsByCategory, getAllItems, getItemById, getItemsBySearchParam } from '../api/StoreClient';
 import { itemClickActionMapper,addClickActionMappper,removeClickActionMapper  } from '../redux/action-mapper';
@@ -33,6 +33,7 @@ interface IItemListComponentState {
     errorMessage: string,
     redirect: number | null,
     searchParam: string,
+    itemAdded: string | null,
 }
 
 export class ItemListComponent extends React.Component<IItemListComponentProps,IItemListComponentState> {
@@ -47,6 +48,7 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
             errorMessage: "",
             redirect: null,
             searchParam: "",
+            itemAdded: null,
         }
     }
 
@@ -122,6 +124,9 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
         e.preventDefault();
         let value: number = parseInt(e.currentTarget.id);
         const clickedItem: Item = this.state.itemList[value];
+        this.setState({
+            itemAdded: clickedItem.item_name,
+        })
         this.props.addClickActionMappper(clickedItem, undefined);
         //localStorage.setItem("cart", JSON.stringify(this.props.items));
     }
@@ -141,6 +146,12 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
                 redirect: null,
             });
         }
+    }
+
+    onAlertDismiss = (e: any) => {
+        this.setState({
+            itemAdded: null,
+        })
     }
 
     clearError = () => {
@@ -175,6 +186,7 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
                             </UncontrolledDropdown>
                         </Col>
                     </Row>
+                    <Alert color="success" isOpen={this.state.itemAdded !== null} toggle={this.onAlertDismiss}>{this.state.itemAdded} added to cart!</Alert>
                         <ListGroup>
                             {this.state.itemList.map((item: Item, i) => {
                                 return( <ListGroupItem key={i}>
@@ -188,6 +200,7 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
                             })}
                         </ListGroup>
                 </Container>
+
             </Jumbotron> :
             
             <>

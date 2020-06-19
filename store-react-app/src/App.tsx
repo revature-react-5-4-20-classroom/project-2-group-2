@@ -81,13 +81,14 @@ export class App extends React.Component<any, any>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
         <BrowserRouter>
           <Switch>
+          <Route path='/newuser'>
+                <CreateUserComponent/>
+              </Route>
             <Route path='/'>
               <LoginComponent updateUser={this.updateUser}/>
             </Route>
 
-            <Route path='/newuser'>
-                <CreateUserComponent/>
-              </Route>
+            
           </Switch>
         </BrowserRouter>
       </>)
@@ -108,7 +109,7 @@ export class App extends React.Component<any, any>
       return(<>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
         <BrowserRouter>
-          <NavbarComponent/>
+          <NavbarComponent updateUser={this.updateUser}/>
 
           <Switch>
             <Provider store={store}>

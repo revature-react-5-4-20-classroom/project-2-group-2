@@ -11,9 +11,9 @@ The user can browse items by selecting categories
 
 The user can sort the items by priceSort the items by price and other properties
 
-The user can add items to their cart (optional)
+The user can add items to their cart
 
-The user can view the items in their cart (optional)
+The user can view the items in their cart
 
 The user can checkout  (no actual money payments, but order will be stored in database)
 
