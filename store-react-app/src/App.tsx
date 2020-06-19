@@ -13,6 +13,8 @@ import { prnt } from './Helpers';
 import { CreateUserComponent } from './components/CreateUserComponent';
 import { ReduxCartComponent } from './components/CartComponent';
 import NavbarComponent from './components/NavbarComponent';
+import { ViewOneOrderAndItems } from './components/ViewOneOrderAndItems';
+import { ProfileComponent } from './components/ProfileComponent';
 //import 'bootstrap/dist/css/bootstrap.min.css';//was not working for me. rene
 
 /*
@@ -70,7 +72,12 @@ export class App extends React.Component<any, any>
 
   render(){
 
-  
+    //test area. comment out to not use
+    // return(<>
+    //   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    //   <h4>Test Area</h4>
+    //   <ViewOneOrderAndItems orderId={18}/>
+    // </>)
   
     if(this.state.loggedInUser == null)
     {
@@ -112,7 +119,9 @@ export class App extends React.Component<any, any>
                 <ReduxSingleItemComponent /> 
               </Route>
 
-              
+              <Route path="/myprofile">
+                <ProfileComponent loggedInUser={this.state.loggedInUser} updateUser={this.updateUser}/>
+              </Route>
             </Provider>
           </Switch>
         </BrowserRouter>

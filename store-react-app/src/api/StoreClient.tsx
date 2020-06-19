@@ -38,6 +38,16 @@ export async function createUser(username:string,password:string,email:string,fi
     }
 }
 
+export async function updateUserInfo(user:any) {
+    try{
+        const id: number = user.userId;
+        const response = await storeClient.put(`/${id}`, user);
+        return response.data;
+    } catch(e) {
+        console.log(e);
+    }
+}
+
 
 //implement login later. needs new user object
 

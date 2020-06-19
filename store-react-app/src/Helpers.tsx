@@ -2,6 +2,8 @@
 	Helpful functions
 */
 
+import { Item } from "./models/Item"
+
 /*
 	shorthand print function that logs things to the console
 
@@ -38,4 +40,23 @@ export function arrayWithValueRemoved(array:any[],valueToRemove:any)
 	arrayRemoveValue(newArray,valueToRemove)
 	localStorage.setItem('cart', JSON.stringify(newArray));
 	return newArray
+}
+
+export function calculatePriceOfItems(arrayOfItems:Item[])
+{
+	let total=0
+
+	for(let item of arrayOfItems)
+	{
+		total+=parseInt(item.price)
+	}
+
+	return total
+
+	// return this.props.items.reduce((total:number,item:Item,0,0)=>
+	// {
+	// 	prnt(debug,`total+parseInt(item.price)`,total+parseInt(item.price))
+
+	// 	return total+parseInt(item.price)
+	// })
 }

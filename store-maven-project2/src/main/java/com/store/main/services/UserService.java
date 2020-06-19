@@ -48,7 +48,9 @@ public class UserService {
 	}
 	
 	public User createOrUpdate(User user) {
-		return userRepository.save(user);
+		User updatedUser = userRepository.save(user);
+		System.out.println(updatedUser);
+		return updatedUser;
 	}
 	
 	public void delete(Integer id) {
