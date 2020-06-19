@@ -8,7 +8,7 @@ import com.store.main.models.Item;
 public interface ItemService {
 	
 	List<Item> getAll();
-	
+//	test
 	Item getById(Integer id);
 	
 	//List<Item> getByCategory(Integer catId); // This is too complicated, only implement if we decide to return category objects
