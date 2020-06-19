@@ -49,10 +49,13 @@ export class SingleItemComponent extends React.Component<IItemProps,IItemState>{
     }
 }
 
-//display the item so it looks pretty. maybe throw a button in the top right corner
-//displayOneItem(item,<Button>Click me</Button>)
 /*
-    ___________________________________________
+  displayOneItem(item,<Button>Click me</Button>)
+
+  displays the item so it looks pretty. 
+  you can pass-in jsx content, such as a button, in the top right corner
+
+    __________________________________________
             |item name		|(jsxButtonContent)
       image	|rating			  |
             |price			  |
@@ -64,9 +67,9 @@ export function displayOneItem(item:Item,jsxButtonContent:any)
 {
   return(
       <Row> 
-        <Col sm="2">
+        <Col sm="3">
           {/* <Media object data-src={logo} /> */}
-          <img src={getImageUrl(item)} style={{height:"150px", width:"auto"}}/>
+          <img src={getImageUrl(item)} style={{height:"100px",width:"auto"}}/>
         </Col>
         <Col>
           <Row>

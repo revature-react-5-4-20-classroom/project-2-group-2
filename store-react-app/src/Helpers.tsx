@@ -3,6 +3,8 @@
 */
 
 import { Item } from "./models/Item"
+import { NavItem, NavLink } from "reactstrap"
+import React from "react"
 
 /*
 	shorthand print function that logs things to the console

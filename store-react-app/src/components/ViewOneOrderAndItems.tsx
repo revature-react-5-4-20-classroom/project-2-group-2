@@ -1,12 +1,18 @@
 import React from "react";
-import { Jumbotron, Container, ListGroupItem } from "reactstrap";
-import { Item } from "../models/Item";
+import { Jumbotron, Container, ListGroupItem, ListGroup } from "reactstrap";
+import { Item, convertFromUnderscoreToCamelCase } from "../models/Item";
 import { storeClient } from "../api/StoreClient";
-import { prnt } from "../Helpers";
+import { prnt, calculatePriceOfItems } from "../Helpers";
 import { displayOneItem } from "./SingleItemComponent";
 
 const debug=true//prnt will log to the console
 
+/*
+	fetches and displays the items of the given order.
+	may display specific order info in the future, but just displays the orders items for now.
+
+	<ViewOneOrderAndItems order={jsObject} />
+*/
 export class ViewOneOrderAndItems extends React.Component<any,any>
 {
 	constructor(props:any)
@@ -19,30 +25,27 @@ export class ViewOneOrderAndItems extends React.Component<any,any>
 
 	componentDidMount=async()=>
 	{
-		let response=await storeClient.get(`/orderItems/${this.props.orderId}`)
+		prnt(debug,`ViewOneOrderAndItems componentDidMount() has been reached`)
+
+		if(this.props.order===null)
+		{
+			prnt(debug,`Nothing to display. this.props.order=`,this.props.order)
+			return
+		}
+
+
+		prnt(debug,`this.props.order`,this.props.order)
+
+		let response=await storeClient.get(`/orderItems/${this.props.order.orderId}`)
 		//prnt(debug,`response=`,response)
 
 		let itemsInOrder=response.data
 		prnt(debug,`itemsInOrder=`,itemsInOrder)
 
-		//convert all item properties to string
+		//convert all item properties to camelCase and string
 		itemsInOrder=itemsInOrder.map((item:any)=>
 		{
-			prnt(debug,`item=`,item)
-
-			let leItem=new Item(
-					item.itemId.toString(),		//item_id:    string,
-					item.itemName,				// item_name:  string,
-					item.price.toString(),		// price:      string,
-					item.description,			// description:string,
-					item.categoryId.toString(),	// category_id:string,
-					item.avgRating.toString(),	// avg_rating: string,
-					item.imgPath,				// img_path:   string,
-			)
-
-			prnt(debug,`leItem=`,leItem)
-
-			return leItem
+			return convertFromUnderscoreToCamelCase(item)
 		})
 
 		this.setState({
@@ -50,22 +53,25 @@ export class ViewOneOrderAndItems extends React.Component<any,any>
 		})
 	}
 
+
 	render()
 	{
+		if(this.props.order==null)return(<h6>Nothing to display. Order is null</h6>)
+
 		return(<>
-		{/* <i>You are viewing a single order. orderId is{this.props.orderId}</i> */}
 		<Jumbotron>
-			<ListGroupItem>
-				<Container>
+			<h6>You are viewing the items of order number {this.props.order.orderId}</h6><br/>
+			<h6>Total cost ${calculatePriceOfItems(this.state.itemsToDisplay)}</h6>
+			
+			<ListGroup>
+				{
+					this.state.itemsToDisplay.map((item:Item)=>
 					{
-						this.state.itemsToDisplay.map((item:Item)=>
-						{
-							return displayOneItem(item,null)
-						})
-					}
-				</Container>
-			</ListGroupItem>
-		</Jumbotron>)
+						return (<ListGroupItem>{displayOneItem(item,null)}</ListGroupItem>)
+					})
+				}
+			</ListGroup>
+		</Jumbotron>
 		</>)
 	}
 }

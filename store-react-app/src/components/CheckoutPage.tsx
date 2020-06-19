@@ -27,7 +27,7 @@ export class CheckoutPage extends React.Component<any,any>
 						<i>Please go buy our stuff</i>
 						</>),
 			showOrder:false, 	//will we display the order and its items?
-			placedOrderId:-1,	//the id of the order that was just placed when purchasing the items
+			placedOrder:null,	//the id order that was just placed when purchasing the items
 		}
 	}
 
@@ -47,7 +47,7 @@ export class CheckoutPage extends React.Component<any,any>
 				<Row>
 					<Col>
 						{this.state.jsxMessage}<br/>
-						{this.state.showOrder?<ViewOneOrderAndItems orderId={this.state.placedOrderId}/>:null}
+						{this.state.showOrder?<ViewOneOrderAndItems order={this.state.placedOrder}/>:null}
 					</Col>
 				</Row>
 			</>)
@@ -69,7 +69,9 @@ export class CheckoutPage extends React.Component<any,any>
 
 		return(	<Jumbotron>
 					<Container>
-						{jsxContent}
+						<ListGroup>
+							{jsxContent}
+						</ListGroup>
 					</Container>
 				</Jumbotron>)
 	}
@@ -84,13 +86,7 @@ export class CheckoutPage extends React.Component<any,any>
 				</Button> 
 			)
 
-			return(
-				<ListGroupItem>
-					<Container>
-						{displayOneItem(item,jsxButton)}
-					</Container>
-				</ListGroupItem>
-			)
+			return(<ListGroupItem>{displayOneItem(item,jsxButton)}</ListGroupItem>)
 		})
 	}
 
@@ -118,7 +114,7 @@ export class CheckoutPage extends React.Component<any,any>
 	*/
 	performPurchase=async()=>
 	{
-		prnt(debug,`CheckoutPage performPurchase() was hit`)
+		prnt(debug,`CheckoutPage performPurchase() was reached`)
 
 		let itemIds=this.props.items.map((item:any)=>
 		{
@@ -137,11 +133,10 @@ export class CheckoutPage extends React.Component<any,any>
 		let response=await storeClient.post('/orderItems',orderToPlace)
 		//prnt(debug,`response=`,response)
 
-		let placedOrderId=response.data
-		prnt(debug,`placedOrderId=`,placedOrderId)
+		let placedOrder=response.data
+		prnt(debug,`placedOrder=`,placedOrder)
 
-
-		if(placedOrderId<0)
+		if(placedOrder===null)
 		{
 			this.setState({
 				jsxMessage:(<i>The order could not be placed. There was an issue on the server</i>),
@@ -154,9 +149,12 @@ export class CheckoutPage extends React.Component<any,any>
 
 			//and display the response from the server
 			this.setState({
-				jsxMessage:(<i>Your order was placed successfully. Order id is {placedOrderId}</i>),
+				jsxMessage:(<>
+							<i>Your order was placed successfully.</i><br/>
+							<i>The following items were purchased</i>
+							</>),
 				showOrder:true,
-				placedOrderId:placedOrderId
+				placedOrder:placedOrder
 			})
 		}
 	}
