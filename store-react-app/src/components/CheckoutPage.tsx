@@ -1,7 +1,7 @@
 
 import React from "react";
 import { connect } from "react-redux";
-import { SingleItemComponent,displayOneItem } from "./SingleItemComponent";
+import { displayOneItem } from "./SingleItemComponent";
 import { store } from "../redux/store";
 import {prnt, calculatePriceOfItems}from'../Helpers';
 import { Container, Row, Col, Button, Table, Media, Jumbotron, ListGroup, ListGroupItem } from "reactstrap";

@@ -136,7 +136,9 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
         e.preventDefault();
         let value: number = parseInt(e.currentTarget.id);
         const clickedItem: Item = this.state.itemList[value];
+
         this.props.itemClickActionMapper(clickedItem);
+
         if(this.state.redirect === null) {
             this.setState({
                 redirect: value,
@@ -193,7 +195,12 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
                                     <Row>
                                         <Col xs='auto'><img src={getImageUrl(this.state.itemList[i])} style={{height:"100px", width:"auto"}} /></Col>
                                         <Col xs='auto'><a href='#' onClick={this.toggleRedirect} id={i.toString()}>{item.item_name}</a></Col>
+
+                                        {/* Added this so long descriptions did not go off page */}
+                                        <Container>
                                         <Col xs='auto'>{item.description}</Col>
+                                        </Container>
+
                                         <Col xs='auto'><Button color="primary" id={i.toString()} onClick={this.addToCart}>Add to cart</Button></Col>
                                     </Row>
                                 </ListGroupItem>)
@@ -204,7 +211,7 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
             </Jumbotron> :
             
             <>
-            <Button onClick={this.toggleRedirect} id="0">Back To Items</Button>
+            {/* <Button onClick={this.toggleRedirect} id="0">Back To Items</Button> */}
             <Redirect to="/viewitem"/>
             </>}
         

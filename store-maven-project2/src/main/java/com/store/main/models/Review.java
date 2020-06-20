@@ -13,19 +13,19 @@ public class Review {
 	@Id
 	@Column(name="review_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer reviewId;
+	public Integer reviewId;
 	
 	@Column(name="user_id")
-	private Integer userId;
+	public Integer userId;
 	
 	@Column(name="rating")
-	private Integer rating;
+	public Integer rating;
 	
 	@Column(name="content")
-	private String content;
+	public String content;
 	
 	@Column(name="item_id")
-	private Integer itemId;
+	public Integer itemId;
 
 	
 	public Review() {
@@ -82,8 +82,8 @@ public class Review {
 
 	@Override
 	public String toString() {
-		return "Review [reviewId=" + reviewId + ", userId=" + userId + ", rating=" + rating + ", content=" + content
-				+ ", itemId=" + itemId + "]";
+		return "Review {reviewId=" + reviewId + ", userId=" + userId + ", rating=" + rating + ", content=" + content
+				+ ", itemId=" + itemId + "}";
 	}
 
 	

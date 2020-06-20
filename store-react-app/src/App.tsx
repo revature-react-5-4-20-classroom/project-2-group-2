@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {Container, Row, Col, Navbar, NavbarToggler, Nav, NavItem, Dropdown, DropdownToggle, DropdownItem, DropdownMenu}from'reactstrap';
-import {ReduxSingleItemComponent} from './components/SingleItemComponent'
+import {SingleItemComponent, ReduxSingleItemComponent} from './components/SingleItemComponent'
 import { CheckoutPage, ReduxCheckoutPage } from './components/CheckoutPage';
 import {  BrowserRouter, Route, Switch,NavLink, Redirect } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -102,7 +102,10 @@ export class App extends React.Component<any, any>
       //     <h4>Test Area</h4>
       //     {/* <ViewOneOrderAndItems orderId={18}/> */}
       //     {/* <Redirect to="/myprofile"/> //didn't work for me */}
-      //     <ProfileComponent loggedInUser={this.state.loggedInUser} updateUser={this.updateUser}/>
+      //     {/* <ProfileComponent loggedInUser={this.state.loggedInUser} updateUser={this.updateUser}/> */}
+      //     <Provider store={store}>
+      //     <ReduxSingleItemComponent/>
+      //     </Provider>
       //   </>)
       // }
 

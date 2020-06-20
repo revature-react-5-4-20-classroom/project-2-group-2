@@ -1,27 +1,26 @@
 import React from 'react'
-import { Form, FormGroup, Label, Col, Input, Button, Toast, ToastHeader, ToastBody } from 'reactstrap';
+import { Form, FormGroup, Label, Col, Input, Button, Toast, ToastHeader, ToastBody, Container, Jumbotron, ListGroupItem } from 'reactstrap';
 import {submitReview} from '../api/StoreClient'
-
 
 interface IReviewState{
     rating:string,
     reviewText: string;
+    reviewHasBeenSubmitted:boolean,
 }
 
 interface IReviewProps{
     itemId : string,
-    userId: string
+    userId: string,
 }
 
-
-
-export class SubmitReviewComponent extends React.Component<any,IReviewState>{
+export class SubmitReviewComponent extends React.Component<IReviewProps,IReviewState>{
 
     constructor(props:any){
         super(props)
         this.state ={
             rating:'',
-            reviewText:''
+            reviewText:'',
+            reviewHasBeenSubmitted:false,
         }
     }
 
@@ -44,27 +43,38 @@ export class SubmitReviewComponent extends React.Component<any,IReviewState>{
         } catch (error) {
             console.log(error)
         }
-      }
-    render(){
-        return(
-            <>
-                <Form onSubmit={this.submitReview} autoComplete='off'>
-                <FormGroup row>
-                    <Label for="Rating" sm={2}>Please rate the product on a scale of 1 to 5!</Label>
-                    <Col sm={6}>
-                    {/* onChange lets Input change state, value lets Input display state */}
-                    <Input onChange={this.setRating} value={this.state.rating} type="text" name="rating" id="rating" placeholder="rating" />
-                    </Col>
-                </FormGroup>
-                <FormGroup row>
-                    <Label for="reviewText" sm={2}>Tell us about your experience with this product!
-                    <textarea onChange={this.setReviewText} value={this.state.reviewText}  />
-                    </Label>  
-                </FormGroup>
-                <Button color="info">Submit</Button>
-            </Form>
 
-            </>
-        )
+        this.setState({
+            reviewHasBeenSubmitted:true,
+        })
+      }
+
+    render()
+    {
+        if(this.state.reviewHasBeenSubmitted)
+        {
+            return(<h3>Thank you for submitting a review</h3>)
+        }
+        else
+        {
+            return(<>
+                
+                <Form onSubmit={this.submitReview} autoComplete='off'>
+                    <FormGroup>
+                        <Label for="Rating" >Please rate the product on a scale of 1 to 5!</Label>
+                        <Col >
+                        {/* onChange lets Input change state, value lets Input display state */}
+                        <Input onChange={this.setRating} value={this.state.rating} type="text" name="rating" id="rating" placeholder="rating" />
+                        </Col>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="reviewText" >Tell us about your experience with this product!</Label>  
+                        <textarea onChange={this.setReviewText} value={this.state.reviewText}  />
+                        
+                    </FormGroup>
+                    <Button color="info">Submit</Button>
+                </Form>
+            </>)
+        }
     }
 }

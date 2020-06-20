@@ -10,7 +10,9 @@ export function getImageUrl(i: Item) : string {
         case 1: category = "Books"; break;
         case 2: category = "Clothing"; break;
         case 3: category = "Electronics"; break;
-        default: throw new Error("Invalid category");
+
+        default: return "";
+            //throw new Error(`Cannot get image item=${i}`);
     }
     imageUrl = `https://project2-group2-store2.s3-us-west-1.amazonaws.com/images/${category}/${category.toLowerCase()}-item-${itemId}.jpg`;
     return imageUrl;

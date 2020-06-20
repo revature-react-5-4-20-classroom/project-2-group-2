@@ -29,8 +29,31 @@ public class ReviewController {
 		return reviewService.getAll();
 	}
 	
-	@PostMapping(path="/reviews", consumes = "application/json")
-	public Review addNewReview(@RequestBody Review review) {
-		return reviewService.create(review);
+	//this endpoint was /reviews but the front end was hitting /review
+	@PostMapping(path="/review", consumes = "application/json")
+	public Review addNewReview(@RequestBody Review review) 
+	{
+	    System.out.println("addNewReview() was reached");
+	    System.out.println("review="+review);
+	    
+	    //clamp the rating between 1 and 5
+	    review.rating=Math.min(Math.max(1, review.rating),5);
+	    System.out.println("review="+review);
+	    
+		Review newReview=reviewService.create(review);
+		 System.out.println("newReview="+newReview);
+		
+		return newReview;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+

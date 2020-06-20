@@ -4,8 +4,12 @@ import { connect, Provider } from 'react-redux';
 import { SubmitReviewComponent } from './SubmitReviewComponent';
 import {itemClickActionMapper} from '../redux/action-mapper';
 import {Item} from '../models/Item';
-import { Row, Col, Button } from 'reactstrap';
+import { Row, Col, Button, Container, Jumbotron, ListGroupItem, ListGroup } from 'reactstrap';
 import { getImageUrl } from '../api/getImageUrl';
+import { prnt } from '../Helpers';
+import { Link } from 'react-router-dom';
+
+const debug=true//prnt will display
 
 interface IItemProps{
     item_id:    string;
@@ -38,21 +42,48 @@ export class SingleItemComponent extends React.Component<IItemProps,IItemState>{
     render(){
 
        return(
-           <>
-            <h4>{this.props.item_name}</h4>
-            <span>{this.props.price}</span>
-            <p>{this.props.description}</p>
-            <span>{this.props.avg_rating}</span>
-            <SubmitReviewComponent itemId={this.props.item_id} userId = "1" />
-            </>
+          <Container>
+            <Jumbotron>
+              <ListGroup>
+                <h6>Hash {}</h6>
+                <ListGroupItem>{this.dispayTheItem()}</ListGroupItem>
+
+                {/* <h4>{this.props.item_name}</h4>
+                <span>{this.props.price}</span>
+                <p>{this.props.description}</p>
+                <span>{this.props.avg_rating}</span> */}
+
+                <ListGroupItem>
+                  <SubmitReviewComponent itemId={this.props.item_id} userId = "1" />
+                </ListGroupItem>
+              </ListGroup>
+            </Jumbotron>
+          </Container>
        );
+    }
+
+    dispayTheItem()
+    {
+      let itemAsAnObject=new Item(
+        this.props.item_id.toString(),
+        this.props.item_name,
+        this.props.price.toString(),
+        this.props.description,
+        this.props.category_id.toString(),
+        this.props.avg_rating.toString(),
+        this.props.img_path,
+      )
+
+      prnt(debug,`dispayTheItem() itemAsAnObject=`,itemAsAnObject)
+
+      return displayOneItem(itemAsAnObject)
     }
 }
 
 /*
   displayOneItem(item,<Button>Click me</Button>)
 
-  displays the item so it looks pretty. 
+  displays the item in a <Row> tag which can be used in many places
   you can pass-in jsx content, such as a button, in the top right corner
 
     __________________________________________
@@ -63,9 +94,11 @@ export class SingleItemComponent extends React.Component<IItemProps,IItemState>{
             |Description
     ___________________________________________
 */
-export function displayOneItem(item:Item,jsxButtonContent:any)
+export function displayOneItem(item:Item,jsxButtonContent?:any)
 {
-  return(
+  prnt(debug,`displayOneItem() item=`,item)
+
+   return(
       <Row> 
         <Col sm="3">
           {/* <Media object data-src={logo} /> */}
@@ -74,9 +107,37 @@ export function displayOneItem(item:Item,jsxButtonContent:any)
         <Col>
           <Row>
             <Col>
-              <Row><Col>{item.item_name}</Col></Row>
-              <Row><Col>{item.avg_rating} / 10</Col></Row>
-              <Row><Col><b>${item.price}</b></Col></Row>
+              <h5>
+                {/* <a href="/viewitem#"
+                id={item.toString()}
+                onClick={
+                  (event:any)=>{
+                    event.preventDefault()
+                  }
+                }> */}
+                
+                {/* <Link to={
+                  {
+                    pathname:"/viewitem",
+                    hash:`#${item.toString()}`,
+                    
+                  }
+                }> */}
+
+                {/* <Link to="/viewitem" onClick={
+
+                  ()=>{
+                    prnt(debug,`Linked!`)
+                    itemClickActionMapper(item)
+                  }
+                }> */}
+
+                  {item.item_name}
+                {/* </Link> */}
+                {/* </a> */}
+              </h5>
+              {item.avg_rating} / 10<br/>
+              <b>${item.price}</b>
             </Col>
             <Col>
               {jsxButtonContent}
@@ -89,7 +150,7 @@ export function displayOneItem(item:Item,jsxButtonContent:any)
           </Row>
         </Col>
       </Row>
-  );
+  )
 }
 
 const mapStateToProps = (state:IState) =>{
