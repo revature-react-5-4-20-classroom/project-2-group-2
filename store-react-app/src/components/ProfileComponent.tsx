@@ -3,10 +3,13 @@ import { User } from "../models/User";
 import { UpdateUserInfo } from "./UpdateUserInfo"
 import { Jumbotron, Button, Modal, ModalHeader, ModalBody, Navbar, NavbarToggler, Nav, NavItem, Container } from 'reactstrap';
 import { BrowserRouter as Router, Switch, Route, BrowserRouter, NavLink } from 'react-router-dom';
-import { ViewOneOrderAndItems } from './ViewOneOrderAndItems';
+import { ViewOneOrderAndItems, ReduxViewOneOrderAndItems } from './ViewOneOrderAndItems';
 import { storeClient } from '../api/StoreClient';
 import { prnt } from '../Helpers';
 import { Order } from '../models/Order';
+import { itemClickActionMapper,addClickActionMappper,removeClickActionMapper  } from '../redux/action-mapper';
+import { connect, Provider } from 'react-redux';
+import { store } from '../redux/store';
 
 interface IProfileComponentProps {
     loggedInUser: User | null,
@@ -118,7 +121,24 @@ export class ProfileComponent extends React.Component<IProfileComponentProps,IPr
     {
         return this.state.allOrdersUserHasPlaced.map((order:Order)=>
         {
-            return(<ViewOneOrderAndItems order={order}/>)
+            return(<ViewOneOrderAndItems order={order} actionMapper={itemClickActionMapper}/>)
         })
     }
 }
+
+// make a redux version so it can access the store
+const mapStateToProps = (state:any) =>{
+    return{
+      ...state.item,
+      ...state.items
+    }
+}
+
+const mapDispatchToProps = {   
+    itemClickActionMapper,
+    addClickActionMappper
+    //removeClickActionMapper
+}
+
+
+export const ReduxProfileComponent = connect(mapStateToProps, mapDispatchToProps)(ProfileComponent)

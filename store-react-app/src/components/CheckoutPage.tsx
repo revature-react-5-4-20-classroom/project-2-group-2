@@ -11,6 +11,7 @@ import { itemClickActionMapper,addClickActionMappper, cartRemoveItemActionMapper
 import { IState } from "../redux/reducers";
 import { getImageUrl } from "../api/getImageUrl";
 import { ViewOneOrderAndItems } from "./ViewOneOrderAndItems";
+import { Link } from "react-router-dom";
 //import book17 from "./books-item-17.jpg"
 //import book18 from "./books-item-18.jpg"
 
@@ -86,7 +87,20 @@ export class CheckoutPage extends React.Component<any,any>
 				</Button> 
 			)
 
-			return(<ListGroupItem>{displayOneItem(item,jsxButton)}</ListGroupItem>)
+			return(
+				<ListGroupItem>
+						{/* <Link to="/viewitem" onClick={
+
+									()=>{
+									prnt(debug,`Linked!`)
+									this.props.itemClickActionMapper(item)
+									}
+								}>View the item</Link> */}
+
+					{displayOneItem(item,this.props.itemClickActionMapper,jsxButton)}
+				
+				</ListGroupItem>
+			)
 		})
 	}
 

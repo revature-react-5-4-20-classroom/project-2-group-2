@@ -4,6 +4,8 @@ import { Item, convertFromUnderscoreToCamelCase } from "../models/Item";
 import { storeClient } from "../api/StoreClient";
 import { prnt, calculatePriceOfItems } from "../Helpers";
 import { displayOneItem } from "./SingleItemComponent";
+import { connect } from "react-redux";
+import { itemClickActionMapper,addClickActionMappper,removeClickActionMapper  } from '../redux/action-mapper';
 
 const debug=true//prnt will log to the console
 
@@ -67,7 +69,7 @@ export class ViewOneOrderAndItems extends React.Component<any,any>
 				{
 					this.state.itemsToDisplay.map((item:Item)=>
 					{
-						return (<ListGroupItem>{displayOneItem(item,null)}</ListGroupItem>)
+						return (<ListGroupItem>{displayOneItem(item)}</ListGroupItem>)
 					})
 				}
 			</ListGroup>
@@ -75,3 +77,19 @@ export class ViewOneOrderAndItems extends React.Component<any,any>
 		</>)
 	}
 }
+
+//make a redux version so it can access the store
+const mapStateToProps = (state:any) =>{
+    return{
+      ...state.item,
+      ...state.items
+    }
+}
+
+const mapDispatchToProps = {   
+    itemClickActionMapper,
+    addClickActionMappper
+    //removeClickActionMapper
+}
+
+export const ReduxViewOneOrderAndItems = connect(mapStateToProps, mapDispatchToProps)(ViewOneOrderAndItems)

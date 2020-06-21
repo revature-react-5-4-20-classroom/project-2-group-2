@@ -8,6 +8,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ReduxCartComponent } from './CartComponent';
 import { getImageUrl } from '../api/getImageUrl';
+import { displayOneItem } from './SingleItemComponent';
 
 // Component for displaying a list of items corresponding to a specific category
 
@@ -191,19 +192,31 @@ export class ItemListComponent extends React.Component<IItemListComponentProps,I
                     <Alert color="success" isOpen={this.state.itemAdded !== null} toggle={this.onAlertDismiss}>{this.state.itemAdded} added to cart!</Alert>
                         <ListGroup>
                             {this.state.itemList.map((item: Item, i) => {
-                                return( <ListGroupItem key={i}>
-                                    <Row>
-                                        <Col xs='auto'><img src={getImageUrl(this.state.itemList[i])} style={{height:"100px", width:"auto"}} /></Col>
-                                        <Col xs='auto'><a href='#' onClick={this.toggleRedirect} id={i.toString()}>{item.item_name}</a></Col>
-
-                                        {/* Added this so long descriptions did not go off page */}
-                                        <Container>
-                                        <Col xs='auto'>{item.description}</Col>
-                                        </Container>
-
-                                        <Col xs='auto'><Button color="primary" id={i.toString()} onClick={this.addToCart}>Add to cart</Button></Col>
-                                    </Row>
+                                
+                                //trying to use the same item display everywhere
+                                return( 
+                                <ListGroupItem key={i}>
+                                    {displayOneItem(item,this.props.itemClickActionMapper,
+                                    
+                                        (<Button color="primary" id={i.toString()} onClick={this.addToCart}>Add to cart</Button>)
+                                    
+                                    )}
                                 </ListGroupItem>)
+
+                                // <ListGroupItem key={i}>
+                                //     <Row>
+                                //         <Col xs='auto'><img src={getImageUrl(this.state.itemList[i])} style={{height:"100px", width:"auto"}} /></Col>
+                                //         <Col xs='auto'><a href='#' onClick={this.toggleRedirect} id={i.toString()}>{item.item_name}</a></Col>
+
+                                //         {/* Added this so long descriptions did not go off page */}
+                                //         <Container>
+                                //         <Col xs='auto'>{item.description}</Col>
+                                //         </Container>
+
+                                //         <Col xs='auto'><Button color="primary" id={i.toString()} onClick={this.addToCart}>Add to cart</Button></Col>
+                                //     </Row>
+                                //</ListGroupItem>
+                                
                             })}
                         </ListGroup>
                 </Container>

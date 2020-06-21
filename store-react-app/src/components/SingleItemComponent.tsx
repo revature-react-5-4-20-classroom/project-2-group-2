@@ -45,7 +45,6 @@ export class SingleItemComponent extends React.Component<IItemProps,IItemState>{
           <Container>
             <Jumbotron>
               <ListGroup>
-                <h6>Hash {}</h6>
                 <ListGroupItem>{this.dispayTheItem()}</ListGroupItem>
 
                 {/* <h4>{this.props.item_name}</h4>
@@ -64,6 +63,7 @@ export class SingleItemComponent extends React.Component<IItemProps,IItemState>{
 
     dispayTheItem()
     {
+      //convert the redux stuff into an item object
       let itemAsAnObject=new Item(
         this.props.item_id.toString(),
         this.props.item_name,
@@ -76,27 +76,52 @@ export class SingleItemComponent extends React.Component<IItemProps,IItemState>{
 
       prnt(debug,`dispayTheItem() itemAsAnObject=`,itemAsAnObject)
 
-      return displayOneItem(itemAsAnObject)
+      return displayOneItem(itemAsAnObject,null,
+      
+        
+
+      )
     }
 }
 
 /*
-  displayOneItem(item,<Button>Click me</Button>)
+  displayOneItem(item,this.props.itemClickActionMapper?,jsxButtonContent?)
 
-  displays the item in a <Row> tag which can be used in many places
-  you can pass-in jsx content, such as a button, in the top right corner
+  displayOneItem(item,this.props.itemClickActionMappe,<Button>Click me</Button>r)
+
+  displays the item in a nice way with its image, name, rating, description...
+  jsxButtonContent. you can pass-in jsx content, such as a button, in the top right corner
+  this.props.itemClickActionMapper. can be passeed in so the item can be clicked on and viewed on its own page.
 
     __________________________________________
-            |item name		|(jsxButtonContent)
-      image	|rating			  |
-            |price			  |
+            |(item name)		|<jsxButtonContent>
+      image	|rating			    |
+            |price			    |
             |__________________________________
             |Description
     ___________________________________________
 */
-export function displayOneItem(item:Item,jsxButtonContent?:any)
+export function displayOneItem(item:Item,funcViewItemActionMapper?:any,jsxButtonContent?:any)
 {
   prnt(debug,`displayOneItem() item=`,item)
+
+  let jsxItemName=(<>{item.item_name}</>)
+
+  //if we have an action mapper we can setup the item name to be clicked on
+  //this will then view the item on its own page
+  if(funcViewItemActionMapper)
+  {
+    jsxItemName=(
+      <Link to="/viewitem" onClick={
+            ()=>{
+              prnt(debug,`Linked!`)
+              funcViewItemActionMapper(item)
+            }
+          }>
+        {item.item_name}  
+      </Link>
+    )
+  }
 
    return(
       <Row> 
@@ -123,17 +148,8 @@ export function displayOneItem(item:Item,jsxButtonContent?:any)
                     
                   }
                 }> */}
-
-                {/* <Link to="/viewitem" onClick={
-
-                  ()=>{
-                    prnt(debug,`Linked!`)
-                    itemClickActionMapper(item)
-                  }
-                }> */}
-
-                  {item.item_name}
-                {/* </Link> */}
+                {jsxItemName}
+                
                 {/* </a> */}
               </h5>
               {item.avg_rating} / 10<br/>

@@ -14,7 +14,7 @@ import { CreateUserComponent } from './components/CreateUserComponent';
 import { ReduxCartComponent } from './components/CartComponent';
 import NavbarComponent from './components/NavbarComponent';
 import { ViewOneOrderAndItems } from './components/ViewOneOrderAndItems';
-import { ProfileComponent } from './components/ProfileComponent';
+import { ProfileComponent, ReduxProfileComponent } from './components/ProfileComponent';
 //import 'bootstrap/dist/css/bootstrap.min.css';//was not working for me. rene
 
 const doingDevWork=true //auto logs in and displays an item after user is logged in
@@ -129,7 +129,7 @@ export class App extends React.Component<any, any>
               </Route>
 
               <Route path="/myprofile">
-                <ProfileComponent loggedInUser={this.state.loggedInUser} updateUser={this.updateUser}/>
+                <ReduxProfileComponent loggedInUser={this.state.loggedInUser} updateUser={this.updateUser}/>
               </Route>
             </Provider>
           </Switch>
