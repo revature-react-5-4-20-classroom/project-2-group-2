@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactChild } from 'react'
 import { Form, FormGroup, Label, Col, Input, Button, Toast, ToastHeader, ToastBody, Container, Jumbotron, ListGroupItem } from 'reactstrap';
 import {submitReview} from '../api/StoreClient'
 
@@ -11,6 +11,8 @@ interface IReviewState{
 interface IReviewProps{
     itemId : string,
     userId: string,
+    parent:React.Component,    //the state of the element SubmitReviewComponent is in. 
+                //when a review is submitted we need to re-render the parent so it shows up.
 }
 
 export class SubmitReviewComponent extends React.Component<IReviewProps,IReviewState>{
@@ -47,6 +49,10 @@ export class SubmitReviewComponent extends React.Component<IReviewProps,IReviewS
         this.setState({
             reviewHasBeenSubmitted:true,
         })
+
+        //this was suppose to make the parent element update so we can see the newly submitted review
+        //it does not work though
+        this.props.parent.forceUpdate()
       }
 
     render()
@@ -58,7 +64,6 @@ export class SubmitReviewComponent extends React.Component<IReviewProps,IReviewS
         else
         {
             return(<>
-                
                 <Form onSubmit={this.submitReview} autoComplete='off'>
                     <FormGroup>
                         <Label for="Rating" >Please rate the product on a scale of 1 to 5!</Label>

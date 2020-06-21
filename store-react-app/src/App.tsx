@@ -17,7 +17,7 @@ import { ViewOneOrderAndItems } from './components/ViewOneOrderAndItems';
 import { ProfileComponent, ReduxProfileComponent } from './components/ProfileComponent';
 //import 'bootstrap/dist/css/bootstrap.min.css';//was not working for me. rene
 
-const doingDevWork=true //auto logs in and displays an item after user is logged in
+const doingDevWork=false //auto logs in and displays an item after user is logged in
 
 /*
     These may need to be installed in gitbash if the page looks bad or breaks
@@ -81,13 +81,14 @@ export class App extends React.Component<any, any>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
         <BrowserRouter>
           <Switch>
-          <Route path='/newuser'>
+            <Container>
+            <Route path='/newuser'>
                 <CreateUserComponent/>
               </Route>
             <Route path='/'>
               <LoginComponent updateUser={this.updateUser}/>
             </Route>
-
+          </Container>
             
           </Switch>
         </BrowserRouter>

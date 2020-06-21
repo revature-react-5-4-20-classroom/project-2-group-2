@@ -5,19 +5,23 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.store.main.models.Review;
+import com.store.main.repositories.ReviewRepository;
 import com.store.main.services.ReviewService;
 
 @RestController
-public class ReviewController {
-
-	
+public class ReviewController 
+{
 	@Autowired
 	ReviewService reviewService;
+	
+	@Autowired
+	ReviewRepository reviewRepo;
 	
 	@GetMapping("/hello")
 	public String test() {
@@ -27,6 +31,14 @@ public class ReviewController {
 	@GetMapping("/reviews")
 	public List<Review> getAllReviews(){
 		return reviewService.getAll();
+	}
+	
+	@GetMapping("/reviews/{itemId}")
+    public List<Review> getAllReviews(@PathVariable Integer itemId)
+	{
+	    
+	    
+        return reviewRepo.findAllByItemId(itemId);
 	}
 	
 	//this endpoint was /reviews but the front end was hitting /review

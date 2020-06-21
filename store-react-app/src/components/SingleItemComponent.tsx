@@ -8,8 +8,9 @@ import { Row, Col, Button, Container, Jumbotron, ListGroupItem, ListGroup } from
 import { getImageUrl } from '../api/getImageUrl';
 import { prnt } from '../Helpers';
 import { Link } from 'react-router-dom';
+import { ViewAllReviews } from './ViewAllReviews';
 
-const debug=true//prnt will display
+const debug=false//prnt will display
 
 interface IItemProps{
     item_id:    string;
@@ -35,7 +36,7 @@ interface IItemState{
 export class SingleItemComponent extends React.Component<IItemProps,IItemState>{
 
     constructor(props:IItemProps){
-        super(props);
+        super(props)
     }
 
 
@@ -53,9 +54,12 @@ export class SingleItemComponent extends React.Component<IItemProps,IItemState>{
                 <span>{this.props.avg_rating}</span> */}
 
                 <ListGroupItem>
-                  <SubmitReviewComponent itemId={this.props.item_id} userId = "1" />
+                  <SubmitReviewComponent itemId={this.props.item_id} userId = "1" parent={this}/>
                 </ListGroupItem>
               </ListGroup>
+
+              <ViewAllReviews itemId={parseInt(this.props.item_id)}/>
+
             </Jumbotron>
           </Container>
        );
@@ -76,11 +80,7 @@ export class SingleItemComponent extends React.Component<IItemProps,IItemState>{
 
       prnt(debug,`dispayTheItem() itemAsAnObject=`,itemAsAnObject)
 
-      return displayOneItem(itemAsAnObject,null,
-      
-        
-
-      )
+      return displayOneItem(itemAsAnObject)
     }
 }
 
@@ -152,7 +152,7 @@ export function displayOneItem(item:Item,funcViewItemActionMapper?:any,jsxButton
                 
                 {/* </a> */}
               </h5>
-              {item.avg_rating} / 10<br/>
+              {item.avg_rating} / 5<br/>
               <b>${item.price}</b>
             </Col>
             <Col>

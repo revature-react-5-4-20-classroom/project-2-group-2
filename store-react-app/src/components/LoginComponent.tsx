@@ -134,7 +134,7 @@ export class LoginComponent extends React.Component<ILoginComponentProps, ILogin
             </Col>
           </FormGroup>
           <a href="#" onClick={this.newUser}>Don't have an account? Click here to create one</a> <br></br>
-          <Button color="info">Submit</Button>
+          <Button color="info">Login</Button>
         </Form>
         <Toast isOpen={this.state.isError}>
           <ToastHeader icon="danger" toggle={this.clearError}>

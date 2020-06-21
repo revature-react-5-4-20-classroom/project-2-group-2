@@ -84,6 +84,8 @@ export class ProfileComponent extends React.Component<IProfileComponentProps,IPr
                             </NavItem>
                         </Nav>
                     </Navbar>
+                    <br/>
+                    <br/>
                     <Switch>
                         <Route path="/myprofile">
                                 <h3 className="display-3">User Profile for {this.props.loggedInUser?.firstName + ' ' + this.props.loggedInUser?.lastName}</h3>
