@@ -123,7 +123,7 @@ export class CreateUserComponent extends React.Component<any,ICreateUserState>{
                 redirect :false
             })
             return(
-                <Redirect to="/"></Redirect>
+                <Redirect to="/login"></Redirect>
             )
         }else{
             return(

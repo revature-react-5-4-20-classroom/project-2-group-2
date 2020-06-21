@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {Container, Row, Col, Navbar, NavbarToggler, Nav, NavItem, Dropdown, DropdownToggle, DropdownItem, DropdownMenu}from'reactstrap';
-import {SingleItemComponent, ReduxSingleItemComponent} from './components/SingleItemComponent'
+import {ReduxSingleItemComponent} from './components/SingleItemComponent'
 import { CheckoutPage, ReduxCheckoutPage } from './components/CheckoutPage';
 import {  BrowserRouter, Route, Switch,NavLink, Redirect } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -14,10 +14,8 @@ import { CreateUserComponent } from './components/CreateUserComponent';
 import { ReduxCartComponent } from './components/CartComponent';
 import NavbarComponent from './components/NavbarComponent';
 import { ViewOneOrderAndItems } from './components/ViewOneOrderAndItems';
-import { ProfileComponent, ReduxProfileComponent } from './components/ProfileComponent';
+import { ProfileComponent } from './components/ProfileComponent';
 //import 'bootstrap/dist/css/bootstrap.min.css';//was not working for me. rene
-
-const doingDevWork=false //auto logs in and displays an item after user is logged in
 
 /*
     These may need to be installed in gitbash if the page looks bad or breaks
@@ -54,12 +52,9 @@ export class App extends React.Component<any, any>
   {
     //prnt(true,`App componentDidMount() was reached`)
     //automatically log in so I don't have to type it in a million times
-
-    if(doingDevWork)
-    {
-      const loggedInUser  = await login("user","user");
-      this.updateUser(loggedInUser)
-    }
+    //comment out to disable
+    // const loggedInUser  = await login("user","user");
+    // this.updateUser(loggedInUser)
     //prnt(true,`App this.props.items=`,this.props.items)
 
     //trying to add items to the cart for testing
@@ -72,8 +67,18 @@ export class App extends React.Component<any, any>
       setIsOpen(!isOpen)
   }
 
+  
+ 
+
   render(){
 
+    //test area. comment out to not use
+    // return(<>
+    //   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    //   <h4>Test Area</h4>
+    //   <ViewOneOrderAndItems orderId={18}/>
+    // </>)
+  
     if(this.state.loggedInUser == null)
     {
       return(<>
@@ -81,35 +86,22 @@ export class App extends React.Component<any, any>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
         <BrowserRouter>
           <Switch>
-            <Container>
-            <Route path='/newuser'>
+          <Route path='/newuser'>
                 <CreateUserComponent/>
               </Route>
+              
             <Route path='/'>
               <LoginComponent updateUser={this.updateUser}/>
             </Route>
-          </Container>
-            
+            <Route path='/login'>
+              <LoginComponent updateUser={this.updateUser}/>
+            </Route>
           </Switch>
         </BrowserRouter>
       </>)
     } 
     else
     {
-      // if(doingDevWork) //test area for fasting viewing of changes. user is logged in at this point.
-      // {
-      //   return(<>
-      //     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
-      //     <h4>Test Area</h4>
-      //     {/* <ViewOneOrderAndItems orderId={18}/> */}
-      //     {/* <Redirect to="/myprofile"/> //didn't work for me */}
-      //     {/* <ProfileComponent loggedInUser={this.state.loggedInUser} updateUser={this.updateUser}/> */}
-      //     <Provider store={store}>
-      //     <ReduxSingleItemComponent/>
-      //     </Provider>
-      //   </>)
-      // }
-
       return(<>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
         <BrowserRouter>
@@ -130,7 +122,7 @@ export class App extends React.Component<any, any>
               </Route>
 
               <Route path="/myprofile">
-                <ReduxProfileComponent loggedInUser={this.state.loggedInUser} updateUser={this.updateUser}/>
+                <ProfileComponent loggedInUser={this.state.loggedInUser} updateUser={this.updateUser}/>
               </Route>
             </Provider>
           </Switch>
